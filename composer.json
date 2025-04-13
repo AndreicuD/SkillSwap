@@ -1,8 +1,8 @@
 {
-    "name": "yiisoft/chime-share",
-    "description": "Chime Share",
-    "keywords": ["yii2", "chime share", "infoed"],
-    "homepage": "https://chime-share.local",
+    "name": "yiisoft/skill-swap",
+    "description": "Skill Swap",
+    "keywords": ["yii2", "skill swap", "infoed"],
+    "homepage": "https://skill-swap.local",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
