@@ -41,7 +41,7 @@ AppAsset::register($this);
         'brandImage' => '/img/logo-white.png',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar navbar-expand-md',
+            'class' => 'navbar navbar-light navbar-expand-md',
         ],
     ]);
     if (Yii::$app->user->isGuest) {
@@ -49,7 +49,7 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            //['label' => 'Signup', 'url' => ['/user/signup']],
+            ['label' => 'Signup', 'url' => ['/user/signup']],
         ];
     } else {
         $menuItems = [

@@ -16,7 +16,7 @@ $this->title = 'Skill Swap';
                 <h1 class="display-5 fw-bold lh-1 mb-3 page_title">SkillSwap</h1>
                 <p class="lead lh-1"><?= Yii::t('app', 'Are you ready to start learning? etc etc etc.') ?></p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                    <button type="button" class="btn btn-primary">Get Started</button>
+                    <button type="button" class="btn btn-primary"><?= Yii::T('app', 'Get Started') ?></button>
                 </div>
             </div>
         </div>
