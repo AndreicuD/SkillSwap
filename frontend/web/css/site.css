@@ -1,8 +1,10 @@
 :root,
 [data-bs-theme=light] {
 	--primary-color: #7cce50;
+	--primary-color-rgb: 124, 206, 80;
 	--primary-darker: #6eb647;
 	--secondary-color: #49d337;
+	--secondary-color-rgb: 73, 211, 55;
 	--secondary-darker: #3cad2d;
 	--accent-color: #b0b0b0;
 	--accent-darker: #8f8f8f;
@@ -345,6 +347,20 @@ footer .footer {
 
 a {
 	color: var(--primary-color);
+}
+
+.hero-image {
+	/* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+	background-image: linear-gradient(rgba(var(--secondary-color-rgb), 0.5), rgba(var(--primary-color-rgb), 0.5)), url("photographer.jpg");
+  
+	/* Set a specific height */
+	height: 50%;
+  
+	/* Position and center the image to scale nicely on all screens */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
 }
 
 /* ICONS */

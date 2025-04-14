@@ -47,7 +47,6 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         $menuItems = [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Concerte', 'url' => ['/site/concerts']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             //['label' => 'Signup', 'url' => ['/user/signup']],
@@ -55,11 +54,6 @@ AppAsset::register($this);
     } else {
         $menuItems = [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Propuneri Publice', 'url' => ['/proposal/public_proposals']],
-            ['label' => 'Propuneri', 'url' => ['/proposal/proposals']],
-            ['label' => 'Calendar', 'url' => ['/calendar/index']],
-            ['label' => 'Concert', 'url' => ['/song/concert']],
-            ['label' => 'Melodii', 'url' => ['/song/index']],
         ];
     }
 
@@ -70,7 +64,7 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         echo Html::tag('div',Html::a('Login',['/user/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex login_logoutbutton']]);
     } else {
-        /*echo '<div class="btn-group">';
+        echo '<div class="btn-group">';
             echo '<a class="btn btn-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">';
                 echo Yii::$app->user->identity->username;
             echo '</a>';
@@ -81,8 +75,8 @@ AppAsset::register($this);
                 echo '<li><a class="dropdown-item" href="#">Setari</a></li>';
                 echo Html::tag('li',Html::a('Logout',['/user/logout'],['class' => ['btn btn-link logout text-decoration-none']]),['class' => ['d-flex login_logoutbutton']]);
             echo '</ul>';
-        echo '</div>';*/
-        echo Html::tag('div',Html::a('Logout (' . Yii::$app->user->identity->username . ')',['/user/logout'],['class' => ['btn btn-link logout text-decoration-none']]),['class' => ['d-flex login_logoutbutton']]);
+        echo '</div>';
+        //echo Html::tag('div',Html::a('Logout (' . Yii::$app->user->identity->username . ')',['/user/logout'],['class' => ['btn btn-link logout text-decoration-none']]),['class' => ['d-flex login_logoutbutton']]);
     }
     NavBar::end();
     ?>
