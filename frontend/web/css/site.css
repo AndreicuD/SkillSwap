@@ -261,6 +261,11 @@ button, .btn {
 
 /* NAVBAR AND HEADER/FOOTER SETTINGS */
 /* align the logout "link" (button in form) of the navbar */
+header .navbar {
+	--bs-bg-opacity: 100%;
+	background-color: var(--bs-gray-400);
+  }
+
 .navbar {
 	--bs-navbar-padding-x: 0;
 	--bs-navbar-padding-y: 0.5rem;
