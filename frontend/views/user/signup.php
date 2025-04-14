@@ -15,10 +15,10 @@ $this->title = Yii::t('app', 'Signup');
         <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['id' => 'form-signup', 'layout' => 'floating']); ?>
 
-                <?= $form->field($model, 'email')->label(Yii::t('app', 'Email')) ?>
-                <?= $form->field($model, 'password')->passwordInput()->label(Yii::t('app', 'Password')) ?>
-
-                <?= $form->field($model, 'username')->label(Yii::t('app', 'Username')) ?>
+            <?= $form->field($model, 'email')->label(Yii::t('app', 'Email')) ?>
+            <?= $form->field($model, 'password')->passwordInput()->label(Yii::t('app', 'Password')) ?>
+            
+            <?= $form->field($model, 'username')->label(Yii::t('app', 'Username')) ?>
 
                 <br>
                 <div class="form-group" style="text-align: center;">
