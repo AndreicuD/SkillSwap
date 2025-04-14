@@ -22,6 +22,10 @@ AppAsset::register($this);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -29,26 +33,6 @@ AppAsset::register($this);
 <body class="d-flex flex-column h-100" data-bs-theme="light">
 <?php $this->beginBody() ?>
 
-<!--<div class="background" id="background"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js"></script>
-<script>
-VANTA.FOG({
-  el: "#background",
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  highlightColor: 0x0,
-  midtoneColor: 0x3b205e,
-  lowlightColor: 0x000000,
-  baseColor: 0x0,
-  blurFactor: 0.61,
-  speed: 0.00,
-  zoom: 0.80
-})
-</script>-->
 
 <header>
     <?php

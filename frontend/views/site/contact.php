@@ -15,16 +15,10 @@ $this->title = Yii::t('app', 'Contact Us');
     <h1 class="page_title" style="text-align: center;"><?= Html::encode($this->title) ?></h1>
 
     <p class="text-center lead">
-        <?= Yii::t("app", "Pentru orice întrebare contactează-ne prin formularul de mai jos sau folosind unul din social media-urile listate.") ?>
+        <?= Yii::t("app", "For any questions please don't hesitate to contact us using the form below.") ?>
     </p>
 
     <div class="row justify-content-center">
-        <div style="display: inline; text-align: center; padding-bottom: 1rem; font-size: 2em;">
-            <a href="https://www.instagram.com/darkened_tunes/" target="_blank" style="color: #ffffff; text-decoration: none;" class="page_title">
-                <i class="fa fa-instagram fa-lg"></i> - Instagram
-            </a>
-        </div>
-
         <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['id' => 'contact-form', 'layout' => 'floating']); ?>
 
