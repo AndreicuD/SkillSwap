@@ -241,7 +241,7 @@ h1, h2, h3, h4, h5 {
   font-weight: 700;
 }
 
-html {font-size: 120%;} /* 16px */
+html {font-size: 100%;} /* 16px */
 
 h1 {font-size: 3.053rem; /* 48.8px */}
 
@@ -354,18 +354,26 @@ a {
 	color: var(--primary-color);
 }
 
+.hero {
+	width: 100%;
+	position: relative;
+}
 .hero-image {
 	/* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
 	background-image: linear-gradient(rgba(var(--secondary-color-rgb), 0.5), rgba(var(--primary-color-rgb), 0.5)), url("photographer.jpg");
   
 	/* Set a specific height */
-	height: 50%;
+	width: 100%;
+	height: auto;
   
 	/* Position and center the image to scale nicely on all screens */
 	background-position: center;
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: contain;
 	position: relative;
+}
+.hero-text {
+	transform: translate(50%, -100%);
 }
 
 /* ICONS */
@@ -395,26 +403,6 @@ a {
 	border: solid rgba(0, 0, 0, 0.15);
 	border-width: 1px 0 0;
 	/*box-shadow: inset 0 .5em .5em rgba(0, 0, 0, .1);*/
-}
-.popup {
-	display: none;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	padding: 20px;
-	background: rgb(34,25,46);
-	background: linear-gradient(234deg, rgba(34,25,46,1) 0%, rgba(22,15,31,1) 100%);
-	border: 1px solid #ccc;
-	z-index: 999;
-	border-radius: 10px;
-}
-@media(max-width: 767px) {
-	.popup {
-		width: 100%;
-		top: 0%;
-		transform: translate(-50%, 0);
-	}
 }
 .group_together {
 	display: flex;
