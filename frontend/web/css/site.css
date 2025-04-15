@@ -441,3 +441,9 @@ a {
 		gap: 0;
 	}
 }
+
+.card-flex {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
