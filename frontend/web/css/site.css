@@ -261,12 +261,8 @@ button, .btn {
 
 /* NAVBAR AND HEADER/FOOTER SETTINGS */
 /* align the logout "link" (button in form) of the navbar */
-header .navbar {
-	--bs-bg-opacity: 100%;
-	background-color: var(--bs-gray-400);
-  }
-
 .navbar {
+	background-color: #fff;
 	--bs-navbar-padding-x: 0;
 	--bs-navbar-padding-y: 0.5rem;
 	--bs-navbar-color: rgba(var(--bs-emphasis-color-rgb), 0.65);
@@ -287,6 +283,10 @@ header .navbar {
 	--bs-navbar-toggler-border-radius: var(--bs-border-radius);
 	--bs-navbar-toggler-focus-width: 0.25rem;
 	--bs-navbar-toggler-transition: box-shadow 0.15s ease-in-out;
+}
+header .navbar {
+	--bs-bg-opacity: 100%;
+	background-color: var(--bs-gray-400);
 }
 
 .navbar form > button.logout {

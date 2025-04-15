@@ -83,13 +83,14 @@ AppAsset::register($this);
 </header>
 
 <main role="main" class="flex-shrink-0">
-    <div class="container">
+    <div class="<?= Yii::$app->requestedRoute == 'site/index' ? '' : 'container' ?>">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
+</main>
 
 
     
