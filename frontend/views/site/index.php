@@ -9,7 +9,7 @@ use yii\helpers\Url;
 
 $this->title = 'Skill Swap';
 ?>
-<div class="site-index">
+<d class="site-index">
     <div class="container my-3 hero hero-image">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
             <div class="col-lg-6">
@@ -21,33 +21,37 @@ $this->title = 'Skill Swap';
             </div>
         </div>
     </div>
-    <div class="index-description">
-        <p class="index-description-text"><?= Yii::t('app', 'Everday is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
-    </div>
-    <div class="card-flex">
-        <div class="card" style="width: 17rem;">
-            <h5 class="card-header"><?= Yii::t('app', 'Course 1') ?></h5>
-            <div class="card-body">
-                <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Go somewhere') ?></a>
+
+
+    <div style="padding: 0 16%;">
+        <div class="index-description title">
+            <p class="index-description-text"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
+        </div>
+        <div class="card-flex">
+            <div class="card" style="width: 17rem;">
+                <h5 class="card-header"><?= Yii::t('app', 'Course 1') ?></h5>
+                <div class="card-body">
+                    <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
+                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                </div>
+            </div>
+            <div class="card" style="width: 17rem;">
+                <h5 class="card-header"><?= Yii::t('app', 'Course 2') ?></h5>
+                <div class="card-body">
+                    <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
+                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                </div>
+            </div>
+            <div class="card" style="width: 17rem;">
+                <h5 class="card-header"><?= Yii::t('app', 'Course 3') ?></h5>
+                <div class="card-body">
+                    <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
+                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                </div>
             </div>
         </div>
-        <div class="card" style="width: 17rem;">
-            <h5 class="card-header"><?= Yii::t('app', 'Course 2') ?></h5>
-            <div class="card-body">
-                <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Go somewhere') ?></a>
-            </div>
+        <div class="title">
+            <h2><?= Yii::t('app', 'Trending articles') ?></h2>
         </div>
-        <div class="card" style="width: 17rem;">
-            <h5 class="card-header"><?= Yii::t('app', 'Course 3') ?></h5>
-            <div class="card-body">
-                <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Go somewhere') ?></a>
-            </div>
-        </div>
-    </div>
-    <div class="trend-art">
-        <h2><?= Yii::t('app', 'Trending articles') ?></h2>
     </div>
 </div>

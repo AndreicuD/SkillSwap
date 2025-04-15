@@ -447,3 +447,8 @@ a {
 	flex-direction: row;
 	justify-content: space-evenly;
 }
+
+.title {
+	margin-top: 20px;
+	text-align: center;
+}
