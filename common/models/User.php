@@ -64,8 +64,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return [
-            [['email', 'username'], 'required', 'on' => 'default'],
-            [['email', 'username', 'password'], 'required', 'on' => 'create'],
+            [['email', 'firstname', 'lastname'], 'required', 'on' => 'default'],
+            [['email', 'firstname', 'lastname', 'password'], 'required', 'on' => 'create'],
             ['status', 'default', 'value' => self::STATUS_INACTIVE, 'on' => 'default'],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             ['sex' , 'in', 'range' => ['F', 'M']],
@@ -77,8 +77,8 @@ class User extends ActiveRecord implements IdentityInterface
             ['email', 'email', 'on' => 'create'],
             ['email', 'unique', 'on' => 'default'],
             ['email', 'unique', 'on' => 'create'],
-            [['firstname', 'lastname'], 'unique', 'skipOnEmpty' => true, 'on' => 'default'],
-            [['firstname', 'lastname'], 'unique', 'skipOnEmpty' => true, 'on' => 'create'],
+            [['firstname', 'lastname'], 'unique', 'on' => 'default'],
+            [['firstname', 'lastname'], 'unique', 'on' => 'create'],
             /*['password_confirmation', 'compare', 'compareAttribute' => 'new_password', 'on' => 'create'],*/
             [['auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'password', 'newsletter_subscription'], 'safe'],
             [['id', 'username', 'email', 'firstname', 'lastname', 'sex', 'phone', 'birth_date', 'item_name'], 'safe', 'on' => 'search'],

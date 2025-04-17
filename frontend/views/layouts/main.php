@@ -41,7 +41,7 @@ AppAsset::register($this);
         'brandImage' => '/img/logo-white.png',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar navbar-light navbar-expand-md',
+            'class' => 'navbar navbar-expand-md bg-body-tertiary',
         ],
     ]);
     if (Yii::$app->user->isGuest) {
