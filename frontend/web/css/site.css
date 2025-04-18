@@ -278,7 +278,9 @@ button, .btn {
 	position: sticky !important;
 	top: 0;
 }
-
+.nav-item {
+	padding: 0 1em;
+}
 .navbar-brand {
 	color: var(--primary-color);
 	font-weight: 700;
@@ -304,7 +306,8 @@ button, .btn {
   transform: scaleX(1);
 }
 .navbar-brand img {
-	max-height: 60px;
+	max-height: 50px;
+	padding: 0.1em 0;
 }
 .navbar-brand:hover {
 	color: var(--primary-darker);
@@ -346,23 +349,47 @@ a {
 	width: 100%;
 	vertical-align: middle;
 	text-align: center;
-
 }
 .hero-text {
-	display: inline-block;
 	padding-top: 100vh;
-	transform: translateY(-50%);
+	transform: translateY(calc(-50% - 86px));
 	color: white;
-	word-break: keep-all;
-	animation: hero_anim ease-in;
+	animation: hero_text_anim ease-in;
 	animation-timeline: scroll();
 }
-@keyframes hero_anim {
+.hero-arrow-anim {
+	position: absolute;
+	top: 80vh;
+	width: 100%;
+	text-align: center;
+	animation: hero_arrow_anim ease-out;
+	animation-timeline: scroll();
+}
+.hero-arrow {
+	position: inherit;
+	color: white;
+	animation: bob 1s infinite;
+}
+@keyframes bob {
+	0% { transform:translate(-50%, 0%) scale(1); }
+	50% { transform:translate(-50%, 15%) scale(1.1); }
+	100% { transform:translate(-50%, 0%) scale(1); }
+}
+@keyframes hero_text_anim {
 	to {
-		transform: translateY(-100%);
+		transform: translateY(-140%);
+		scale: 2 2;
 		opacity: 0;
 	}
 }
+@keyframes hero_arrow_anim {
+	to {
+		scale: 0.2 0.2;
+		top: calc(90vh + 120px);
+		opacity: 0;
+	}
+}
+
 .hero-text h1 {
 	font-size: 15vw;
 }

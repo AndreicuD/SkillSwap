@@ -100,16 +100,15 @@ AppAsset::register($this);
 
 <!-- hero if on the index page -->
 <?php if(Yii::$app->requestedRoute == "site/index" && Yii::$app->user->isGuest){ ?>
-    <!--<script>
-        $(window).scroll(function(){
-            $("#hero-text").stop().animate({"marginTop": -($(window).scrollTop()) + "px", "marginLeft":-($(window).scrollLeft()) + "px"}, "slow" );
-            console.log("ceva")
-        });
-    </script>-->
     <div class="hero user-select-none">
         <div class="hero-text" id="hero-text">
             <h1>SkillSwap</h1>
             <p><?= Yii::t('app', 'Learn new skills faster than ever before!') ?></p>
+        </div>
+        <div class="hero-arrow-anim">
+            <a class="hero-arrow" href="#content">
+                <svg xmlns="http://www.w3.org/2000/svg"  width="60"  height="60"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-compact-down down-arrow"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 11l8 3l8 -3" /></svg>
+            </a>
         </div>
     </div>
 <?php } ?>
