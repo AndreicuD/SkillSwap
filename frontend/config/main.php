@@ -7,8 +7,8 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'template-frontend',
-    'name' => 'Yii Template',
+    'id' => 'skillswap-frontend',
+    'name' => 'Skill Swap',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -29,7 +29,7 @@ return [
             'loginUrl' => ['user/login'],
         ],
         'session' => [
-            'name' => 'template-frontend',
+            'name' => 'skillswap-frontend',
         ],
         'log' => [
             'traceLevel' => /*YII_DEBUG ? 3 :*/ 0,

@@ -14,7 +14,7 @@ AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" class="h-100">
+<html lang="<?= Yii::$app->language ?>" class="<?= Yii::$app->requestedRoute == 'site/index' ? '' : 'h-100' ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,23 +33,23 @@ AppAsset::register($this);
 <body class="d-flex flex-column h-100" data-bs-theme="light">
 <?php $this->beginBody() ?>
 
-
-<header>
-    <?php
+<?php
     NavBar::begin([
+        //'brandImage' => '/img/logo-dark.png',
         'brandLabel' => Yii::$app->name,
-        'brandImage' => '/img/logo-white.png',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar navbar-expand-md bg-body-tertiary',
+            'id' => 'navbar',
+            'class' => 'navbar bg-primary navbar-expand-md sticky-top',
+
         ],
     ]);
     if (Yii::$app->user->isGuest) {
         $menuItems = [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Home', 'url' => ['/site/index/#navbar']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Signup', 'url' => ['/user/signup']],
+            //['label' => 'Signup', 'url' => ['/user/signup']],
         ];
     } else {
         $menuItems = [
@@ -62,10 +62,16 @@ AppAsset::register($this);
         'items' => $menuItems,
     ]);
     if (Yii::$app->user->isGuest) {
-        echo Html::tag('div',Html::a('Login',['/user/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex login_logoutbutton']]);
+        echo "<div class='btn-group login_logoutbutton'>";
+        
+        echo Html::a('Signup',['/user/signup'],['class' => ['btn btn-primary signup text-decoration-none']]);
+        echo Html::a('Login',['/user/login'],['class' => ['btn btn-primary login text-decoration-none']]);
+
+        echo "</div>";
+
     } else {
         echo '<div class="btn-group">';
-            echo '<a class="btn btn-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">';
+            echo '<a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">';
                 echo Yii::$app->user->identity->username;
             echo '</a>';
             echo '<ul class="dropdown-menu dropdown-menu-lg-end">';
@@ -79,8 +85,23 @@ AppAsset::register($this);
         //echo Html::tag('div',Html::a('Logout (' . Yii::$app->user->identity->username . ')',['/user/logout'],['class' => ['btn btn-link logout text-decoration-none']]),['class' => ['d-flex login_logoutbutton']]);
     }
     NavBar::end();
-    ?>
-</header>
+?>
+
+<!-- hero if on the index page -->
+<?php if(Yii::$app->requestedRoute == "site/index" && Yii::$app->user->isGuest){ ?>
+    <script>
+        $(window).scroll(function(){
+            $("#hero-text").stop().animate({"marginTop": -($(window).scrollTop()) + "px", "marginLeft":-($(window).scrollLeft()) + "px"}, "slow" );
+            console.log("ceva")
+        });
+    </script>
+    <div class="hero">
+        <div class="hero-text" id="hero-text">
+            <h1>SkillSwap</h1>
+            <p><?= Yii::t('app', 'Learn new skills faster than ever before!') ?></p>
+        </div>
+    </div>
+<?php } ?>
 
 <main role="main" class="flex-shrink-0">
     <div class="<?= Yii::$app->requestedRoute == 'site/index' ? '' : 'container' ?>">
@@ -92,14 +113,10 @@ AppAsset::register($this);
     </div>
 </main>
 
-
-    
-</main>
-
-<footer class="footer footer-dark mt-auto py-3 text-muted">
+<footer class="footer footer-light mt-auto py-3 text-muted">
     <div class="container">
         <p class="float-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="float-end"><?= Yii::powered() ?></p>
+        <p class="float-end">Made with <span>Love</span> by <b>Huțanu Andrei</b> and <b>Roman David</b> 💚</p>
     </div>
 </footer>
 

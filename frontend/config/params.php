@@ -1,4 +1,4 @@
 <?php
 return [
-    'adminEmail' => 'site@yii-template.com',
+    'adminEmail' => 'site@skill-swap.com',
 ];

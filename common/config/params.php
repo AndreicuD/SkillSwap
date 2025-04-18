@@ -1,9 +1,9 @@
 <?php
 return [
-    'adminEmail' => 'site@yii-template.com',
-    'supportEmail' => 'site@yii-template.com',
-    'senderEmail' => 'site@yii-template.com',
-    'senderName' => 'yii-template.com mailer',
+    'adminEmail' => 'site@skill-swap.com',
+    'supportEmail' => 'site@skill-swap.com',
+    'senderEmail' => 'site@skill-swap.com',
+    'senderName' => 'skill-swap.com mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
 

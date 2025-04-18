@@ -7,8 +7,8 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'template-backend',
-    'name' => 'Backend Yii Template',
+    'id' => 'skillswap-backend',
+    'name' => 'Backend SkillSwap',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
@@ -33,7 +33,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
-            'name' => 'template-backend',
+            'name' => 'skillswap-backend',
             'cookieParams' => [
                 'path' => '/admin',
             ],

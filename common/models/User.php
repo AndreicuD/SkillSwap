@@ -69,7 +69,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_INACTIVE, 'on' => 'default'],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             ['sex' , 'in', 'range' => ['F', 'M']],
-            [['sex', 'birth_date', 'firstname', 'lastname'], 'default', 'value' => NULL],
+            [['sex', 'birth_date'], 'default', 'value' => NULL],
             [['item_name'], 'default', 'value' => 'member', 'on' => 'create'],
             [['firstname', 'lastname', 'username'], 'string', 'max' => 254],
             [['phone'], 'string', 'max' => 128],
