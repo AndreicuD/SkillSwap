@@ -44,9 +44,20 @@ AppAsset::register($this);
 
         ],
     ]);
+?>
+
+<!-- keep this if you also want a logo by the navbar label -->
+<!--
+<a class="navbar-brand" href="/site/index">
+    <img src="/img/logo-dark.png" alt="Logo" class="d-inline-block align-text-top">
+    <a class="navbar-brand"><?= Yii::$app->name ?></a>
+</a>
+-->
+
+<?php
     if (Yii::$app->user->isGuest) {
         $menuItems = [
-            ['label' => 'Home', 'url' => ['/site/index/#navbar']],
+            ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             //['label' => 'Signup', 'url' => ['/user/signup']],
@@ -89,13 +100,13 @@ AppAsset::register($this);
 
 <!-- hero if on the index page -->
 <?php if(Yii::$app->requestedRoute == "site/index" && Yii::$app->user->isGuest){ ?>
-    <script>
+    <!--<script>
         $(window).scroll(function(){
             $("#hero-text").stop().animate({"marginTop": -($(window).scrollTop()) + "px", "marginLeft":-($(window).scrollLeft()) + "px"}, "slow" );
             console.log("ceva")
         });
-    </script>
-    <div class="hero">
+    </script>-->
+    <div class="hero user-select-none">
         <div class="hero-text" id="hero-text">
             <h1>SkillSwap</h1>
             <p><?= Yii::t('app', 'Learn new skills faster than ever before!') ?></p>

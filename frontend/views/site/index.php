@@ -7,7 +7,7 @@ use yii\bootstrap5\Html;
 use yii\widgets\ListView;
 use yii\helpers\Url;
 
-$this->title = 'Skill Swap';
+$this->title = 'SkillSwap';
 ?>
 <div class="site-index">
 
