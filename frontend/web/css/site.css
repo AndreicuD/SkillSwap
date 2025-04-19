@@ -227,9 +227,12 @@ body {
   font-family: 'Funnel Sans';
   font-weight: 400;
 }
+::selection {
+	background-color: var(--bs-secondary-border-subtle)
+}
 
 h1, h2, h3, h4, h5 {
-  font-family: 'Antonio';
+  font-family: 'Ubuntu';
   font-weight: 700;
 }
 
@@ -252,13 +255,13 @@ small {font-size: 0.800rem; /* 12.8px */}
 }
 .nav-item:hover {
 	scale: 1.2;
-	rotate: 3deg;
+	rotate: 2deg;
 }
 .rotate_on_hover {
 	transition: 0.3s;
 }
 .rotate_on_hover:hover {
-	rotate: 3deg;
+	rotate: 2deg;
 }
 .scale_on_hover {
 	transition: 0.3s;
@@ -284,6 +287,7 @@ button, .btn {
 .navbar-brand {
 	color: var(--primary-color);
 	font-weight: 700;
+	font-family: 'Ubuntu';
 	font-size: 2em;
 	padding: 0;
 	display: inline-block;
@@ -351,11 +355,15 @@ a {
 	text-align: center;
 }
 .hero-text {
+	font-family: 'Ubuntu';
 	padding-top: 100vh;
 	transform: translateY(calc(-50% - 86px));
 	color: white;
 	animation: hero_text_anim ease-in;
 	animation-timeline: scroll();
+}
+.hero-text h1 {
+	font-family: 'Ubuntu';
 }
 .hero-arrow-anim {
 	position: absolute;
@@ -364,6 +372,10 @@ a {
 	text-align: center;
 	animation: hero_arrow_anim ease-out;
 	animation-timeline: scroll();
+	transition: 0.3s;
+}
+.hero-arrow-anim:hover {
+	scale: 1.2;
 }
 .hero-arrow {
 	position: inherit;
@@ -467,6 +479,9 @@ a {
 }
 .card {
 	margin-bottom: 1em;
+}
+.card-header {
+	font-weight: 500;
 }
 @media(max-width: 767px) {
 	.card-flex {

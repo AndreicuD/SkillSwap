@@ -20,21 +20,21 @@ $this->title = 'SkillSwap';
                 <h5 class="card-header"><?= Yii::t('app', 'Course 1') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
             <div class="card" style="width: 17rem;">
                 <h5 class="card-header"><?= Yii::t('app', 'Course 2') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
             <div class="card" style="width: 17rem;">
                 <h5 class="card-header"><?= Yii::t('app', 'Course 3') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
         </div>
@@ -50,21 +50,21 @@ $this->title = 'SkillSwap';
                 <h5 class="card-header"><?= Yii::t('app', 'Course 1') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
             <div class="card" style="width: 17rem;">
                 <h5 class="card-header"><?= Yii::t('app', 'Course 2') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
             <div class="card" style="width: 17rem;">
                 <h5 class="card-header"><?= Yii::t('app', 'Course 3') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
         </div>
@@ -80,21 +80,21 @@ $this->title = 'SkillSwap';
                 <h5 class="card-header"><?= Yii::t('app', 'Course 1') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
             <div class="card" style="width: 17rem;">
                 <h5 class="card-header"><?= Yii::t('app', 'Course 2') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
             <div class="card" style="width: 17rem;">
                 <h5 class="card-header"><?= Yii::t('app', 'Course 3') ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                    <a href="#" class="btn btn-primary"><?= Yii::t('app', 'Buy now!') ?></a>
+                    <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
                 </div>
             </div>
         </div>
