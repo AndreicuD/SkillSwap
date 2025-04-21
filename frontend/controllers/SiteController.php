@@ -3,8 +3,6 @@
 namespace frontend\controllers;
 
 use frontend\models\ContactForm;
-use common\models\PublicProposal;
-use common\models\Concert;
 use Yii;
 use yii\web\Controller;
 

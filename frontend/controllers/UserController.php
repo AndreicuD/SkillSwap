@@ -15,6 +15,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use common\models\User;
+use common\models\Article;
 
 /**
  * Site controller
@@ -36,7 +37,7 @@ class UserController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'profile', 'logout'],
+                        'actions' => ['index', 'profile', 'articles', 'logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -73,6 +74,23 @@ class UserController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    /**
+     *  Page to show the articles of a user.
+     *
+     * @return mixed
+     */
+    public function actionArticles() 
+    {
+        $searchModel = new Article();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andWhere(['user_id' => Yii::$app->user->id]);
+
+        return $this->render('articles', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
