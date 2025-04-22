@@ -11,6 +11,7 @@ use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
 AppAsset::register($this);
+$point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-analyze"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918" /><path d="M4 13a8.1 8.1 0 0 0 15 3" /><path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></svg>';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -82,8 +83,9 @@ AppAsset::register($this);
 
         } else {
             echo '<div class="btn-group login_logoutbutton">';
-                echo '<a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo Yii::$app->user->identity->firstname . " " . Yii::$app->user->identity->lastname[0] . ".";
+                echo '<a class="btn btn-primary dropdown-toggle rotate_on_hover" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">';
+                    echo Yii::$app->user->identity->firstname . " " . Yii::$app->user->identity->lastname[0] . " - ";
+                    echo Yii::$app->user->identity->points . $point_svg;
                 echo '</a>';
                 echo '<ul class="dropdown-menu dropdown-menu-lg-end">';
                     echo Html::tag('li',Html::a('My articles',['/user/articles'],['class' => ['dropdown-item']]));
@@ -99,22 +101,6 @@ AppAsset::register($this);
         }
         NavBar::end();
 ?>
-
-<!-- hero if on the index page -->
-<?php if(Yii::$app->requestedRoute == "site/index" && Yii::$app->user->isGuest){ ?>
-    <div class="hero user-select-none">
-        <div class="hero-text" id="hero-text">
-            <h1>SkillSwap</h1>
-            <p><?= Yii::t('app', 'Acquire new skills faster than ever before!') ?></p>
-            <?= Html::a(Yii::t('app', 'Join Us'),['/user/signup'],['class' => ['btn btn-secondary']]) ?>
-        </div>
-        <div class="hero-arrow-anim">
-            <a class="hero-arrow" href="#site-index">
-                <svg xmlns="http://www.w3.org/2000/svg"  width="60"  height="60"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-compact-down down-arrow"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 11l8 3l8 -3" /></svg>
-            </a>
-        </div>
-    </div>
-<?php } ?>
 
 <main role="main" class="flex-shrink-0">
     <div class="<?= Yii::$app->requestedRoute == 'site/index' ? '' : 'container' ?>">

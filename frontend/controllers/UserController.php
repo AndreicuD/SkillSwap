@@ -16,6 +16,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use common\models\User;
 use common\models\Article;
+use common\models\Category;
 
 /**
  * Site controller
@@ -86,9 +87,13 @@ class UserController extends Controller
         $searchModel = new Article();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andWhere(['user_id' => Yii::$app->user->id]);
+        
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
 
         return $this->render('articles', [
-            'searchModel' => $searchModel,
+            'model' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

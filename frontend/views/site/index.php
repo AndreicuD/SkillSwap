@@ -9,6 +9,22 @@ use yii\helpers\Url;
 
 $this->title = 'SkillSwap';
 ?>
+<!-- hero if on the index page -->
+<?php if(Yii::$app->requestedRoute == "site/index" && Yii::$app->user->isGuest){ ?>
+    <div class="hero user-select-none">
+        <div class="hero-text" id="hero-text">
+            <h1>SkillSwap</h1>
+            <p><?= Yii::t('app', 'Discover your new hobby!') ?></p>
+            <?= Html::a(Yii::t('app', 'Join Us'),['/user/signup'],['class' => ['btn btn-secondary btn-lg']]) ?>
+        </div>
+        <div class="hero-arrow-anim">
+            <a class="hero-arrow" href="#site-index">
+                <svg xmlns="http://www.w3.org/2000/svg"  width="60"  height="60"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-compact-down down-arrow"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 11l8 3l8 -3" /></svg>
+            </a>
+        </div>
+    </div>
+<?php } ?>
+
 <div class="site-index" id="site-index">
 
     <div style="padding: 0 16%;">

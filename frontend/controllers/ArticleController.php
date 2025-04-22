@@ -36,40 +36,70 @@ class ArticleController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
-    }
+        $searchModel = new Article();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andWhere(condition: ['is_public' => 1]);
 
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+        return $this->render('index', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
     /**
-     * edit article info
+     * see article stats
      * @param integer $id
      * @return string
      */
-    public function actionAjaxEdit($public_id) {
+    public function actionAjaxStats($public_id) {
         $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
         $this->layout = 'blank';
-        return $this->renderAjax('ajax-edit', [
+        return $this->renderAjax('ajax-stats', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
+     * edit article content
+     * @param integer $id
+     * @return string
+     */
+    public function actionEdit($public_id) {
+        $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('edit', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+    /**
      * update an article
      * @param integer $id
+     * @param string $page
      * @return
      */
-    public function actionUpdate($public_id, $page)
+    public function actionUpdate($id, $page)
     {
-        $model = Article::findOne(['public_id' => $public_id]);
+        $model = Article::findOne(['id' => $id]);
         //$model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', Yii::t('app', 'Article changes saved succesfully.'));
             if($page == "user") {
                 $this->redirect(['user/articles']);
             } else {
-                $this->redirect(['article/index']);
+                $this->redirect(['article/edit', 'public_id' => $model->public_id]);
             }
         } else {
             Yii::$app->session->setFlash('error', Yii::t('app', 'Failed to save article changes.'));
@@ -77,7 +107,7 @@ class ArticleController extends Controller
         if($page == "user") {
             $this->redirect(['user/articles']);
         } else {
-            $this->redirect(['article/index']);
+            $this->redirect(['article/edit', 'public_id' => $model->public_id]);
         }
     }
 }

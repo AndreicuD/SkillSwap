@@ -271,6 +271,10 @@ h4 {font-size: 1.563rem; /* 24.96px */}
 h5 {font-size: 1.250rem; /* 20px */}
 
 small {font-size: 0.800rem; /* 12.8px */}
+.gray {
+	color:#000;
+	opacity: 0.6;
+}
 
 @media(max-width: 767px) {
 	.hide-on-sm {
@@ -278,11 +282,22 @@ small {font-size: 0.800rem; /* 12.8px */}
 	}
 }
 
-.rotate_on_hover {
-	transition: 0.3s;
+@keyframes rotate {
+	0% {
+		rotate: 0deg;
+	}
+	25% {
+		rotate: 3deg;
+	}
+	62% {
+		rotate: -3deg;
+	}
+	100% {
+		rotate: 0deg;
+	}
 }
 .rotate_on_hover:hover {
-	rotate: 2deg;
+	animation: rotate 0.3s;
 }
 .scale_on_hover {
 	transition: 0.3s;
@@ -381,7 +396,9 @@ button, .btn {
 a {
 	color: var(--primary-color);
 }
-
+.select2-container--krajee-bs5 .select2-results__option--highlighted[aria-selected] {
+	background-color: var(--primary-color);
+}
 
 /* HERO SECTION */
 .hero {
@@ -519,16 +536,56 @@ a {
 	}
 }
 
-.card-flex {
+.flex-row-even {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
+	gap: 1em;
+}
+@media(max-width: 767px) {
+	.flex-row-even {
+		flex-wrap: wrap;
+	}
 }
 .card {
 	margin-bottom: 1em;
+	width: 25%;
+	border-radius: 16px;
+	overflow: hidden;
 }
-.card-header {
-	font-weight: 500;
+/* for the summernote editor */
+.form-control .card {
+	width: 100%;
+}
+.card-slide .card-body {
+	width: 100%;
+	background-color: var(--bs-body-bg);
+    transition: 0.3s ease;
+	position: absolute;
+	bottom: 0;
+    left: 0;
+}
+.card-slide .card-footer {
+	width: 100%;
+	position: absolute;
+    transition: 0.3s ease;
+	background-color: var(--bs-body-bg);
+	padding-top: 1em;
+	bottom: -54px;
+    left: 0;
+	background-color: var(--bs-body-bg);
+}
+.card-slide .card:hover .card-body {
+	bottom: 54px;
+}
+.card-slide .card:hover .card-footer {
+	bottom: 0;
+}
+.card-image img{
+	width: 100%;
+	object-fit: cover;
+	max-height: 250px;
+	border-radius: 16px 16px 0 0;
 }
 .card-title {
 	margin-bottom: 0;
@@ -536,10 +593,14 @@ a {
 	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
-  	text-overflow: ellipsis;
+	text-overflow: ellipsis;
 }
-.card-title-edit {
-	max-width: 80%;
+.card-button {
+	display: flex;
+	justify-content: center;
+	padding: 10px 0;
+	width: 100%;
+	border-radius: 0;
 }
 .custom-value {
 	border: 1px;
@@ -550,20 +611,15 @@ a {
 .custom-profit {
 	background-color: rgba(var(--bs-primary-bg-subtle-rgb), 0.9);
 }
-.custom-likes {
-	background-color: #ffc0e3;
-}
 .custom-bought {
 	background-color: #ffeebe;
 }
 @media(max-width: 767px) {
-	.card-flex {
-		flex-wrap: wrap;
-	}
-	.card-title-edit {
-		max-width: 100%;
+	.card {
+		width: 100%;
 	}
 }
+
 
 .title {
 	margin-top: 20px;

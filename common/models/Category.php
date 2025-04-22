@@ -9,13 +9,15 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * Category model
  *
  * @property integer $id [int(auto increment)]
  * @property string $name [varchar(128)]
- * @property string $description [varchar(256)]
+ * @property integer $created_at [datetime]
+ * @property integer $updated_at [timestamp = current_timestamp()]
  *
  * @property integer $page_size
  *
@@ -44,13 +46,12 @@ class Category extends ActiveRecord
             [['name'], 'required', 'on' => 'create'],
             
             [['name'], 'string', 'max' => 128],
-            [['description'], 'string', 'max' => 256],
 
             ['name', 'unique', 'on' => 'default'],
             ['name', 'unique', 'on' => 'create'],
 
-            [['name', 'description', 'id'], 'safe'],
-            [['name', 'description', 'id'], 'safe', 'on' => 'search'],
+            [['name', 'id'], 'safe'],
+            [['name', 'id'], 'safe', 'on' => 'search'],
         ];
     }
 
@@ -62,7 +63,6 @@ class Category extends ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-            'description' => Yii::t('app', 'Description'),
         ];
     }
 
@@ -81,6 +81,29 @@ class Category extends ActiveRecord
         ];
     }
 
+    public function beforeSave($insert): bool
+    {
+        if (parent::beforeSave($insert)) {
+            // Trim, normalize spaces, and capitalize each word in the name
+            $this->name = trim(preg_replace('/\s+/', ' ', $this->name));
+            $this->name = mb_convert_case($this->name, MB_CASE_TITLE, 'UTF-8');
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Finds all unique categories from the article table.
+     *
+     * @return array|null
+     */
+    public static function getCategories(): ?array
+    {
+        return ArrayHelper::map(Category::find()->all(), 'name', 'name');
+    }
+
+
     /**
      * Returns the object (with the same id) if found.
      */
@@ -92,9 +115,18 @@ class Category extends ActiveRecord
     /**
      * Returns the object's name if found.
      */
-    public static function getName($id): string|null
+    public static function getName($id): ?string
     {
-        return static::findOne(['id' => $id])->name;
+        $object = static::findOne(['id' => $id]);
+        return $object ? $object->name : 'Category could not be found.';
+    }
+    /**
+     * Returns the object's id if found.
+     */
+    public static function getId($name): ?string
+    {
+        $object = static::findOne(['name' => $name]);
+        return $object ? $object->id : '';
     }
 
     /**

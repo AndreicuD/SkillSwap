@@ -4,27 +4,37 @@
 
 use yii\helpers\Html;
 use yii\widgets\ListView;
-use yii\bootstrap5\ActiveForm;
+use kartik\widgets\ActiveForm;
 use yii\bootstrap5\Modal;
 use yii\web\View;
+use common\models\Category;
+use kartik\select2\Select2;
 
 $this->title = Yii::t('app', 'My Articles');
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-about">
+<style>
+    @media(max-width: 767px) {
+        .new-article-button {
+            text-align: center;
+            width: 100%;
+        }
+    }
+</style>
+<div class="site-index">
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>
 
-    <?= Html::a(Yii::t('app', 'Create New Article'),['/article/edit'],['class' => ['btn btn-secondary']]) ?>
-
-    <?php $form = ActiveForm::begin(['id' => 'form-searcharticle','method' => 'get', 'layout' => 'floating']); ?>
-        <?= $form->errorSummary($searchModel);?>
-        
-        <div class="d-flex">
-            <?= $form->field($searchModel, 'title')->label(Yii::t('app', 'Title')) ?>
-            <input type="submit" value="Search" class="btn btn-primary search_button">
+    <div class="group_together">
+        <div class="new-article-button">
+            <?= Html::a(Yii::t('app', 'Create New Article'),['/article/edit'],['class' => ['btn btn-secondary rotate_on_hover scale_on_hover mb-3']]) ?>
         </div>
     
-    <?php ActiveForm::end(); ?>
+        <?= $this->render('/templates/search', [
+            'model' => $model,
+            'url' => '/user/articles'
+        ]) ?>
+    </div>
+
 
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
@@ -32,11 +42,11 @@ $this->title = Yii::t('app', 'My Articles');
         'viewParams' => [],
         'options' => [
             'tag' => 'div',
-            'style' => 'padding: 1em 0;'
+            'class' => 'flex-row-even card-slide'
         ],
         'itemOptions' => [
             'tag' => 'div',
-            'class' => '',
+            'class' => 'card',
         ],
         'layout' => '{items}{pager}',
         'pager' => [
@@ -51,8 +61,8 @@ $this->title = Yii::t('app', 'My Articles');
         ],
     ]); ?>
 
-    <!-- Aticle Modal -->
-    <div class="modal fade" id="article-blank" tabindex="-1" aria-labelledby="article_title" aria-hidden="true" data-bs-backdrop="static">
+    <!-- Article Modal -->
+    <div class="modal fade" id="article-blank" tabindex="-1" aria-labelledby="article_title" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -61,9 +71,6 @@ $this->title = Yii::t('app', 'My Articles');
                 </div>
                 <div class="modal-body">
                     ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" type="submit" id="btn-submit" data-target="" class="btn btn-primary rotate_on_hover">Save changes</button>
                 </div>
             </div>
         </div>
@@ -89,17 +96,10 @@ $(document).ready(function () {
             }
         });
         bootstrap_modal.show();
-        modal_element.find('#btn-submit').attr('data-target', $(this).data('modal_form'));
-
     });
     
     $('#article-blank .btn-close').on('click', function(){
         bootstrap_modal.hide();
-    });
-
-    $('#article-blank #btn-submit').on('click', function(){
-        let target_form = $(this).data('target');
-        $(target_form).submit();
     });
 });
 JS;

@@ -11,6 +11,7 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
+use common\models\Category;
 /**
  * Article model
  *
@@ -21,7 +22,8 @@ use yii\db\Expression;
  * @property string $description [varchar(1024)]
  * @property string $content [mediumtext]
  * 
- * @property integer $category [varchar(128)]
+ * @property integer $category [int(11)]
+ * //@property string $category_name;
  * 
  * @property string $price [int(11)]
  * @property string $bought [int(11)]
@@ -31,12 +33,11 @@ use yii\db\Expression;
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
  *
- * @property integer $page_size
  *
  */
 class Article extends ActiveRecord
 {
-
+    public $category_name;
     const STATUS_PRIVATE = 0;
     const STATUS_PUBLIC = 1;
 
@@ -59,9 +60,8 @@ class Article extends ActiveRecord
             
             ['is_public', 'default', 'value' => self::STATUS_PUBLIC, 'on' => 'default'],
             ['is_public', 'in', 'range' => [self::STATUS_PUBLIC, self::STATUS_PRIVATE]],
-            ['price', 'in', 'range' => [500, 1200]],
             
-            ['category', 'default', 'value' => 'Uncategorised', 'on' => 'create'],
+            ['category', 'default', 'value' => 1, 'on' => 'create'],
             
             [['title'], 'string', 'max' => 254],
             [['description'], 'string', 'max' => 1024],
@@ -70,8 +70,8 @@ class Article extends ActiveRecord
             ['title', 'unique', 'on' => 'default'],
             ['title', 'unique', 'on' => 'create'],
 
-            [['title', 'description', 'content', 'category', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
-            [['title', 'description', 'content', 'category', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe', 'on' => 'search'],
+            [['title', 'description', 'content', 'category', 'category_name', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
+            [['title', 'description', 'content', 'category', 'category_name', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe', 'on' => 'search'],
         ];
     }
 
@@ -110,6 +110,36 @@ class Article extends ActiveRecord
             ],
         ];
     }
+    public function beforeValidate(): bool
+    {   
+        if (!empty($this->category_name)) {
+            // Normalize input
+            $name = trim(preg_replace('/\s+/', ' ', $this->category_name));
+            $name = mb_convert_case($name, MB_CASE_TITLE, 'UTF-8');
+
+            // Find or create
+            $existing = Category::findOne(['name' => $name]);
+            if ($existing) {
+                $this->category = $existing->id;
+            } else {
+                $newCategory = new Category();
+                $newCategory->name = $name;
+                if ($newCategory->save()) {
+                    $this->category = $newCategory->id;
+                } else {
+                    $this->addError('category_name', Yii::t('app', 'Could not create new category.'));
+                    return false;
+                }
+            }
+        }
+
+        return parent::beforeValidate(); // ← call parent method
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Category::class, ['id' => 'category']);
+    }
 
     /**
      * Returns the object (with the same id) if found.
@@ -140,10 +170,9 @@ class Article extends ActiveRecord
      * used to create lists / grids
      *
      * @param array $params
-     * @param bool $full
      * @return ActiveDataProvider
      */
-    public function search(array $params, bool $full = false): ActiveDataProvider
+    public function search(array $params): ActiveDataProvider
     {
         $this->scenario = 'search';
 
@@ -160,22 +189,16 @@ class Article extends ActiveRecord
             return $dataProvider;
         }
 
-        if ($full) {
-            $dataProvider->setPagination(false);
-        } else {
-            $dataProvider->pagination->pageSize = ($this->page_size !== NULL) ? $this->page_size : 20;
-        }
-
-
-
         $query->andFilterWhere([
             'id' => $this->id,
-            'active' => $this->active,
         ]);
+        
+        $this->category = Category::getId($this->category_name);
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'category', $this->category])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);
 
@@ -190,17 +213,6 @@ class Article extends ActiveRecord
     public static function getCategories(): array
     {
         return ArrayHelper::map(static::find()->select('category')->all(), 'category', 'category');
-/*
-        return array_filter(
-            array_map('trim',
-                static::find()
-                    ->select(['category'])
-                    ->distinct()
-                    ->orderBy(['category' => SORT_ASC])
-                    ->column()
-            ),
-            fn($category) => !empty($category)
-        );*/
     }
 
     /**
