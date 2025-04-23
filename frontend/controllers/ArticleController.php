@@ -43,6 +43,7 @@ class ArticleController extends Controller
         if ($searchModel->category && !$searchModel->category_name) {
             $searchModel->category_name = Category::getName($searchModel->category);
         }
+
         return $this->render('index', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -76,6 +77,10 @@ class ArticleController extends Controller
     public function actionEdit($public_id) {
         $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
 
         return $this->render('edit', [
             'model' => $searchModel,

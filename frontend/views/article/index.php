@@ -27,7 +27,7 @@ $this->title = Yii::t('app', 'Articles');
         'viewParams' => [],
         'options' => [
             'tag' => 'div',
-            'class' => 'flex-row-even'
+            'class' => 'flex-row-start'
         ],
         'itemOptions' => [
             'tag' => 'div',

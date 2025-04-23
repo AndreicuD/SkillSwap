@@ -1,7 +1,9 @@
 <?php
 
 use yii\bootstrap5\Html;
+use yii\helpers\Url;
 use common\models\Category;
+use common\models\User;
 
 /* @var $this yii\web\View */
 /* @var $widget yii\widgets\ListView this widget instance */
@@ -13,10 +15,12 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
     <img src="../frontend/web/img/placeholder.jpg" alt="HTML5 Icon" width="250" height="250">
 </div>
 <div class="card-body">
-    <p class="card-text small gray" style="margin-bottom: 0; align-content: center;"><?= Category::getName($model->category) ?></p>
-    <h5 class="card-text"><?= Html::encode($model->title) ?></h5>
-    <p class="card-text"><?= Html::encode($model->description) ?></p>
+    <h5 class="card-text" style="margin-bottom: 0;"><?= Html::encode($model->title) ?></h5>
+    <p class="card-text gray"><?= Html::encode(User::getUsername($model->user_id)) ?> - 
+    <a class="text-secondary" href="<?= Url::to(['article/index', 'Article[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
 </div>
-<a href="#" class="card-button btn btn-primary"><?= Html::encode($model->price) ?>
-<?= $point_svg ?>
+<div class="btn-group">
+    <a href="#" class="card-button btn btn-secondary"><?= Yii::t('app', 'More Info') ?></a>
+    <a href="#" class="card-button btn btn-primary"><?= Html::encode($model->price) ?> <?= $point_svg ?></a>
+</div>
 </a>

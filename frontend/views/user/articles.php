@@ -42,7 +42,8 @@ $this->title = Yii::t('app', 'My Articles');
         'viewParams' => [],
         'options' => [
             'tag' => 'div',
-            'class' => 'flex-row-even card-slide'
+            //'class' => 'flex-row-start card-slide'
+            'class' => 'flex-row-start'
         ],
         'itemOptions' => [
             'tag' => 'div',
