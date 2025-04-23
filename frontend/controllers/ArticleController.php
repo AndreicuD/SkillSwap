@@ -115,4 +115,24 @@ class ArticleController extends Controller
             $this->redirect(['article/edit', 'public_id' => $model->public_id]);
         }
     }
+
+    /**
+     * Create a new article
+     * @return string
+     */
+    public function actionCreate(): string
+    {
+        $model = new Article();
+        $model->user_id = Yii::$app->user->id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model = Article::find()->where('id = :id', [':id' => $model->id])->one();
+            Yii::$app->session->setFlash('success', 'The article has been created.');
+            $this->redirect(['article/edit', 'public_id' => $model->public_id]);
+        }
+
+        return $this->render('create' ,[
+            'model' => $model,
+        ]);
+    }
 }

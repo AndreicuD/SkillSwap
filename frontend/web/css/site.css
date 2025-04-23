@@ -558,10 +558,20 @@ a {
 	width: 25%;
 	border-radius: 16px;
 	overflow: hidden;
+	bottom: 0;
+	transition: 0.2s ease;
+}
+.card:hover {
+	scale: 1.05;
+	bottom: 20px;
 }
 /* for the summernote editor */
 .form-control .card {
 	width: 100%;
+}
+.form-control .card:hover {
+	bottom: 0;
+	scale: 1;
 }
 .card-slide .card-body {
 	width: 100%;
@@ -609,7 +619,7 @@ a {
 	border-radius: 16px 16px 0 0;
 	transition: 0.3s ease;
 }
-.card:hover .card-image img { transform: scale(1.2); filter: brightness(110%); }
+.card:hover .card-image img { transform: scale(1.1); filter: brightness(110%); }
 .card-title {
 	margin-bottom: 0;
 	align-content: center;

@@ -26,7 +26,7 @@ $this->title = Yii::t('app', 'My Articles');
 
     <div class="group_together">
         <div class="new-article-button">
-            <?= Html::a(Yii::t('app', 'Create New Article'),['/article/edit'],['class' => ['btn btn-secondary rotate_on_hover scale_on_hover mb-3']]) ?>
+            <?= Html::a(Yii::t('app', 'Create New Article'),['/article/create'],['class' => ['btn btn-secondary rotate_on_hover scale_on_hover mb-3']]) ?>
         </div>
     
         <?= $this->render('/templates/search', [
