@@ -14,18 +14,17 @@ use yii\db\Expression;
  * User model
  *
  * @property integer $id [int(auto increment)]
- * @property string $username [varchar(254)]
  * @property string $email [varchar(254)]
  * @property string $firstname [varchar(254)]
  * @property string $lastname [varchar(254)]
- * @property string $sex [enum('F','M')]
- * @property string $phone [varchar(32)]
- * @property string $birth_date [date]
  * @property integer $status [smallint = 10]
+ * @property integer $points [int(11)]
+ * @property integer $rating [int(11)]
  * @property string $auth_key [varchar(32)]
  * @property string $password_hash [varchar(254)]
  * @property string $password_reset_token [varchar(254)]
  * @property string $verification_token [varchar(254)]
+ * @property integer $last_login [timestamp = current_timestamp()]
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
  *
@@ -64,24 +63,21 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return [
-            [['email', 'firstname', 'lastname'], 'required', 'on' => 'default'],
+            [['email'], 'required', 'on' => 'default'],
             [['email', 'firstname', 'lastname', 'password'], 'required', 'on' => 'create'],
-            ['status', 'default', 'value' => self::STATUS_INACTIVE, 'on' => 'default'],
+            ['status', 'default', 'value' => self::STATUS_ACTIVE, 'on' => 'default'],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-            ['sex' , 'in', 'range' => ['F', 'M']],
-            [['sex', 'birth_date'], 'default', 'value' => NULL],
             [['item_name'], 'default', 'value' => 'member', 'on' => 'create'],
-            [['firstname', 'lastname', 'username'], 'string', 'max' => 254],
-            [['phone'], 'string', 'max' => 128],
+            [['firstname', 'lastname'], 'string', 'max' => 254],
             ['email', 'email', 'on' => 'default'],
             ['email', 'email', 'on' => 'create'],
             ['email', 'unique', 'on' => 'default'],
             ['email', 'unique', 'on' => 'create'],
             [['firstname', 'lastname'], 'unique', 'on' => 'default'],
             [['firstname', 'lastname'], 'unique', 'on' => 'create'],
-            /*['password_confirmation', 'compare', 'compareAttribute' => 'new_password', 'on' => 'create'],*/
+            ['password_confirmation', 'compare', 'compareAttribute' => 'new_password', 'on' => 'create'],
             [['auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'password', 'newsletter_subscription'], 'safe'],
-            [['id', 'username', 'email', 'firstname', 'lastname', 'sex', 'phone', 'birth_date', 'item_name'], 'safe', 'on' => 'search'],
+            [['id', 'email', 'firstname', 'lastname', 'phone', 'item_name'], 'safe', 'on' => 'search'],
         ];
     }
 
@@ -92,7 +88,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'username' => Yii::t('app', 'Username'),
             'email' => Yii::t('app', 'Email'),
             'firstname' => Yii::t('app', 'First name'),
             'lastname' => Yii::t('app', 'Last name'),

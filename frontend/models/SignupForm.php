@@ -13,13 +13,8 @@ class SignupForm extends Model
 {
     public $email;
     public $password;
-    public $username;
     public $firstname;
     public $lastname;
-    public $sex;
-    public $phone;
-    public $birth_date;
-
 
     /**
      * {@inheritdoc}
@@ -30,13 +25,11 @@ class SignupForm extends Model
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'string', 'max' => 254],
+            [['email','firstname', 'lastname'], 'string', 'max' => 254],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
-            ['username', 'required'],
-            ['sex' , 'in', 'range' => ['F', 'M']],
-            [['sex', 'phone', 'birth_date', 'username'], 'default', 'value' => NULL],
+            [['firstname', 'lastname'], 'required'],
         ];
     }
 
@@ -50,9 +43,6 @@ class SignupForm extends Model
             'email' => Yii::t('app', 'Email'),
             'firstname' => Yii::t('app', 'First name'),
             'lastname' => Yii::t('app', 'Last name'),
-            'sex' => Yii::t('app', 'Sex'),
-            'phone' => Yii::t('app', 'Phone'),
-            'birth_date' => Yii::t('app', 'Birth date'),
             'status' => Yii::t('app', 'Status'),
             'password' => Yii::t('app', 'Password'),
             'password_confirmation' => Yii::t('app', 'Password confirmation'),
@@ -62,7 +52,7 @@ class SignupForm extends Model
     /**
      * Signs user up.
      *
-     * @return bool whether the creating new account was successful and email was sent
+     * @return bool|null whether the creating new account was successful and email was sent
      */
     public function signup()
     {
@@ -71,13 +61,9 @@ class SignupForm extends Model
         }
 
         $user = new User();
-        $user->username = $this->username;
         $user->email = $this->email;
-        //$user->firstname = $this->firstname;
-        //$user->lastname = $this->lastname;
-        //$user->sex = $this->sex;
-        //$user->phone = $this->phone;
-        //$user->birth_date = $this->birth_date;
+        $user->firstname = $this->firstname;
+        $user->lastname = $this->lastname;
         /* 9 = needs validation, 10 = activ */
         $user->status = 10;
         $user->setPassword($this->password);
