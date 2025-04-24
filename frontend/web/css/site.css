@@ -667,8 +667,14 @@ a {
 	filter: blur(2px);
 	object-fit: cover;
 	max-height: 400px;
+	transform: scale(1);
+	transition: 0.3s ease;
 }
-.article-image h1 {
+.article-image:hover img {
+	transform: scale(1.1);
+	filter: blur();
+}
+.article-image .article-title {
 	background-color: rgba(0, 0, 0, 0.5);
 	border-radius: 40px;
 	padding: 1em;
@@ -677,6 +683,10 @@ a {
 	transform: translate(-50%, 50%);
 	bottom: 50%;
 	left: 50%;
+	transition: 0.3s ease;
+}
+.article-image:hover .article-title {
+	opacity: 0.5;
 }
 @media(max-width: 767px) {
 	.article-image {
@@ -685,7 +695,7 @@ a {
 		border-radius: 0;
 		margin-bottom: 2em;
 	}
-	.article-image h1 {
-		font-size: 2.035em;
+	.article-image .article-title {
+		scale: 0.6;	
 	}
 }

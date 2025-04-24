@@ -12,10 +12,13 @@ $this->title = $model->title;
 ?>
 <div class="site-index">
     
-    <div class="article-content">
+    <div class="article-content user-select-none">
         <div class="article-image">
             <img src="../frontend/web/img/placeholder.jpg" alt="HTML5 Icon">
-            <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>
+            <div class="article-title">
+                <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
+                <h4 class="text-center"><?= Html::encode(User::getUsername($model->user_id)) ?></h4>
+            </div>
         </div>
         <br>
         <?= $model->content ?>
