@@ -5,6 +5,9 @@ namespace frontend\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\ArrayHelper;
+use common\models\User;
+use common\models\Article;
+use common\models\Transaction;
 
 /**
  * Transation controller
@@ -27,5 +30,47 @@ class TransactionController extends Controller
         ];
     }
 
-    
+    /**
+     * Create a new article transaction
+     * @return void
+     */
+    public function actionCreate()
+    {   
+        $model = new Transaction();
+        $model->user_id = Yii::$app->user->identity->id;
+        
+        if ($model->load(Yii::$app->request->post())) {
+            // Fetch the current user
+            $article = Article::findOne(['id' => $model->article_id]);
+            $article_owner = User::findOne(['id' => $article->user_id]);
+            $user = User::findOne(Yii::$app->user->id);
+            
+            // Check if the user has enough points
+            if ($user->points < $model->value) {
+                Yii::$app->session->setFlash('error', 'You do not have enough points to complete this transaction.');
+                return $this->redirect(['article/index']);
+            }
+            
+            $newPoints = $user->points - $model->value;
+
+            $model->value = 0.2 * $model->value;
+            $owner_newPoints = $article_owner->points + $model->value;
+
+            // Save the transaction
+            if (!$model->save()) {
+                Yii::$app->session->setFlash('error', 'Transaction failed: ' . json_encode($model->getErrors()));
+                return $this->redirect(['article/index']);
+            }
+
+            // Only save the user if there were changes to the points
+            if (!$article_owner->updateUserPoints($article->user_id, $owner_newPoints) || !$user->updateUserPoints(Yii::$app->user->id, $newPoints)) {
+                Yii::$app->session->setFlash('error', 'User update failed: ' . json_encode($user->getErrors()));
+                return $this->redirect(['article/index']);
+            }
+
+            Yii::$app->session->setFlash('success', 'Transaction completed!');
+            return $this->redirect(['article/index']);
+        }
+    }
+
 }

@@ -68,15 +68,18 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE, 'on' => 'default'],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             [['item_name'], 'default', 'value' => 'member', 'on' => 'create'],
+            [['points'], 'default', 'value' => 500, 'on' => 'create'],
             [['firstname', 'lastname'], 'string', 'max' => 254],
             ['email', 'email', 'on' => 'default'],
             ['email', 'email', 'on' => 'create'],
             ['email', 'unique', 'on' => 'default'],
             ['email', 'unique', 'on' => 'create'],
+            [['points'], 'required'],
+            [['points'], 'integer', 'min' => 0],
             [['firstname', 'lastname'], 'unique', 'on' => 'default'],
             [['firstname', 'lastname'], 'unique', 'on' => 'create'],
             ['password_confirmation', 'compare', 'compareAttribute' => 'new_password', 'on' => 'create'],
-            [['auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'password', 'newsletter_subscription'], 'safe'],
+            [['points', 'auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'password', 'newsletter_subscription'], 'safe'],
             [['id', 'email', 'firstname', 'lastname', 'phone', 'item_name'], 'safe', 'on' => 'search'],
         ];
     }
@@ -91,10 +94,9 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => Yii::t('app', 'Email'),
             'firstname' => Yii::t('app', 'First name'),
             'lastname' => Yii::t('app', 'Last name'),
-            'sex' => Yii::t('app', 'Sex'),
-            'phone' => Yii::t('app', 'Phone'),
-            'birth_date' => Yii::t('app', 'Birth date'),
             'status' => Yii::t('app', 'Status'),
+            'points' => Yii::t('app', 'Points'),
+            'Rating' => Yii::t('app', 'Rating'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'item_name' => Yii::t('app', 'Access level'),
@@ -152,6 +154,44 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findIdentity($id): User|IdentityInterface|null
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * Updates the points for a specific user.
+     * 
+     * @param int $userId The ID of the user whose points need to be updated.
+     * @param int $newPoints The new points value to set for the user.
+     * @return bool Whether the points update was successful.
+     */
+    public function updateUserPoints(int $userId, float $newPoints): bool
+    {
+        $newPoints = (int) $newPoints;
+        // Fetch the user by ID
+        $user = User::findOne($userId);
+
+        // Check if the user exists
+        if (!$user) {
+            Yii::$app->session->setFlash('error', 'User not found!');
+            return false;
+        }
+
+        // Check if points are valid (you can add further checks like negative points here)
+        if ($newPoints < 0) {
+            Yii::$app->session->setFlash('error', 'Points cannot be negative!');
+            return false;
+        }
+
+        // Set the new points value
+        $user->points = $newPoints;
+
+        // Save only the points attribute, avoiding full validation and saving other fields
+        if ($user->updateAttributes(['points'])) {
+            Yii::$app->session->setFlash('success', 'Points updated successfully!');
+            return true;
+        } else {
+            Yii::$app->session->setFlash('error', 'Failed to update points.');
+            return false;
+        }
     }
 
     /**

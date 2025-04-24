@@ -17,7 +17,7 @@ use common\models\Category;
  *
  * @property integer $id [int(auto increment)]
  * @property string $public_id [varchar(36)]
- * @property string $user_id [int(11)]
+ * @property integer $user_id [int(11)]
  * @property string $title [varchar(254)]
  * @property string $description [varchar(1024)]
  * @property string $content [mediumtext]
@@ -25,10 +25,10 @@ use common\models\Category;
  * @property integer $category [int(11)]
  * //@property string $category_name;
  * 
- * @property string $price [int(11)]
- * @property string $bought [int(11)]
+ * @property integer $price [int(11)]
+ * @property integer $bought [int(11)]
  *
- * @property string $likes_count [int(11)]
+ * @property integer $likes_count [int(11)]
  * @property integer $is_public [smallint(1)]
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
@@ -61,6 +61,8 @@ class Article extends ActiveRecord
             ['is_public', 'default', 'value' => self::STATUS_PUBLIC, 'on' => 'default'],
             ['is_public', 'in', 'range' => [self::STATUS_PUBLIC, self::STATUS_PRIVATE]],
             
+
+            ['price', 'number', 'min' => 500, 'max' => 1200],
             ['category', 'default', 'value' => 1, 'on' => 'create'],
             
             [['title'], 'string', 'max' => 254],
@@ -70,8 +72,7 @@ class Article extends ActiveRecord
             ['title', 'unique', 'on' => 'default'],
             ['title', 'unique', 'on' => 'create'],
 
-            [['title', 'description', 'content', 'category', 'category_name', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
-            [['title', 'description', 'content', 'category', 'category_name', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe', 'on' => 'search'],
+            [['title', 'description', 'content', 'category', 'category_name', 'price', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
         ];
     }
 

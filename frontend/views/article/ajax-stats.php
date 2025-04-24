@@ -6,16 +6,15 @@
 
 use kartik\widgets\ActiveForm;
 use yii\bootstrap5\Html;
-use kartik\select2\Select2;
-use yii\helpers\ArrayHelper;
+use common\models\Transaction;
 
 use common\models\Category;
 $model->category_name = Category::getName($model->category);
 ?>
 <p class="card-text text-center" style="margin-bottom: 0; align-content: center;"><b><?= Yii::t('app', 'Profit: ') ?></b></p>
-<p class="custom-value custom-profit text-center"><?= Html::encode($model->price) ?></p>
+<p class="custom-value custom-profit text-center"><?= Transaction::calculateProfit($model->id) ?></p>
 <p class="card-text text-center" style="margin-bottom: 0; align-content: center;"><b><?= Yii::t('app', 'How many bought: ') ?></b></p>
-<p class="custom-value custom-bought text-center"><?= Html::encode($model->bought) ?></p>
+<p class="custom-value custom-bought text-center"><?= count(Transaction::findByArticleId($model->id)) ?></p>
 
 <hr>
 <p class="card-text" style="margin-bottom: 0; align-content: center;"><b><?= Yii::t('app', 'Last Updated At: ') ?></b> <?= Html::encode($model->updated_at) ?></p>

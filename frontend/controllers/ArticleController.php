@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use common\models\Article;
 use common\models\Category;
+use common\models\Transaction;
 
 /**
  * Article controller
@@ -44,9 +45,12 @@ class ArticleController extends Controller
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
+        $transactionModel = new Transaction();
+
         return $this->render('index', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
+            'transactionModel' => $transactionModel,
         ]);
     }
     /**

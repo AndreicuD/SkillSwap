@@ -20,11 +20,10 @@ $this->title = Yii::t('app', 'Articles');
         'model' => $model,
         'url' => '/article/index'
     ]) ?>
-
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemView' => '_article',
-        'viewParams' => [],
+        'viewParams' => ['transactionModel' => $transactionModel],
         'options' => [
             'tag' => 'div',
             'class' => 'flex-row-start'

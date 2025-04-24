@@ -15,8 +15,9 @@ use yii\db\Expression;
  * Transaction model
  *
  * @property integer $id [int(auto increment)]
- * @property string $user_id [int(11)]
- * @property string $article_id [int(11)]
+ * @property integer $user_id [int(11)]
+ * @property integer $article_id [int(11)]
+ * @property integer $value [int(11)]
  * 
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
@@ -43,10 +44,10 @@ class Transaction extends ActiveRecord
     {
         return [
             [['user_id', 'article_id'], 'required', 'on' => 'default'],
-            [['user_id', 'article_id'], 'required', 'on' => 'create'],
+            [['user_id', 'article_id', 'value'], 'required', 'on' => 'create'],
 
-            [['user_id', 'article_id'], 'safe'],
-            [['user_id', 'article_id'], 'safe', 'on' => 'search'],
+            [['user_id', 'article_id', 'value'], 'safe'],
+            [['user_id', 'article_id', 'value'], 'safe', 'on' => 'search'],
         ];
     }
 
@@ -59,6 +60,7 @@ class Transaction extends ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', 'User ID'),
             'article_id' => Yii::t('app', 'Article ID'),
+            'value' => Yii::t('app', 'Value'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
@@ -83,9 +85,21 @@ class Transaction extends ActiveRecord
     /**
      * Returns the object (with the same id) if found.
      */
-    public static function findTransaction($id): Article|IdentityInterface|null
+    public static function findTransaction($user_id, $article_id): Transaction|IdentityInterface|null
     {
-        return static::findOne(['id' => $id]);
+        return static::findOne(['user_id' => $user_id, 'article_id' => $article_id]);
+    }
+    /**
+     * Returns the profit for an article found by id.
+     */
+    public static function calculateProfit($article_id): int
+    {
+        $profit = 0;
+        $transactions = static::findAll(['article_id' => $article_id]);
+        foreach($transactions as $transaction) {
+            $profit += $transaction->value;
+        }
+        return $profit;
     }
     
     /**
@@ -115,13 +129,10 @@ class Transaction extends ActiveRecord
         $query->andFilterWhere([
             'id' => $this->id,
         ]);
-        
-        $this->category = Category::getId($this->category_name);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'category', $this->category])
+        $query->andFilterWhere(['like', 'user_id', $this->user_id])
+            ->andFilterWhere(['like', 'article_id', $this->article_id])
+            ->andFilterWhere(['like', 'value', $this->value])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);
 
