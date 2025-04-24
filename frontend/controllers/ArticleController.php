@@ -92,6 +92,25 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+     * read an article
+     * @param integer $id
+     * @return string
+     */
+    public function actionRead($public_id) {
+        $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        return $this->render('read', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
 
     /**
      * update an article

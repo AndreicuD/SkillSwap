@@ -16,6 +16,8 @@ $this->title = $model->title;
 <div class="site-index">
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>
 
+    <br>
+
     <?php $form = ActiveForm::begin([
         'id' => 'article-form',
         'type' => ActiveForm::TYPE_VERTICAL,
