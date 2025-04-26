@@ -35,7 +35,15 @@ $transactionModel->value = $model->price;
     <a class="text-secondary" href="<?= Url::to(['article/index', 'Article[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
 </div>
 <div class="btn-group w-100">
-        <a href="#" class="card-button btn btn-secondary"><?= Yii::t('app', 'More Info') ?></a>
+        <!--<a href="#" class="card-button btn btn-secondary"><?= Yii::t('app', 'More Info') ?></a> -->
+        <button 
+            type = "button"
+            id="article_info_<?=$index?>" 
+            class="card-button btn btn-secondary btn-ajax" 
+            data-modal_title="<?=Yii::t('app', 'Information'); ?>" 
+            data-modal_url="<?=Url::to(['article/ajax-info', 'public_id' => $model->public_id]); ?>" >
+            More Info
+        </button>
         <?php 
             if(Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {
                 echo Html::a(Yii::t('app', 'Read'), [Url::to(['article/read', 'public_id' => $model->public_id])],['class' => ['card-button btn btn-primary']]);

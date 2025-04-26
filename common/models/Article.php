@@ -27,7 +27,8 @@ use common\models\Category;
  * 
  * @property integer $price [int(11)]
  * @property integer $bought [int(11)]
- *
+ * 
+ * @property integer $rating [int(11)]
  * @property integer $likes_count [int(11)]
  * @property integer $is_public [smallint(1)]
  * @property integer $created_at [datetime]
@@ -64,6 +65,7 @@ class Article extends ActiveRecord
 
             ['price', 'number', 'min' => 500, 'max' => 1200],
             ['category', 'default', 'value' => 1, 'on' => 'create'],
+            ['rating', 'number', 'min' => 0, 'max' => 5],
             
             [['title'], 'string', 'max' => 254],
             [['description'], 'string', 'max' => 1024],
@@ -90,6 +92,7 @@ class Article extends ActiveRecord
 
             'category' => Yii::t('app', 'Category'),
 
+            'rating' => Yii::t('app', 'Rating'),
             'likes_count' => Yii::t('app', 'Like Count'),
             'is_public' => Yii::t('app', 'Public'),
             'created_at' => Yii::t('app', 'Created At'),

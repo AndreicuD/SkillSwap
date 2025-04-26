@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37afb07e6562d80809d1f8835f666a0d",
+    "content-hash": "367c3363d669b8440e4a697668e0a3ac",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -1480,7 +1480,7 @@
         },
         {
             "name": "kartik-v/yii2-widget-rating",
-            "version": "v1.0.5",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-rating.git",
@@ -1496,6 +1496,7 @@
                 "kartik-v/bootstrap-star-rating": "~4.0",
                 "kartik-v/yii2-krajee-base": ">=1.9"
             },
+            "default-branch": true,
             "type": "yii2-extension",
             "extra": {
                 "branch-alias": {
@@ -7195,6 +7196,7 @@
         "kartik-v/yii2-helpers": 20,
         "kartik-v/yii2-widget-datepicker": 20,
         "kartik-v/yii2-widget-datetimepicker": 20,
+        "kartik-v/yii2-widget-rating": 20,
         "kartik-v/yii2-widget-typeahead": 20,
         "kartik-v/yii2-widgets": 20
     },

@@ -74,6 +74,26 @@ class ArticleController extends Controller
     }
 
     /**
+     * see article information
+     * @param integer $id
+     * @return string
+     */
+    public function actionAjaxInfo($public_id) {
+        $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        $this->layout = 'blank';
+        return $this->renderAjax('ajax-info', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
      * edit article content
      * @param integer $id
      * @return string
