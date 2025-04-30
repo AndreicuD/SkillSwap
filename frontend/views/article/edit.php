@@ -9,6 +9,7 @@ use kartik\editors\Codemirror;
 use kartik\form\ActiveForm;
 use common\models\Category;
 use kartik\select2\Select2;
+use kartik\widgets\FileInput;
 
 $this->title = $model->title;
 //$this->params['breadcrumbs'][] = $this->title;
@@ -94,6 +95,10 @@ $this->title = $model->title;
                         'uncheck' => '0',
                         'value' => '1',
                     ])->label(Yii::t('app', 'Make Public')); ?>
+
+                    <?= $form->field($model, 'cover')->widget(FileInput::classname(), [
+                        'options' => ['accept' => 'image/*'],
+                    ]); ?>
                 </div>
 
                 <div class="modal-footer">

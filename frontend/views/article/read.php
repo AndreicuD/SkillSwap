@@ -6,6 +6,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\models\Category;
 use common\models\User;
+use common\models\Transaction;
 
 $this->title = $model->title;
 //$this->params['breadcrumbs'][] = $this->title;
@@ -21,6 +22,14 @@ $this->title = $model->title;
             </div>
         </div>
         <br>
-        <?= $model->content ?>
+        <?php 
+            if(Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {
+                echo $model->content;
+            } else {
+                echo '<div class="text-center lead">';
+                echo Yii::t('app', 'You can not acces this article. Check if you have bought it or if you are logged in.');
+                echo '</div>';
+            }
+        ?>
     </div>
 </div>

@@ -31,6 +31,8 @@ use common\models\Category;
  * @property integer $rating [int(11)]
  * @property integer $likes_count [int(11)]
  * @property integer $is_public [smallint(1)]
+ * 
+ * @property string $cover_extension [varchar(254)]
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
  *
@@ -38,6 +40,7 @@ use common\models\Category;
  */
 class Article extends ActiveRecord
 {
+    public $cover;
     public $category_name;
     const STATUS_PRIVATE = 0;
     const STATUS_PUBLIC = 1;
