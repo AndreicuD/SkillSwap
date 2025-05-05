@@ -12,19 +12,21 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
 /**
- * Rating model
+ * Review model
  *
  * @property integer $id [int(auto increment)]
  * @property integer $user_id [int(11)]
  * @property integer $article_id [int(11)]
  * @property integer $value [int(11)]
+ * @property integer $title [varchar(256)]
+ * @property integer $body [varchar(2048)]
  * 
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
  *
  *
  */
-class Rating extends ActiveRecord
+class Review extends ActiveRecord
 {
     const STATUS_PRIVATE = 0;
     const STATUS_PUBLIC = 1;
@@ -34,7 +36,7 @@ class Rating extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return '{{%rating}}';
+        return '{{%review}}';
     }
 
     /**
@@ -45,9 +47,10 @@ class Rating extends ActiveRecord
         return [
             [['user_id', 'article_id'], 'required', 'on' => 'default'],
             [['user_id', 'article_id', 'value'], 'required', 'on' => 'create'],
+            [['title'], 'string', 'max' => 256],
+            [['body'], 'string', 'max' => 2048],
 
-            [['user_id', 'article_id', 'value'], 'safe'],
-            [['user_id', 'article_id', 'value'], 'safe', 'on' => 'search'],
+            [['user_id', 'article_id', 'value', 'body', 'title'], 'safe'],
         ];
     }
 
@@ -61,6 +64,8 @@ class Rating extends ActiveRecord
             'user_id' => Yii::t('app', 'User ID'),
             'article_id' => Yii::t('app', 'Article ID'),
             'value' => Yii::t('app', 'Value'),
+            'title' => Yii::t('app', 'Title'),
+            'body' => Yii::t('app', 'Body'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
@@ -90,7 +95,7 @@ class Rating extends ActiveRecord
         return static::findOne(['user_id' => $user_id, 'article_id' => $article_id]);
     }
     /**
-     * Returns the profit for an article found by id.
+     * Returns the rating for an article found by id.
      */
     public static function calculateRating($article_id): int
     {
@@ -101,7 +106,7 @@ class Rating extends ActiveRecord
         }
         if(count($ratings) > 0) {
             $rating_median /= count($ratings);
-                return $rating_median;
+            return (int) $rating_median;
         } else {
             return 0;
         }
@@ -138,6 +143,7 @@ class Rating extends ActiveRecord
         $query->andFilterWhere(['like', 'user_id', $this->user_id])
             ->andFilterWhere(['like', 'article_id', $this->article_id])
             ->andFilterWhere(['like', 'value', $this->value])
+            ->andFilterWhere(['like', 'feedback', $this->feedback])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);
 
@@ -145,7 +151,7 @@ class Rating extends ActiveRecord
     }
 
     /**
-     * Finds ratings by user id.
+     * Finds reviews by user id.
      *
      * @param string $id
      * @return array|null
@@ -156,7 +162,7 @@ class Rating extends ActiveRecord
     }
 
     /**
-     * Finds ratings by article id.
+     * Finds reviews by article id.
      *
      * @param string $id
      * @return array|null

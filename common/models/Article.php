@@ -67,7 +67,6 @@ class Article extends ActiveRecord
 
             ['price', 'number', 'min' => 500, 'max' => 1200],
             ['category', 'default', 'value' => 1, 'on' => 'create'],
-            ['rating', 'number', 'min' => 0, 'max' => 5],
             
             [['title'], 'string', 'max' => 254],
             [['description'], 'string', 'max' => 1024],

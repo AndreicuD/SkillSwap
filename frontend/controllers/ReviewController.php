@@ -7,12 +7,12 @@ use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use common\models\User;
 use common\models\Article;
-use common\models\Rating;
+use common\models\Review;
 
 /**
- * Rating controller
+ * Review controller
  */
-class RatingController extends Controller
+class ReviewController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +31,13 @@ class RatingController extends Controller
     }
 
     /**
-     * Create a new article rating
-     * @return void
+     * Create a new article review
+     * @return \yii\web\Response|null
      */
-    public function actionCreate($page)
+    
+    public function actionCreate($public_id)
     {   
-        $model = new Rating();
+        $model = new Review();
         $model->user_id = Yii::$app->user->identity->id;
         
         if ($model->load(Yii::$app->request->post())) {
@@ -45,12 +46,12 @@ class RatingController extends Controller
 
             // Save the transaction
             if (!$model->save()) {
-                Yii::$app->session->setFlash('error', 'Rating failed: ' . json_encode($model->getErrors()));
-                return $this->redirect([$page]);
+                Yii::$app->session->setFlash('error', 'Review failed: ' . json_encode($model->getErrors()));
+                return $this->redirect('/article/read?public_id=' . $public_id);
             }
 
-            Yii::$app->session->setFlash('success', 'Rating completed!');
-            return $this->redirect([$page]);
+            Yii::$app->session->setFlash('success', 'Review has been saved!');
+            return $this->redirect('/article/read?public_id=' . $public_id);
         }
     }
 

@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 use common\models\Article;
 use common\models\Category;
 use common\models\Transaction;
-use common\models\Rating;
+use common\models\Review;
 
 /**
  * Article controller
@@ -87,8 +87,8 @@ class ArticleController extends Controller
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
-        $ratingModel = new Rating();
-        $ratingModel->value = Rating::calculateRating($searchModel->id);
+        $ratingModel = new Review();
+        $ratingModel->value = Review::calculateRating($searchModel->id);
 
         $this->layout = 'blank';
         return $this->renderAjax('ajax-info', [
@@ -130,9 +130,15 @@ class ArticleController extends Controller
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
+        $reviewModel = Review::find()
+            ->where(['user_id' => Yii::$app->user->id])
+            ->andWhere(['article_id' => $searchModel->id])
+            ->one();
+
         return $this->render('read', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
+            'reviewModel' => $reviewModel ? $reviewModel : new Review(),
         ]);
     }
 

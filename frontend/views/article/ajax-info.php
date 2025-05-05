@@ -10,11 +10,8 @@ use kartik\widgets\StarRating;
 
 use common\models\Rating;
 ?>
-<?php echo StarRating::widget(['model' => $ratingModel, 'attribute' => 'value', 
+<?php echo StarRating::widget(['model' => $ratingModel, 'attribute' => 'value',
     'pluginOptions' => [
-        'theme' => 'krajee-uni',
-        'filledStar' => '★',
-        'emptyStar' => '☆',
         'readonly' => true,
         'showClear' => false,
     ]

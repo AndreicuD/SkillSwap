@@ -47,7 +47,6 @@ class Transaction extends ActiveRecord
             [['user_id', 'article_id', 'value'], 'required', 'on' => 'create'],
 
             [['user_id', 'article_id', 'value'], 'safe'],
-            [['user_id', 'article_id', 'value'], 'safe', 'on' => 'search'],
         ];
     }
 
