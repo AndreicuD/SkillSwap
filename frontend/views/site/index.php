@@ -19,7 +19,7 @@ $this->title = 'SkillSwap';
                     echo Html::a(Yii::t('app', 'Join Us'),['/user/signup'],['class' => ['btn btn-secondary btn-lg']]);
                 }
                 else {
-                    echo Html::a(Yii::t('app', 'Explore Courses'),['/course/index'],['class' => ['btn btn-secondary btn-lg']]);
+                    //echo Html::a(Yii::t('app', 'Explore Courses'),['/course/index'],['class' => ['btn btn-secondary btn-lg']]);
                     echo Html::a(Yii::t('app', 'Explore Articles'),['/article/index'],['class' => ['btn btn-secondary btn-lg']]);
                 }
             ?> 

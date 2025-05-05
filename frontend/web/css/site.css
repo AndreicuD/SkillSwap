@@ -548,9 +548,8 @@ a {
 	gap: 1em;
 }
 @media(max-width: 767px) {
-	.flex-row-even {
-		flex-wrap: wrap;
-	}
+	.flex-row-even  {flex-wrap: wrap;};
+	.flex-row-start {flex-wrap: wrap;};
 }
 .card {
 	margin-bottom: 1em;
@@ -652,6 +651,16 @@ a {
 .title {
 	margin-top: 20px;
 	text-align: center;
+}
+.padd-10 {
+	padding: 0 10%;
+}
+.padd-15 {
+	padding: 0 15%;
+}
+@media(max-width: 767px) {
+	.padd-10 {padding: 0};
+	.padd-15 {padding: 0};
 }
 
 .article-content {
