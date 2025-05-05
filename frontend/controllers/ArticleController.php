@@ -40,7 +40,7 @@ class ArticleController extends Controller
     {
         $searchModel = new Article();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(condition: ['is_public' => 1]);
+        $dataProvider->query->andWhere(['is_public' => 1]);
 
         if ($searchModel->category && !$searchModel->category_name) {
             $searchModel->category_name = Category::getName($searchModel->category);
@@ -60,7 +60,7 @@ class ArticleController extends Controller
      * @return string
      */
     public function actionAjaxStats($public_id) {
-        $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
+        $searchModel = Article::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($searchModel->category && !$searchModel->category_name) {
@@ -80,7 +80,7 @@ class ArticleController extends Controller
      * @return string
      */
     public function actionAjaxInfo($public_id) {
-        $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
+        $searchModel = Article::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($searchModel->category && !$searchModel->category_name) {
@@ -88,6 +88,7 @@ class ArticleController extends Controller
         }
 
         $ratingModel = new Rating();
+        $ratingModel->value = Rating::calculateRating($searchModel->id);
 
         $this->layout = 'blank';
         return $this->renderAjax('ajax-info', [
@@ -103,7 +104,7 @@ class ArticleController extends Controller
      * @return string
      */
     public function actionEdit($public_id) {
-        $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
+        $searchModel = Article::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($searchModel->category && !$searchModel->category_name) {
@@ -122,7 +123,7 @@ class ArticleController extends Controller
      * @return string
      */
     public function actionRead($public_id) {
-        $searchModel = Article::findOne(condition: ['public_id' => $public_id]);
+        $searchModel = Article::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($searchModel->category && !$searchModel->category_name) {

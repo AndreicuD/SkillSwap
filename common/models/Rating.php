@@ -34,7 +34,7 @@ class Rating extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return '{{%transaction}}';
+        return '{{%rating}}';
     }
 
     /**
@@ -95,7 +95,7 @@ class Rating extends ActiveRecord
     public static function calculateRating($article_id): int
     {
         $rating_median = 0;
-        $ratings = static::findAll(['article_id' => $article_id]);
+        $ratings = self::findAll(['article_id' => $article_id]);
         foreach($ratings as $rating) {
             $rating_median += $rating->value;
         }
