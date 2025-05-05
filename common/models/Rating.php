@@ -99,8 +99,12 @@ class Rating extends ActiveRecord
         foreach($ratings as $rating) {
             $rating_median += $rating->value;
         }
-	$rating_median /= count($ratings);
-        return $rating_median;
+        if(count($ratings) > 0) {
+            $rating_median /= count($ratings);
+                return $rating_median;
+        } else {
+            return 0;
+        }
     }
     
     /**

@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 use common\models\Article;
 use common\models\Category;
 use common\models\Transaction;
+use common\models\Rating;
 
 /**
  * Article controller
@@ -86,10 +87,13 @@ class ArticleController extends Controller
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
+        $ratingModel = new Rating();
+
         $this->layout = 'blank';
         return $this->renderAjax('ajax-info', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
+            'ratingModel' => $ratingModel,
         ]);
     }
 
