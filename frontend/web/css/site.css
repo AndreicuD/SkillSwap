@@ -735,3 +735,28 @@ a {
 		display:block;
 	}
 }
+
+@media screen and (min-width: 576px) {
+	.carousel-inner{
+		display: flex;
+	}
+	.carousel-item{
+		display: block;
+		margin-right: 0;
+		flex: 0 0 calc(100%/3);
+	}
+}
+
+.carousel-inner{
+	padding: 1em;
+}
+
+.carousel-control-next, .carousel-control-prev{
+	width: 6vh;
+	height: 6vh;
+	background-color: #e1e1e1;
+	border-radius: 50%;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: .5;
+}
