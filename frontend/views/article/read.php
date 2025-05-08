@@ -64,7 +64,7 @@ $this->title = $model->title;
                 <?= Html::activeHiddenInput($reviewModel, 'article_id'); ?>
         
                 <div class="w-100 text-center">
-                    <?= Html::button(Yii::t('app', 'Send Review'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']) ?>
+                    <?= Html::button(Yii::t('app', 'Save Review'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']) ?>
                 </div>
             
                 <?php ActiveForm::end(); ?>
