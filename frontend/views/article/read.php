@@ -3,15 +3,14 @@
 /** @var yii\web\View $this */
 
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use common\models\Category;
 use common\models\User;
 use common\models\Transaction;
-use common\models\Rating;
+use common\models\Review;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\StarRating;
+use yii\widgets\ListView;
 
-$reviewModel->article_id = $model->id;
+$userReviewModel->article_id = $model->id;
 
 $this->title = $model->title;
 //$this->params['breadcrumbs'][] = $this->title;
@@ -45,29 +44,64 @@ $this->title = $model->title;
             <hr>
             <div class="w-100">
                 <h2><?= Yii::t('app', 'Leave a review!'); ?></h2>
-                <?php $form = ActiveForm::begin([
-                    'id' => 'article-form',
-                    'type' => ActiveForm::TYPE_FLOATING,
-                    'action' => ['review/create', 'public_id' => $model->public_id], // Specify the route to the create action
-                    'method' => 'post',
+                <?php 
+                    if(Review::findRating(Yii::$app->user->id, $model->id)) {
+                        $form = ActiveForm::begin([
+                            'id' => 'article-form',
+                            'type' => ActiveForm::TYPE_FLOATING,
+                            'action' => ['review/update', 'public_id' => $model->public_id], // Specify the route to the update  action
+                            'method' => 'post',
+                        ]);
+                    } else {
+                        $form = ActiveForm::begin([
+                            'id' => 'article-form',
+                            'type' => ActiveForm::TYPE_FLOATING,
+                            'action' => ['review/create', 'public_id' => $model->public_id], // Specify the route to the create action
+                            'method' => 'post',
+                        ]);
+                    }
+                    echo $form->errorSummary($userReviewModel);
+                    echo $form->field($userReviewModel, 'title')->label(Yii::t('app', 'Title'));
+                    echo $form->field($userReviewModel, 'body')->textarea(['rows' => 4, 'style' => 'min-height: 160px']);
+                
+                    echo $form->field($userReviewModel, 'value')->widget(StarRating::classname(), [
+                        'pluginOptions' => ['step' => 0.5]
+                    ])->label(false);
+            
+                    echo Html::activeHiddenInput($userReviewModel, 'article_id');
+            
+                    echo '<div class="w-100 text-center">';
+                        echo Html::button(Yii::t('app', 'Save Review'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']);
+                    echo '</div>';
+                
+                    ActiveForm::end();
+                ?>
+                <br>
+                <br>
+                <?= ListView::widget([
+                    'dataProvider' => $reviewDataProvider,
+                    'itemView' => '_review',
+                    'viewParams' => ['reviewModel' => $reviewModel],
+                    'options' => [
+                        'tag' => 'div',
+                        'class' => ''
+                    ],
+                    'itemOptions' => [
+                        'tag' => 'div',
+                        'class' => 'w-100',
+                    ],
+                    'layout' => '{items}{pager}',
+                    'pager' => [
+                        'pageCssClass' => 'page-item',
+                        'prevPageCssClass' => 'prev page-item',
+                        'nextPageCssClass' => 'next page-item',
+                        'firstPageCssClass' => 'first page-item',
+                        'lastPageCssClass' => 'last page-item',
+                        'linkOptions' => ['class' => 'page-link'],
+                        'disabledListItemSubTagOptions' => ['class' => 'page-link'],
+                        'options' => ['class' => 'pagination justify-content-center'],
+                    ],
                 ]); ?>
-            
-                <?= $form->errorSummary($reviewModel);?>
-        
-                <?= $form->field($reviewModel, 'title')->label(Yii::t('app', 'Title')) ?>
-                <?= $form->field($reviewModel, 'body')->textarea(['rows' => 4, 'style' => 'min-height: 160px']) ?>
-            
-                <?= $form->field($reviewModel, 'value')->widget(StarRating::classname(), [
-                    'pluginOptions' => ['step' => 0.5]
-                ])->label(false);?>
-        
-                <?= Html::activeHiddenInput($reviewModel, 'article_id'); ?>
-        
-                <div class="w-100 text-center">
-                    <?= Html::button(Yii::t('app', 'Save Review'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']) ?>
-                </div>
-            
-                <?php ActiveForm::end(); ?>
             </div>
         </div>
         

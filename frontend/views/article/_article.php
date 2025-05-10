@@ -6,6 +6,8 @@ use common\models\Category;
 use kartik\widgets\ActiveForm;
 use common\models\User;
 use common\models\Transaction;
+use kartik\widgets\StarRating;
+use common\models\Review;
 
 /* @var $this yii\web\View */
 /* @var $widget yii\widgets\ListView this widget instance */
@@ -14,6 +16,8 @@ use common\models\Transaction;
 $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-analyze"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918" /><path d="M4 13a8.1 8.1 0 0 0 15 3" /><path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></svg>';
 $transactionModel->article_id = $model->id;
 $transactionModel->value = $model->price;
+
+$reviewModel->value = Review::calculateRating($model->id);
 ?>
 <?php $form = ActiveForm::begin([
     'id' => 'article-form',
@@ -31,6 +35,27 @@ $transactionModel->value = $model->price;
 </div>
 <div class="card-body">
     <h5 class="card-text" style="margin-bottom: 0;"><?= Html::encode($model->title) ?></h5>
+    <div class="group_together">
+        <div class=w-50>
+            <?php echo StarRating::widget(['model' => $reviewModel, 'attribute' => 'value',
+                'name' => 'stars' . $model->public_id,
+                'options' => ['id' => 'review-' . $model->public_id],
+                'pluginOptions' => [
+                    'step' => 0.01,
+                    'showCaption' => false,
+                    'size' => 'xs',
+                    'readonly' => true,
+                    'showClear' => false,
+                ]
+            ]); ?>
+        </div>
+        <div class="group_together">
+            <b><?= $reviewModel->value ?></b>
+            <span class="gray">
+                (<?= $reviewModel->countRatings($model->id) ?>)
+            </span>
+        </div>
+    </div>
     <p class="card-text gray"><?= Html::encode(User::getUsername($model->user_id)) ?> - 
     <a class="text-secondary" href="<?= Url::to(['article/index', 'Article[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
 </div>
@@ -42,7 +67,7 @@ $transactionModel->value = $model->price;
             class="card-button btn btn-secondary btn-ajax" 
             data-modal_title="<?=Yii::t('app', 'Information'); ?>" 
             data-modal_url="<?=Url::to(['article/ajax-info', 'public_id' => $model->public_id]); ?>" >
-            More Info
+            Description
         </button>
         <?php 
             if(Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {

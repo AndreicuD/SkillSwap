@@ -4,11 +4,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ListView;
-use kartik\widgets\ActiveForm;
-use yii\bootstrap5\Modal;
 use yii\web\View;
-use common\models\Category;
-use kartik\select2\Select2;
 
 $this->title = Yii::t('app', 'Articles');
 //$this->params['breadcrumbs'][] = $this->title;
@@ -23,7 +19,7 @@ $this->title = Yii::t('app', 'Articles');
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemView' => '_article',
-        'viewParams' => ['transactionModel' => $transactionModel],
+        'viewParams' => ['transactionModel' => $transactionModel, 'reviewModel' => $reviewModel],
         'options' => [
             'tag' => 'div',
             'class' => 'flex-row-start'

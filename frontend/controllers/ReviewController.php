@@ -55,4 +55,25 @@ class ReviewController extends Controller
         }
     }
 
+    /**
+     * update a review
+     * @param integer $public_id
+     * @return
+     */
+    public function actionUpdate($public_id)
+    {   
+        $article = Article::findOne(['public_id' => $public_id]);
+        $model = Review::find()
+            ->where(['user_id' => Yii::$app->user->id])
+            ->andWhere(['article_id' => $article->id])
+            ->one();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Review changes saved succesfully.'));
+            $this->redirect(['/article/read?public_id=' . $public_id]);
+        } else {
+            Yii::$app->session->setFlash('error', Yii::t('app', 'Failed to save review changes.'));
+        }
+        $this->redirect(['/article/read?public_id=' . $public_id]);
+    }
 }

@@ -47,11 +47,13 @@ class ArticleController extends Controller
         }
 
         $transactionModel = new Transaction();
+        $reviewModel = new Review();
 
         return $this->render('index', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
             'transactionModel' => $transactionModel,
+            'reviewModel' => $reviewModel,
         ]);
     }
     /**
@@ -87,14 +89,14 @@ class ArticleController extends Controller
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
-        $ratingModel = new Review();
-        $ratingModel->value = Review::calculateRating($searchModel->id);
+        $reviewModel = new Review();
+        $reviewModel->value = Review::calculateRating($searchModel->id);
 
         $this->layout = 'blank';
         return $this->renderAjax('ajax-info', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
-            'ratingModel' => $ratingModel,
+            'reviewModel' => $reviewModel,
         ]);
     }
 
@@ -119,7 +121,7 @@ class ArticleController extends Controller
 
     /**
      * read an article
-     * @param integer $id
+     * @param integer $public_id
      * @return string
      */
     public function actionRead($public_id) {
@@ -130,15 +132,19 @@ class ArticleController extends Controller
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
-        $reviewModel = Review::find()
+        $reviewModel = new Review;
+        $userReviewModel = Review::find()
             ->where(['user_id' => Yii::$app->user->id])
             ->andWhere(['article_id' => $searchModel->id])
             ->one();
+        $reviewDataProvider = $reviewModel->findByArticleId($searchModel->id);
 
         return $this->render('read', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
-            'reviewModel' => $reviewModel ? $reviewModel : new Review(),
+            'userReviewModel' => $userReviewModel ? $userReviewModel : $reviewModel,
+            'reviewModel' => $reviewModel,
+            'reviewDataProvider' => $reviewDataProvider,
         ]);
     }
 

@@ -4,7 +4,6 @@
 /** @var yii\data\ActiveDataProvider $dataProvider */
 /** @var common\models\Article $model */
 
-use kartik\widgets\ActiveForm;
 use yii\bootstrap5\Html;
 use common\models\Transaction;
 
