@@ -106,39 +106,39 @@ class UserController extends Controller
      * @return mixed
      */
     public function actionBookmarks()
-{
-    $searchModel = new Article();
-    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-    $dataProvider->query->andWhere(['is_public' => 1]);
+    {
+        $searchModel = new Article();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andWhere(['is_public' => 1]);
 
-    // Get bookmarked articles by current user
-    $bookmarkModel = new Bookmark();
-    $bookmarks = $bookmarkModel->findByUserId(Yii::$app->user->id);
+        // Get bookmarked articles by current user
+        $bookmarkModel = new Bookmark();
+        $bookmarks = $bookmarkModel->findByUserId(Yii::$app->user->id);
 
-    // Extract article IDs from bookmarks
-    $bookmarkedArticleIds = array_map(function ($bookmark) {
-        return $bookmark->article_id;
-    }, $bookmarks);
+        // Extract article IDs from bookmarks
+        $bookmarkedArticleIds = array_map(function ($bookmark) {
+            return $bookmark->article_id;
+        }, $bookmarks);
 
-    // Filter articles to those bookmarked
-    $dataProvider->query->andWhere(['id' => $bookmarkedArticleIds]);
+        // Filter articles to those bookmarked
+        $dataProvider->query->andWhere(['id' => $bookmarkedArticleIds]);
 
-    // Optional: update category name
-    if ($searchModel->category && !$searchModel->category_name) {
-        $searchModel->category_name = Category::getName($searchModel->category);
+        // Optional: update category name
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        $transactionModel = new Transaction();
+        $reviewModel = new Review();
+
+        return $this->render('bookmarks', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'transactionModel' => $transactionModel,
+            'reviewModel' => $reviewModel,
+            'bookmarkModel' => $bookmarkModel,
+        ]);
     }
-
-    $transactionModel = new Transaction();
-    $reviewModel = new Review();
-
-    return $this->render('bookmarks', [
-        'model' => $searchModel,
-        'dataProvider' => $dataProvider,
-        'transactionModel' => $transactionModel,
-        'reviewModel' => $reviewModel,
-        'bookmarkModel' => $bookmarkModel,
-    ]);
-}
 
 
     /**
@@ -185,11 +185,11 @@ class UserController extends Controller
     {
         $model = new SignupForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->signup()) {
             //Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
             Yii::$app->session->setFlash('success', 'Thank you for registration. You can now login.');
             //return $this->goHome();
-            $this->redirect(['user/login']);
+            return $this->redirect(['user/login']);
         }
 
         return $this->render('signup', [

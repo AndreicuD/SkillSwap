@@ -32,7 +32,7 @@ class TransactionController extends Controller
 
     /**
      * Create a new article transaction
-     * @return void
+     * @return yii\web\Response
      */
     public function actionCreate()
     {   

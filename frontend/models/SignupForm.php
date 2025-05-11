@@ -22,14 +22,13 @@ class SignupForm extends Model
     public function rules()
     {
         return [
+            [['firstname', 'lastname', 'email', 'password'], 'required'],
             ['email', 'trim'],
-            ['email', 'required'],
             ['email', 'email'],
             [['email','firstname', 'lastname'], 'string', 'max' => 254],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
-            ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
-            [['firstname', 'lastname'], 'required'],
+            
         ];
     }
 
@@ -56,21 +55,17 @@ class SignupForm extends Model
      */
     public function signup()
     {
-        if (!$this->validate()) {
-            return null;
-        }
-
         $user = new User();
         $user->email = $this->email;
         $user->firstname = $this->firstname;
         $user->lastname = $this->lastname;
         /* 9 = needs validation, 10 = activ */
         $user->status = 10;
+        $user->points = 0;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         //$user->generateEmailVerificationToken();
-
-        return $user->save() /*&& $this->sendEmail($user)*/;
+        return $user->save();
     }
 
     /**

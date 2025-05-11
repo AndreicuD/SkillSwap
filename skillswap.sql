@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 10, 2025 at 07:37 PM
+-- Generation Time: May 11, 2025 at 04:14 PM
 -- Server version: 11.3.2-MariaDB
 -- PHP Version: 8.2.18
 
@@ -143,6 +143,30 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
   `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookmark`
+--
+
+DROP TABLE IF EXISTS `bookmark`;
+CREATE TABLE IF NOT EXISTS `bookmark` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `article_id` int(11) UNSIGNED NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bookmark`
+--
+
+INSERT INTO `bookmark` (`id`, `user_id`, `article_id`, `created_at`, `updated_at`) VALUES
+(16, 3, 2, '2025-05-11 19:09:40', '2025-05-11 16:09:40'),
+(18, 3, 8, '2025-05-11 19:09:43', '2025-05-11 16:09:43');
 
 -- --------------------------------------------------------
 

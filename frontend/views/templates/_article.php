@@ -26,13 +26,12 @@ $bookmark = $bookmarkModel->findBookmark(Yii::$app->user->id, $model->id);
     <img src="../frontend/web/img/placeholder.jpg" alt="HTML5 Icon" width="250" height="250">
 
     <?php $form = ActiveForm::begin([
-            'id' => 'bookmark-form' . $model->public_id,
-            'action' => empty($bookmark) ? ['bookmark/create', 'id' => $model->id, 'page' => $page] : ['bookmark/delete', 'id' => $bookmark->id, 'page' => $page], // Specify the route to the create action
-        ]);?>
-
-    <button type="submit" name="bookmark" class="absolute_card_button bottom_right_card_button icon_btn bookmark_button <?= !empty($bookmark) ? 'card_button_pressed' : '' ?>">
-        <?=$bookmark_svg?>
-    </button>
+        'id' => 'bookmark-form' . $model->public_id,
+        'action' => empty($bookmark) ? ['bookmark/create', 'id' => $model->id, 'page' => $page] : ['bookmark/delete', 'id' => $bookmark->id, 'page' => $page], // Specify the route to the create action
+    ]);?>
+        <button type="submit" name="bookmark" class="absolute_card_button bottom_right_card_button icon_btn bookmark_button <?= !empty($bookmark) ? 'card_button_pressed' : '' ?>">
+            <?=$bookmark_svg?>
+        </button>
     <?php ActiveForm::end(); ?>
 </div>
 <div class="card-body">

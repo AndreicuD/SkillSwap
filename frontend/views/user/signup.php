@@ -20,6 +20,7 @@ $this->title = Yii::t('app', 'Signup');
         <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['id' => 'form-signup', 'layout' => 'floating']); ?>
 
+            <?= $form->errorSummary($model) ?>
             <?= $form->field($model, 'firstname')->label(Yii::t('app', 'First Name')) ?>
             <?= $form->field($model, 'lastname')->label(Yii::t('app', 'Last Name')) ?>
             <hr>
