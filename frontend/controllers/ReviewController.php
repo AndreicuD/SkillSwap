@@ -41,8 +41,6 @@ class ReviewController extends Controller
         $model->user_id = Yii::$app->user->identity->id;
         
         if ($model->load(Yii::$app->request->post())) {
-            // Fetch the current user
-            $article = Article::findOne(['id' => $model->article_id]);
 
             // Save the transaction
             if (!$model->save()) {

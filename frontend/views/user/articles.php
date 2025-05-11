@@ -25,14 +25,14 @@ $this->title = Yii::t('app', 'My Articles');
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>
 
     <div class="group_together">
-        <div class="new-article-button">
-            <?= Html::a(Yii::t('app', 'Create New Article'),['/article/create'],['class' => ['btn btn-secondary rotate_on_hover scale_on_hover mb-3']]) ?>
-        </div>
-    
         <?= $this->render('/templates/search', [
             'model' => $model,
             'url' => '/user/articles'
         ]) ?>
+    
+        <div class="new-article-button">
+            <?= Html::a(Yii::t('app', 'Create New Article'),['/article/create'],['class' => ['btn btn-secondary rotate_on_hover scale_on_hover mb-3']]) ?>
+        </div>
     </div>
 
 

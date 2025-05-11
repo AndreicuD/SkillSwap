@@ -7,11 +7,11 @@ use yii\bootstrap5\Html;
 use yii\widgets\ListView;
 use yii\helpers\Url;
 
-$this->title = 'SkillSwap';
+$this->title = 'Skill Swap';
 ?>
 <div class="hero user-select-none">
     <div class="hero-text" id="hero-text">
-        <h1>SkillSwap</h1>
+        <h1>Skill Swap</h1>
         <p><?= Yii::t('app', 'Discover your new hobby!') ?></p>
         <div class="btn-group" role="group">
             <?php 
@@ -32,11 +32,18 @@ $this->title = 'SkillSwap';
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="site.js"></script>
-
 <div class="site-index" id="site-index">
-    <div style="padding: 0 16%;">
+    <div class="index-about">
+        <div class="group_together padd-15">
+            <div class="w-50">
+                <h1>ceva</h1>
+            </div>
+            <div class="w-50">
+                <h1>test</h1>
+            </div>
+        </div>
+    </div>
+    <div class="padd-15">
         <div class="index-description title">
             <p class="index-description-text"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
         </div>

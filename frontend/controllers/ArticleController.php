@@ -5,10 +5,13 @@ namespace frontend\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
+use yii\db\ActiveRecord;
 use common\models\Article;
 use common\models\Category;
 use common\models\Transaction;
 use common\models\Review;
+use common\models\Bookmark;
 
 /**
  * Article controller
@@ -32,7 +35,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * Displays index.
      *
      * @return mixed
      */
@@ -48,12 +51,14 @@ class ArticleController extends Controller
 
         $transactionModel = new Transaction();
         $reviewModel = new Review();
+        $bookmarkModel = new Bookmark();
 
         return $this->render('index', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
             'transactionModel' => $transactionModel,
             'reviewModel' => $reviewModel,
+            'bookmarkModel' => $bookmarkModel,
         ]);
     }
     /**
@@ -69,10 +74,14 @@ class ArticleController extends Controller
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
+        $reviewModel = new Review();
+        $reviewModel->value = Review::calculateRating($searchModel->id);
+
         $this->layout = 'blank';
         return $this->renderAjax('ajax-stats', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
+            'reviewModel' => $reviewModel,
         ]);
     }
 
@@ -89,14 +98,10 @@ class ArticleController extends Controller
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
-        $reviewModel = new Review();
-        $reviewModel->value = Review::calculateRating($searchModel->id);
-
         $this->layout = 'blank';
         return $this->renderAjax('ajax-info', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
-            'reviewModel' => $reviewModel,
         ]);
     }
 
@@ -194,5 +199,35 @@ class ArticleController extends Controller
         return $this->render('create' ,[
             'model' => $model,
         ]);
+    }
+
+    /**
+     * delete an article
+     * @return
+     */
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->delete()) {
+            Bookmark::deleteAll(['article_id' => $model->id]);
+            Yii::$app->session->setFlash('success', 'The article has been deleted.');
+        }
+
+        $this->redirect(['user/articles']);
+    }
+    /**
+     * Finds the Article based on its id value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id - the id of the model
+     * @return array|Article|ActiveRecord
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel(string $id): array|Article|ActiveRecord
+    {
+        if (($model = Article::find()->where('id = :id', [':id' => $id])->andWhere(['user_id' => Yii::$app->user->id])->one()) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested article does not exist.'));
     }
 }

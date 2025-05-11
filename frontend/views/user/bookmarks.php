@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\web\View;
 
-$this->title = Yii::t('app', 'Articles');
+$this->title = Yii::t('app', 'My Bookmarks');
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-index">
@@ -14,16 +14,17 @@ $this->title = Yii::t('app', 'Articles');
 
     <?= $this->render('/templates/search', [
         'model' => $model,
-        'url' => '/article/index'
+        'url' => '/user/bookmarks'
     ]) ?>
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemView' => '/templates/_article',
-        'viewParams' => ['transactionModel' => $transactionModel,
-                        'reviewModel' => $reviewModel,
-                        'bookmarkModel' => $bookmarkModel,
-                        'page' => 'article/index',
-                    ],
+        'viewParams' => [
+            'transactionModel' => $transactionModel,
+            'reviewModel' => $reviewModel,
+            'bookmarkModel' => $bookmarkModel,
+            'page' => 'user/bookmarks',
+        ],
         'options' => [
             'tag' => 'div',
             'class' => 'flex-row-start'

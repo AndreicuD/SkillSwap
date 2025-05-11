@@ -23,7 +23,6 @@ use common\models\Category;
  * @property string $content [mediumtext]
  * 
  * @property integer $category [int(11)]
- * //@property string $category_name;
  * 
  * @property integer $price [int(11)]
  * @property integer $bought [int(11)]
@@ -77,6 +76,21 @@ class Article extends ActiveRecord
 
             [['title', 'description', 'content', 'category', 'category_name', 'price', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
         ];
+    }
+    public function scenarios(): array
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['search'] = [
+            'id',
+            'title',
+            'description',
+            'content',
+            'category',
+            'category_name',
+            'created_at',
+            'updated_at',
+        ];
+        return $scenarios;
     }
 
     /**

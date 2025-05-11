@@ -20,13 +20,13 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
     <h5 class="card-text card-title"><?= Html::encode($model->title) ?> - <?= Html::encode($model->price) . $point_svg ?></h5>
     <p class="card-text"><?= Html::encode($model->description) ?></p>
 </div>
-<div class="card-footer group_together" style="border: none;">
+<div class="btn-group w-100" style="border: none;">
     <button 
         id="article_modal_<?=$index?>" 
-        class="btn btn-secondary btn-ajax rotate_on_hover" 
+        class="card-button btn btn-secondary btn-ajax" 
         data-modal_title="<?=Yii::t('app', 'Stats'); ?>" 
         data-modal_url="<?=Url::to(['article/ajax-stats', 'public_id' => $model->public_id]); ?>" >
         Stats
     </button>
-    <?= Html::a(Yii::t('app', 'Edit Article'),['/article/edit', 'public_id' => $model->public_id],['class' => ['btn btn-primary rotate_on_hover scale_on_hover']]) ?>
+    <?= Html::a(Yii::t('app', 'Edit Article'),['/article/edit', 'public_id' => $model->public_id],['class' => ['card-button btn btn-primary']]) ?>
 </div>

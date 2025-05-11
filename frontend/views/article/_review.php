@@ -11,7 +11,7 @@ use common\models\User;
 ?>
 <div class="group_together">
     <p><b><?= Html::encode(User::getUsername($model->user_id)); ?></b></p>
-    <p><b><?= Html::encode($model->title) ?></b></p>
+    <p class="gray"><?= Html::encode($model->updated_at) ?></p>
     <div>
         <?php echo StarRating::widget(['model' => $model, 'attribute' => 'value',
             'options' => ['id' => 'review-' . $model->user_id . $model->article_id . $model->id],
@@ -21,9 +21,14 @@ use common\models\User;
                 'size' => 'xs',
                 'readonly' => true,
                 'showClear' => false,
-            ]
-        ]); ?>
+                ]
+            ]); ?>
     </div>
 </div>
-<p><?= Html::encode($model->body) ?></p>
+<div class="w-100 text-center">
+    <p style="margin: none; padding: none;"><b><?= Html::encode($model->title) ?></b></p>
+</div>
+<div class='padd-15'>
+    <p><?= Html::encode($model->body) ?></p>
+</div>
 <hr>
