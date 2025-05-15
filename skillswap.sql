@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 11, 2025 at 04:14 PM
+-- Generation Time: May 15, 2025 at 06:15 PM
 -- Server version: 11.3.2-MariaDB
 -- PHP Version: 8.2.18
 
@@ -158,14 +158,13 @@ CREATE TABLE IF NOT EXISTS `bookmark` (
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `bookmark`
 --
 
 INSERT INTO `bookmark` (`id`, `user_id`, `article_id`, `created_at`, `updated_at`) VALUES
-(16, 3, 2, '2025-05-11 19:09:40', '2025-05-11 16:09:40'),
 (18, 3, 8, '2025-05-11 19:09:43', '2025-05-11 16:09:43');
 
 -- --------------------------------------------------------
@@ -321,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `password_reset_token` (`password_reset_token`),
   UNIQUE KEY `auth_key` (`auth_key`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user`
@@ -331,7 +330,8 @@ INSERT INTO `user` (`id`, `email`, `firstname`, `lastname`, `status`, `points`, 
 (1, 'urecheatu007@gmail.com', 'Leo', 'Hutanu', 10, 0, 0, '62XosHOiCccwkrTCij676SF_rXyUQLl2', '$2y$13$M8mo4D3ct94rBqDMcqr2uuq8Yz3CTujfxeEg7a13yHETP3NS/apRi', NULL, NULL, '0000-00-00 00:00:00', '2024-05-21 08:05:44', '2024-12-12 19:51:52'),
 (2, 'littlegamerdeiu@gmail.com', 'Hutanu', 'Deiu', 10, 0, 0, 'GlSQdASMDtccXTF67Owwti_Fb8PT8fZV', '$2y$13$plSTsq1fcyMhiUVogIvZ8.Y8qEdQVSFOEIRHQ3eS/A1ANlPomMacC', NULL, NULL, '0000-00-00 00:00:00', '2024-05-23 23:34:23', '2024-12-19 23:09:18'),
 (3, 'andreileontinhutanu@gmail.com', 'Andrei', 'Hutanu', 10, 213, 0, 'hMmtbqHbunydWqwEGLnU0DMCRqFgnIbo', '$2y$13$BA5OsniwY.GW.B7D3n.4SurN8GTcOKyw9KI1VhLRD9UQ28gNcogW6', 'BECjvL5xg0xgnTCvECHShVWLTwxV6jdE_1720727147', NULL, '0000-00-00 00:00:00', '2024-05-22 00:12:27', '2025-04-24 13:30:50'),
-(4, 'emaildetest@gmail.com', 'Cont', 'De Test', 10, 157, 0, 'pQOgzwxlY5PHkYIWoboNZ0Tn3WalbZ0d', '$2y$13$TgcMnFO3lNTd3.oGLgfGwuVTDopnGZiGu7/SwohzLQXHgwnI/WGba', NULL, NULL, '2025-04-23 18:46:51', '2025-04-23 21:46:51', '2025-04-24 13:30:50');
+(4, 'emaildetest@gmail.com', 'Cont', 'De Test', 10, 157, 0, 'pQOgzwxlY5PHkYIWoboNZ0Tn3WalbZ0d', '$2y$13$TgcMnFO3lNTd3.oGLgfGwuVTDopnGZiGu7/SwohzLQXHgwnI/WGba', NULL, NULL, '2025-04-23 18:46:51', '2025-04-23 21:46:51', '2025-04-24 13:30:50'),
+(5, '23452342@gmail.com', 'asd', 'asd', 10, 0, 0, 'mBf2XkFZE61DxO0WJ2j2bXDbGP_J38Sy', '$2y$13$tiWjB57WyFIg6oUDpJdSI.HEAXllGs0jRkhuz/6Ua.vMc2KqyIsda', NULL, NULL, '2025-05-11 17:06:27', '2025-05-11 20:06:27', '2025-05-11 17:06:27');
 
 --
 -- Constraints for dumped tables

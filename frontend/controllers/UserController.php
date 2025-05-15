@@ -14,12 +14,8 @@ use frontend\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use common\models\User;
 use common\models\Article;
 use common\models\Category;
-use common\models\Transaction;
-use common\models\Review;
-use common\models\Bookmark;
 
 /**
  * Site controller
@@ -41,7 +37,7 @@ class UserController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'profile', 'articles', 'bookmarks', 'logout'],
+                        'actions' => ['index', 'profile', 'articles', 'logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -100,46 +96,6 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    /**
-     * Displays bookmarks page.
-     *
-     * @return mixed
-     */
-    public function actionBookmarks()
-    {
-        $searchModel = new Article();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(['is_public' => 1]);
-
-        // Get bookmarked articles by current user
-        $bookmarkModel = new Bookmark();
-        $bookmarks = $bookmarkModel->findByUserId(Yii::$app->user->id);
-
-        // Extract article IDs from bookmarks
-        $bookmarkedArticleIds = array_map(function ($bookmark) {
-            return $bookmark->article_id;
-        }, $bookmarks);
-
-        // Filter articles to those bookmarked
-        $dataProvider->query->andWhere(['id' => $bookmarkedArticleIds]);
-
-        // Optional: update category name
-        if ($searchModel->category && !$searchModel->category_name) {
-            $searchModel->category_name = Category::getName($searchModel->category);
-        }
-
-        $transactionModel = new Transaction();
-        $reviewModel = new Review();
-
-        return $this->render('bookmarks', [
-            'model' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'transactionModel' => $transactionModel,
-            'reviewModel' => $reviewModel,
-            'bookmarkModel' => $bookmarkModel,
-        ]);
-    }
-
 
     /**
      * Logs in a user.

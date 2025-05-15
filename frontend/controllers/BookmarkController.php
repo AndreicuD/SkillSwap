@@ -9,6 +9,9 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use common\models\User;
 use common\models\Article;
+use common\models\Category;
+use common\models\Transaction;
+use common\models\Review;
 use common\models\Bookmark;
 
 /**
@@ -31,6 +34,46 @@ class BookmarkController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    /**
+     * Displays bookmarks page.
+     *
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new Article();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andWhere(['is_public' => 1]);
+
+        // Get bookmarked articles by current user
+        $bookmarkModel = new Bookmark();
+        $bookmarks = $bookmarkModel->findByUserId(Yii::$app->user->id);
+
+        // Extract article IDs from bookmarks
+        $bookmarkedArticleIds = array_map(function ($bookmark) {
+            return $bookmark->article_id;
+        }, $bookmarks);
+
+        // Filter articles to those bookmarked
+        $dataProvider->query->andWhere(['id' => $bookmarkedArticleIds]);
+
+        // Optional: update category name
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        $transactionModel = new Transaction();
+        $reviewModel = new Review();
+
+        return $this->render('bookmarks', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'transactionModel' => $transactionModel,
+            'reviewModel' => $reviewModel,
+            'bookmarkModel' => $bookmarkModel,
+        ]);
     }
 
     /**
