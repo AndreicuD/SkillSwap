@@ -37,74 +37,63 @@ $this->title = 'Skill Swap';
         <div class="index-description title">
             <p class="index-description-text"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
         </div>
-        <div id="carouselCourses" class="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 1') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
+        <div class="why-div">
+            <div class="title why-text"><?= Yii::t('app','Why choose us?') ?></div>
+            <div class="card-flex">
+                <div class="card column why-card">
+                    <div class="card-header text-center">
+                        <h5><?= Yii::t('app','Reason no.1') ?></h5>
+                    </div>
+                    <div class="card-body">
+                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 2') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
+                <div class="card column why-card">
+                    <div class="card-header text-center">
+                        <h5><?= Yii::t('app','Reason no.2') ?></h5>
+                    </div>
+                    <div class="card-body">
+                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 3') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
+                <div class="card column why-card">
+                    <div class="card-header text-center">
+                        <h5><?= Yii::t('app','Reason no.3') ?></h5>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 4') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 5') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 6') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
+                    <div class="card-body">
+                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
                     </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+        </div>
+        <div class="trending-articles">
+            <div class="title trend-text"> <?=Yii::t('app','Trending articles')?></div>
+            <div class="trending-articles-flex">
+                <div class="card trend-art" style="width: 18rem;">
+                        <img src="../frontend/web/img/placeholder.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card trend-art" style="width: 18rem;">
+                        <img src="../frontend/web/img/placeholder.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card trend-art" style="width: 18rem;">
+                        <img src="../frontend/web/img/placeholder.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
             </div>
-        <div class="title">
-            <h2><?= Yii::t('app', 'Trending articles') ?></h2>
         </div>
     </div>
 </div>
