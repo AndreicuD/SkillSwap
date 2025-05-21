@@ -5,6 +5,7 @@
 
 use yii\bootstrap5\Html;
 use yii\widgets\ListView;
+use yii\web\View;
 use yii\helpers\Url;
 
 $this->title = 'Skill Swap';
@@ -32,79 +33,110 @@ $this->title = 'Skill Swap';
     </div>
 </div>
 
-<div class="site-index" id="site-index">
-    <div class="padd-15">
-        <div class="index-description title">
-            <p class="index-description-text"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
-        </div>
-        <div id="carouselCourses" class="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 1') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 2') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 3') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 4') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 5') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="card" style="width: 17rem;">
-                        <h5 class="card-header"><?= Yii::t('app', 'Course 6') ?></h5>
-                        <div class="card-body">
-                            <p class="card-text"><?= Yii::t('app', 'Some quick example text to build on the card title and make up the bulk of the cards content') ?>.</p>
-                            <a href="#" class="btn btn-primary scale_on_hover rotate_on_hover"><?= Yii::t('app', 'Buy now!') ?></a>
-                        </div>
-                    </div>
-                </div>
+<br>
+<div class="padd-15">
+    <h1><?= Yii::t('app', 'Latest Articles') ?></h1>
+    <?= ListView::widget([
+        'dataProvider' => $latestDataProvider,
+        'itemView' => '/templates/article',
+        'viewParams' => ['transactionModel' => $transactionModel,
+                        'reviewModel' => $reviewModel,
+                        'bookmarkModel' => $bookmarkModel,
+                        'page' => 'article/index',
+                    ],
+        'options' => [
+            'tag' => 'div',
+            'class' => 'flex-row-even'
+        ],
+        'itemOptions' => [
+            'tag' => 'div',
+            'class' => 'card',
+        ],
+        'layout' => '{items}{pager}',
+        'pager' => [
+            'pageCssClass' => 'page-item',
+            'prevPageCssClass' => 'prev page-item',
+            'nextPageCssClass' => 'next page-item',
+            'firstPageCssClass' => 'first page-item',
+            'lastPageCssClass' => 'last page-item',
+            'linkOptions' => ['class' => 'page-link'],
+            'disabledListItemSubTagOptions' => ['class' => 'page-link'],
+            'options' => ['class' => 'pagination justify-content-center'],
+        ],
+    ]); ?>
+</div>
+<br>
+<div class="padd-15">
+    <h1><?= Yii::t('app', 'Top Rated Articles') ?></h1>
+    <?= ListView::widget([
+        'dataProvider' => $topRatedDataProvider,
+        'itemView' => '/templates/article',
+        'viewParams' => ['transactionModel' => $transactionModel,
+                        'reviewModel' => $reviewModel,
+                        'bookmarkModel' => $bookmarkModel,
+                        'page' => 'article/index',
+                    ],
+        'options' => [
+            'tag' => 'div',
+            'class' => 'flex-row-even'
+        ],
+        'itemOptions' => [
+            'tag' => 'div',
+            'class' => 'card',
+        ],
+        'layout' => '{items}{pager}',
+        'pager' => [
+            'pageCssClass' => 'page-item',
+            'prevPageCssClass' => 'prev page-item',
+            'nextPageCssClass' => 'next page-item',
+            'firstPageCssClass' => 'first page-item',
+            'lastPageCssClass' => 'last page-item',
+            'linkOptions' => ['class' => 'page-link'],
+            'disabledListItemSubTagOptions' => ['class' => 'page-link'],
+            'options' => ['class' => 'pagination justify-content-center'],
+        ],
+    ]); ?>
+</div>
+
+<!-- Article Modal -->
+<div class="modal fade" id="article-blank" tabindex="-1" aria-labelledby="article_title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 truncate" id="article_title">Blank Title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            <div class="modal-body">
+                ...
             </div>
-        <div class="title">
-            <h2><?= Yii::t('app', 'Trending articles') ?></h2>
         </div>
     </div>
 </div>
+<?php 
+    $string_error = Yii::t('app', 'There was an error loading the data');
+
+    $update_js = <<< JS
+    const bootstrap_modal = new bootstrap.Modal('#article-blank');
+    const modal_element = $('#article-blank');
+    const text_waiting = '<div class="d-flex justify-content-center align-items-center p-2"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_Uvk8{animation:spinner_otJF 1.6s cubic-bezier(.52,.6,.25,.99) infinite}.spinner_ypeD{animation-delay:.2s}.spinner_y0Rj{animation-delay:.4s}@keyframes spinner_otJF{0%{transform:translate(12px,12px) scale(0);opacity:1}75%,100%{transform:translate(0,0) scale(1);opacity:0}}</style><path class="spinner_Uvk8" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="translate(12, 12) scale(0)"/><path class="spinner_Uvk8 spinner_ypeD" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="translate(12, 12) scale(0)"/><path class="spinner_Uvk8 spinner_y0Rj" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="translate(12, 12) scale(0)"/></svg></div>';
+    $(document).ready(function () {
+        $(document).on('click', '.btn-ajax', function(){
+            let request_url = $(this).data('modal_url');
+            modal_element.find('.modal-title').html($(this).data('modal_title'));
+            modal_element.find('.modal-body').html(text_waiting).load(request_url, function( response, status, xhr ) {
+                if ( status === "error" ) {
+                    let text_error = '<p class="alert alert-danger">$string_error<br>'
+                    text_error += xhr.status + " " + xhr.statusText + '</p>';
+                    modal_element.find('.modal-body').html(text_error);
+                }
+            });
+            bootstrap_modal.show();
+        });
+        
+        $('#article-blank .btn-close').on('click', function(){
+            bootstrap_modal.hide();
+        });
+    });
+    JS;
+    $this->registerJs($update_js, View::POS_END);
+?>

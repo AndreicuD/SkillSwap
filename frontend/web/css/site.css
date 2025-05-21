@@ -622,42 +622,30 @@ a {
 }
 
 .flex-row-even {
-	display: -webkit-box;
-	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	    -ms-flex-direction: row;
-	        flex-direction: row;
-	-webkit-box-pack: space-evenly;
-	    -ms-flex-pack: space-evenly;
-	        justify-content: space-evenly;
+	flex-direction: row;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
 	gap: 1em;
 }
 .flex-row-start {
-	display: -webkit-box;
-	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	    -ms-flex-direction: row;
-	        flex-direction: row;
-	-webkit-box-pack: start;
-	    -ms-flex-pack: start;
-	        justify-content: flex-start;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 	gap: 1em;
 }
 @media(max-width: 767px) {
-	.flex-row-even  {-ms-flex-wrap: wrap;flex-wrap: wrap;};
-	.flex-row-start {-ms-flex-wrap: wrap;flex-wrap: wrap;};
+	.flex-row-even  {-ms-flex-wrap: wrap;flex-wrap: wrap;}
+	.flex-row-start {-ms-flex-wrap: wrap;flex-wrap: wrap;}
 }
 .card {
+	box-sizing: border-box;
+	flex: 0 0 calc(25% - 0.75em);
+	max-width: calc(25% - 0.75em);
 	margin-bottom: 1em;
-	width: 25%;
 	border-radius: 16px;
 	overflow: hidden;
-	-webkit-transition: 0.2s ease;
-	-o-transition: 0.2s ease;
 	transition: 0.2s ease;
 }
 .card:hover {
@@ -665,7 +653,9 @@ a {
 }
 /* for the summernote editor */
 .form-control .card {
+	flex: 0 0 100%;
 	width: 100%;
+	max-width: 100%
 }
 .form-control .card:hover {
 	scale: 1;

@@ -13,6 +13,7 @@ use common\models\Review;
 /* @var $widget yii\widgets\ListView this widget instance */
 /* @var $key mixed the key value associated with the data item */
 /* @var $index integer the zero-based index of the data item in the items array returned by the data provider */
+/* @var common\models\Article $model */
 $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-analyze"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918" /><path d="M4 13a8.1 8.1 0 0 0 15 3" /><path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></svg>';
 $transactionModel->article_id = $model->id;
 $transactionModel->value = $model->price;
@@ -21,9 +22,10 @@ $reviewModel->value = Review::calculateRating($model->id);
 
 $bookmark_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-bookmark"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z" /></svg>';
 $bookmark = $bookmarkModel->findBookmark(Yii::$app->user->id, $model->id);
+$src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
 ?>
 <div class="card-image">
-    <img src="../frontend/web/img/placeholder.jpg" alt="HTML5 Icon" width="250" height="250">
+    <img src="<?=$src?>" alt="<?= Html::encode($this->title) ?>" width="250" height="250">
 
     <?php $form = ActiveForm::begin([
         'id' => 'bookmark-form' . $model->public_id,
@@ -35,12 +37,12 @@ $bookmark = $bookmarkModel->findBookmark(Yii::$app->user->id, $model->id);
     <?php ActiveForm::end(); ?>
 </div>
 <div class="card-body">
-    <h5 class="card-text" style="margin-bottom: 0;"><?= Html::encode($model->title) ?></h5>
+    <h5 class="card-text card-title" style="margin-bottom: 0;"><?= Html::encode($model->title) ?></h5>
     <div class="group_together">
         <div class=w-50>
             <?php echo StarRating::widget(['model' => $reviewModel, 'attribute' => 'value',
-                'name' => 'stars' . $model->public_id,
-                'options' => ['id' => 'review-' . $model->public_id],
+                'name' => 'stars_' . $model->public_id . '_' . uniqid(),
+                'options' => ['id' => 'review-' . $model->public_id . '-' . uniqid()],
                 'pluginOptions' => [
                     'step' => 0.01,
                     'showCaption' => false,

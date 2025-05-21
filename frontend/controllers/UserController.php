@@ -12,10 +12,12 @@ use yii\web\Response;
 use yii\filters\AccessControl;
 use frontend\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
+use frontend\models\ChangePasswordForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use common\models\Article;
 use common\models\Category;
+use common\models\User;
 
 /**
  * Site controller
@@ -32,12 +34,16 @@ class UserController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['signup', 'login', 'reset-password', 'request-password-reset', 'verify-email', 'resend-verification-email'],
+                        'actions' => ['reset-password', 'request-password-reset', 'verify-email', 'resend-verification-email'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['signup', 'login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'profile', 'articles', 'logout'],
+                        'actions' => ['index', 'profile', 'articles', 'logout', 'settings', 'change-password'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -151,6 +157,46 @@ class UserController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    public function actionSettings()
+    {
+        $user = User::findOne(['id' => Yii::$app->user->id]);
+        $changePasswordModel = new ChangePasswordForm();
+    
+        if ($user->load(Yii::$app->request->post())) {
+            if ($user->validate()) {
+                if ($user->save()) {
+                    Yii::$app->session->setFlash('success', 'The user info was modified succesfuly.');
+                } else {
+                    Yii::$app->session->setFlash('error', 'There was an error saving the user settings.');
+                }
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed Validation: ' . json_encode($user->getErrors()));
+            }
+        }
+    
+        return $this->render('settings', [
+            'userModel' => $user,
+            'changePasswordModel' => $changePasswordModel,
+        ]);
+    }
+
+    /**
+     * change the password
+     * @return Response
+     */
+    public function actionChangePassword()
+    {
+        $model = new ChangePasswordForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Parola a fost schimbată cu succes.'));
+            return $this->redirect(['user/settings']);
+        }
+
+        Yii::$app->session->setFlash('error', Yii::t('app', 'Parola nu a fost schimbată. Verifică datele introduse.'));
+        return $this->redirect(['user/settings']);
     }
 
     /**

@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 use common\models\User;
 use common\models\Article;
 use common\models\Category;
@@ -20,6 +21,26 @@ use common\models\Bookmark;
 class BookmarkController extends Controller
 {
     public $enableCsrfValidation = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index', 'create', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */

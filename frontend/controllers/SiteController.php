@@ -5,6 +5,11 @@ namespace frontend\controllers;
 use frontend\models\ContactForm;
 use Yii;
 use yii\web\Controller;
+use common\models\Article;
+use common\models\Category;
+use common\models\Transaction;
+use common\models\Review;
+use common\models\Bookmark;
 
 /**
  * Site controller
@@ -34,7 +39,27 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $searchModel = new Article();
+        $searchModel2 = new Article();
+        $latestDataProvider = $searchModel->searchLatest();
+        $topRatedDataProvider = $searchModel2->searchTopRated();
+
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        $transactionModel = new Transaction();
+        $reviewModel = new Review();
+        $bookmarkModel = new Bookmark();
+
+        return $this->render('index', [
+            'model' => $searchModel,
+            'latestDataProvider' => $latestDataProvider,
+            'topRatedDataProvider' => $topRatedDataProvider,
+            'transactionModel' => $transactionModel,
+            'reviewModel' => $reviewModel,
+            'bookmarkModel' => $bookmarkModel,
+        ]);
     }
 
     /**

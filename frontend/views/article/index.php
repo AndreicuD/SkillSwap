@@ -18,7 +18,7 @@ $this->title = Yii::t('app', 'Articles');
     ]) ?>
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
-        'itemView' => '/templates/_article',
+        'itemView' => '/templates/article',
         'viewParams' => ['transactionModel' => $transactionModel,
                         'reviewModel' => $reviewModel,
                         'bookmarkModel' => $bookmarkModel,

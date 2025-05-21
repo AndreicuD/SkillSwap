@@ -39,6 +39,8 @@ use common\models\Category;
 class Article extends ActiveRecord
 {
     public $cover;
+    public $storage_path = '@frontend/web/files/article';
+    public $storage_uri = '/files/article';
     public $category_name;
     const STATUS_PRIVATE = 0;
     const STATUS_PUBLIC = 1;
@@ -104,9 +106,7 @@ class Article extends ActiveRecord
             'title' => Yii::t('app', 'Title'),
             'description' => Yii::t('app', 'Description'),
             'content' => Yii::t('app', 'Content'),
-
             'category' => Yii::t('app', 'Category'),
-            
             'likes_count' => Yii::t('app', 'Like Count'),
             'is_public' => Yii::t('app', 'Public'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -223,6 +223,60 @@ class Article extends ActiveRecord
         return $dataProvider;
     }
 
+    /**
+    * Creates data provider instance with search query applied
+    *
+    * @param array $params
+    *
+    * @return ActiveDataProvider
+    */
+    public function searchLatest($limit = 3)
+    {
+        $this->scenario = 'search';
+
+        $query = self::find();
+
+        $query->andFilterWhere(['is_public' => 1]);
+        $query->limit($limit);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort'=> [
+                'defaultOrder' => ['id'=>SORT_DESC],
+            ]
+        ]);
+        $dataProvider->setPagination(false);
+
+        return $dataProvider;
+    }
+
+    public function searchTopRated($limit = 3)
+    {
+        $this->scenario = 'search';
+
+        $query = self::find()
+            ->alias('a')
+            ->select(['a.*', 'AVG(r.value) as avg_rating'])
+            ->joinWith(['reviews r'])
+            ->where(['a.is_public' => 1])
+            ->groupBy('a.id')
+            ->orderBy(['avg_rating' => SORT_DESC])
+            ->limit($limit);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => false,
+            'pagination' => false,
+        ]);
+
+        return $dataProvider;
+    }
+
+    public function getReviews()
+    {
+        return $this->hasMany(Review::class, ['article_id' => 'id']);
+    }
+
    /**
      * Finds all unique categories from the article table.
      *
@@ -254,5 +308,57 @@ class Article extends ActiveRecord
     {
         $model =  static::findOne(['id' => $id]);
         return 0.1 * $model->price * $model->bought;
+    }
+
+        /**
+     * @param $path boolean false returns the URI, true returns the path
+     * @return string
+     */
+    public function getFolder(bool $path = false)
+    {
+        $str = str_pad($this->id, 2, '0', STR_PAD_LEFT);
+        return ($path ? Yii::getAlias($this->storage_path) : $this->storage_uri).'/'.$str[0].'/'.$str[1];
+    }
+
+    /**
+     * @return string the uri to the file
+     */
+    public function getSrc()
+    {
+        return $this->getFolder().'/'.$this->id.'.'.$this->cover_extension;
+    }
+
+    /**
+     * @return string the path to the file
+     */
+    public function getFilePath()
+    {
+        return $this->getFolder(true).'/'.$this->id.'.'.$this->cover_extension;
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkFileExists(): bool
+    {
+        return file_exists($this->getFilePath());
+    }
+
+    public function getImageDatas()
+    {
+        $src_array = [];
+        if (isset($this->cover_extension) && !empty($this->cover_extension)) {
+            $src_array[] = [
+                'type' => 'image',
+                'fileId' => $this->id,
+                'downloadUrl' => $this->getSrc(),
+                'url' => yii\helpers\Url::to(['article/file-delete', 'id' => $this->id]),
+                'extra' => [
+                    'id' => $this->id,
+                ],
+                'key' => 1,
+            ];
+        }
+        return $src_array;
     }
 }

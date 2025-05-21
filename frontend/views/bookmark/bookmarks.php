@@ -18,7 +18,7 @@ $this->title = Yii::t('app', 'My Bookmarks');
     ]) ?>
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
-        'itemView' => '/templates/_article',
+        'itemView' => '/templates/article',
         'viewParams' => [
             'transactionModel' => $transactionModel,
             'reviewModel' => $reviewModel,

@@ -10,8 +10,7 @@ use common\models\User;
 
 ?>
 <div class="group_together">
-    <p><b><?= Html::encode(User::getUsername($model->user_id)); ?></b></p>
-    <p class="gray"><?= Html::encode($model->updated_at) ?></p>
+    <p><b><?= Html::encode(User::getUsername($model->user_id)); ?></b> - <span class="gray"><?= Html::encode($model->updated_at) ?></span></p>
     <div>
         <?php echo StarRating::widget(['model' => $model, 'attribute' => 'value',
             'options' => ['id' => 'review-' . $model->user_id . $model->article_id . $model->id],
@@ -25,10 +24,10 @@ use common\models\User;
             ]); ?>
     </div>
 </div>
-<div class="w-100 text-center">
+<div class="w-100">
     <p style="margin: none; padding: none;"><b><?= Html::encode($model->title) ?></b></p>
 </div>
-<div class='padd-15'>
+<div>
     <p><?= Html::encode($model->body) ?></p>
 </div>
 <hr>

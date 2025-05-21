@@ -7,17 +7,44 @@ use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\db\ActiveRecord;
+use yii\filters\AccessControl;
 use common\models\Article;
 use common\models\Category;
 use common\models\Transaction;
 use common\models\Review;
 use common\models\Bookmark;
+use yii\web\UploadedFile;
+use yii\web\Response;
+use yii\helpers\Url;
 
 /**
  * Article controller
  */
 class ArticleController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['read', 'ajax-info', 'ajax-stats', '_review', 'index'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['update', 'edit', 'create', 'delete', 'file-upload', 'file-delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -165,6 +192,19 @@ class ArticleController extends Controller
         $model = Article::findOne(['id' => $id]);
         //$model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $file = UploadedFile::getInstanceByName('Article[cover]');
+            if ($file) {
+                $model->cover_extension = $file->getExtension();
+                if ($model->save()) {
+                    if (!file_exists($model->getFolder(true))) {
+                        @mkdir($model->getFolder(true), 0777, true);
+                    }
+                    if (file_exists($model->getFolder(true)) && $file->saveAs($model->getFilePath())) {
+                        Yii::$app->session->setFlash('success', Yii::t('app', 'The image was saved succesfully.'));
+                    }
+                }
+            }
+
             Yii::$app->session->setFlash('success', Yii::t('app', 'Article changes saved succesfully.'));
             if($page == "user") {
                 $this->redirect(['user/articles']);
@@ -229,5 +269,49 @@ class ArticleController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested article does not exist.'));
+    }
+
+        /**
+     * @param integer $id
+     * @return array|false
+     */
+    public function actionFileUpload(int $id): array|false
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+        $file = UploadedFile::getInstanceByName('Article[cover]');
+        if ($file) {
+            $model->cover_extension = $file->getExtension();
+            if ($model->save()) {
+                if (!file_exists($model->getFolder(true))) {
+                    @mkdir($model->getFolder(true), 0777, true);
+                }
+                if (file_exists($model->getFolder(true)) && $file->saveAs($model->getFilePath())) {
+                    return [
+                        'initialPreview' => $model->getSrc(),
+                        'initialPreviewConfig' => [
+                            [
+                                'url' => Url::to(['article/file-delete', 'id' => $model->id]),
+                                'type' => 'image',
+                                'fileId' => $model->id,
+                            ]
+                        ],
+                        'append' => true
+                    ];
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param integer $id
+     * @return bool
+     */
+    public function actionFileDelete(int $id): bool
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+        return unlink($model->getFilePath());
     }
 }

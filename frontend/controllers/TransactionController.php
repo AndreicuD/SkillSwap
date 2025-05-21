@@ -5,15 +5,38 @@ namespace frontend\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 use common\models\User;
 use common\models\Article;
 use common\models\Transaction;
 
 /**
- * Transation controller
+ * Transaction controller
  */
 class TransactionController extends Controller
 {
+
+    public $enableCsrfValidation = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */

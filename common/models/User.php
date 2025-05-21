@@ -77,7 +77,6 @@ class User extends ActiveRecord implements IdentityInterface
             [['points'], 'required'],
             [['points'], 'integer', 'min' => 0],
             [['points'], 'default', 'value' => 0, 'on' => 'default'],
-            [['firstname', 'lastname'], 'unique', 'on' => 'default'],
             [['firstname', 'lastname'], 'unique', 'on' => 'create'],
             ['password_confirmation', 'compare', 'compareAttribute' => 'new_password', 'on' => 'create'],
             [['points', 'auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'password', 'newsletter_subscription'], 'safe'],
