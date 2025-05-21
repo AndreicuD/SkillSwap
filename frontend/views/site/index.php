@@ -33,7 +33,48 @@ $this->title = 'Skill Swap';
     </div>
 </div>
 
+<div class="site-index" id="site-index">
+    <div class="padd-15">
+        <div class="index-description title">
+            <p class="index-description-text lead"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
+        </div>
+        <div class="why-div">
+            <div class="title why-text"><?= Yii::t('app','Why choose us?') ?></div>
+            <br>
+            <div class="card-flex">
+                <div class="card column why-card">
+                    <div class="card-header text-center">
+                        <h5><?= Yii::t('app','Reason no.1') ?></h5>
+                    </div>
+                    <div class="card-body">
+                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
+                    </div>
+                </div>
+                <div class="card column why-card">
+                    <div class="card-header text-center">
+                        <h5><?= Yii::t('app','Reason no.2') ?></h5>
+                    </div>
+                    <div class="card-body">
+                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
+                    </div>
+                </div>
+                <div class="card column why-card">
+                    <div class="card-header text-center">
+                        <h5><?= Yii::t('app','Reason no.3') ?></h5>
+                    </div>
+                    <div class="card-body">
+                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <br>
+<hr>
+<br>
+
 <div class="padd-15">
     <h1><?= Yii::t('app', 'Latest Articles') ?></h1>
     <?= ListView::widget([

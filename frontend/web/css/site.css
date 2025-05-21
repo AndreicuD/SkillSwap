@@ -880,33 +880,35 @@ a {
 	}
 }
 
-@media screen and (min-width: 576px) {
-	.carousel-inner{
-		display: -webkit-box;
-		display: -ms-flexbox;
-		display: flex;
-	}
-	.carousel-item{
-		display: block;
-		margin-right: 0;
-		-webkit-box-flex: 0;
-		    -ms-flex: 0 0 calc(100%/3);
-		        flex: 0 0 calc(100%/3);
-	}
+.why-text{
+	font-size: 50px;
+	font-weight: bold;
 }
 
-.carousel-inner{
-	padding: 1em;
+.card-group{
+	display: flex;
 }
 
-.carousel-control-next, .carousel-control-prev{
-	width: 6vh;
-	height: 6vh;
-	background-color: #e1e1e1;
-	border-radius: 50%;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	    -ms-transform: translateY(-50%);
-	        transform: translateY(-50%);
-	opacity: .5;
+.card-flex{
+	display: flex;
+	margin-bottom: 1em;
+}
+
+.why-card{
+	margin: auto;
+}
+
+.trending-articles-flex{
+	display: flex;
+	margin-bottom: 1em;
+}
+
+.trend-text{
+	font-size: 50px;
+	font-weight: bold;
+	margin: auto;
+}
+
+.trend-art{
+	margin: auto;
 }
