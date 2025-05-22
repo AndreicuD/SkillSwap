@@ -459,8 +459,8 @@ a {
 	    -ms-transform: translateY(calc(-50% - 86px));
 	        transform: translateY(calc(-50% - 86px));
 	color: white;
-	-webkit-animation: hero_text_anim cubic-bezier(0.895, 0.03, 0.685, 0.22);
-	        animation: hero_text_anim cubic-bezier(0.895, 0.03, 0.685, 0.22);
+	-webkit-animation: hero_text_anim ease-in;
+	        animation: hero_text_anim ease-in;
 	animation-timeline: scroll();
 }
 .hero-text h1 {
