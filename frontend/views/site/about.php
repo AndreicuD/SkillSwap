@@ -9,5 +9,5 @@ $this->title = Yii::t('app', 'About Us');
 ?>
 <div class="site-about">
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>
-
+    
 </div>

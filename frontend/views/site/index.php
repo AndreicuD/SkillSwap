@@ -42,28 +42,28 @@ $this->title = 'Skill Swap';
             <div class="title why-text"><?= Yii::t('app','Why choose us?') ?></div>
             <br>
             <div class="card-flex">
-                <div class="card column why-card">
+                <div class="card column index-card">
                     <div class="card-header text-center">
-                        <h5><?= Yii::t('app','Reason no.1') ?></h5>
+                        <h5><?= Yii::t('app','To learn') ?></h5>
                     </div>
                     <div class="card-body">
-                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
+                        <p><?= Yii::t('app','We wanted to make learning accesible to anyone, no matter who you are and what you do.')?></p>
                     </div>
                 </div>
-                <div class="card column why-card">
+                <div class="card column index-card">
                     <div class="card-header text-center">
-                        <h5><?= Yii::t('app','Reason no.2') ?></h5>
+                        <h5><?= Yii::t('app','Fun') ?></h5>
                     </div>
                     <div class="card-body">
-                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
+                        <p><?= Yii::t('app','You can learn new stuff by buying articles, which contain information on whatever you want to study.')?></p>
                     </div>
                 </div>
-                <div class="card column why-card">
+                <div class="card column index-card">
                     <div class="card-header text-center">
-                        <h5><?= Yii::t('app','Reason no.3') ?></h5>
+                        <h5><?= Yii::t('app','Easy to use') ?></h5>
                     </div>
                     <div class="card-body">
-                        <p><?= Yii::t('app','We wanted to make learning accessible to everyone. For this reason, we designed this platform in order to ensure you learn whatever you want as fast as possible. We also want to build a community with people that help each other and make the experience better.')?></p>
+                        <p><?= Yii::t('app','We managed to create an intuitive point-based system that allows you to buy articles using points.')?></p>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@ $this->title = 'Skill Swap';
 <br>
 
 <div class="padd-15">
-    <h1><?= Yii::t('app', 'Latest Articles') ?></h1>
+    <h1 class="title"><?= Yii::t('app', 'Latest Articles') ?></h1>
     <?= ListView::widget([
         'dataProvider' => $latestDataProvider,
         'itemView' => '/templates/article',
@@ -87,11 +87,11 @@ $this->title = 'Skill Swap';
                     ],
         'options' => [
             'tag' => 'div',
-            'class' => 'flex-row-even'
+            'class' => 'flex-row-even card-flex'
         ],
         'itemOptions' => [
             'tag' => 'div',
-            'class' => 'card',
+            'class' => 'card index-card',
         ],
         'layout' => '{items}{pager}',
         'pager' => [
@@ -108,7 +108,7 @@ $this->title = 'Skill Swap';
 </div>
 <br>
 <div class="padd-15">
-    <h1><?= Yii::t('app', 'Top Rated Articles') ?></h1>
+    <h1 class="title"><?= Yii::t('app', 'Top Rated Articles') ?></h1>
     <?= ListView::widget([
         'dataProvider' => $topRatedDataProvider,
         'itemView' => '/templates/article',
@@ -119,11 +119,11 @@ $this->title = 'Skill Swap';
                     ],
         'options' => [
             'tag' => 'div',
-            'class' => 'flex-row-even'
+            'class' => 'flex-row-even card-flex'
         ],
         'itemOptions' => [
             'tag' => 'div',
-            'class' => 'card',
+            'class' => 'card index-card',
         ],
         'layout' => '{items}{pager}',
         'pager' => [
