@@ -930,3 +930,8 @@ a {
 		flex-direction: row;
 	}
 }
+
+.abt-us-text{
+	margin: auto;
+	width: 300px;
+}

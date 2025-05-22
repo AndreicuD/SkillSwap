@@ -87,7 +87,7 @@ $this->title = 'Skill Swap';
                     ],
         'options' => [
             'tag' => 'div',
-            'class' => 'flex-row-even card-flex'
+            'class' => 'flex-row-even'
         ],
         'itemOptions' => [
             'tag' => 'div',
@@ -119,7 +119,7 @@ $this->title = 'Skill Swap';
                     ],
         'options' => [
             'tag' => 'div',
-            'class' => 'flex-row-even card-flex'
+            'class' => 'flex-row-even'
         ],
         'itemOptions' => [
             'tag' => 'div',
@@ -181,3 +181,14 @@ $this->title = 'Skill Swap';
     JS;
     $this->registerJs($update_js, View::POS_END);
 ?>
+
+<div class="padd-15">
+    <div class="testimonials" style="background:rgb(252, 252, 252); padding: 30px; border-radius: 10px; margin-top: 1rem">
+        <div class="title">
+            <h1><?= Yii::t('app', 'About us')?></h1>
+        </div>
+        <div class="abt-us-text">
+            <div class="abt-us-text"><?=Yii::t('app', 'We are 2 stundents that aspire to do good things to help people online. We managed to create this site, hoping to help peoiple who want to learn things fast.')?></div>
+        </div>
+    </div>
+</div>
