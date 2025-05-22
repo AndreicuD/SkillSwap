@@ -33,16 +33,15 @@ $this->title = 'Skill Swap';
     </div>
 </div>
 
+<div class="index-description text-center">
+    <p class="index-description-text lead"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
+</div>
 <div class="site-index" id="site-index">
     <div class="padd-15">
-        <div class="index-description title">
-            <p class="index-description-text lead"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
-        </div>
         <div class="why-div">
             <div class="title why-text"><?= Yii::t('app','Why choose us?') ?></div>
-            <br>
-            <div class="card-flex">
-                <div class="card column index-card">
+            <div class="flex-row-even">
+                <div class="card column">
                     <div class="card-header text-center">
                         <h5><?= Yii::t('app','To learn') ?></h5>
                     </div>
@@ -50,7 +49,7 @@ $this->title = 'Skill Swap';
                         <p><?= Yii::t('app','We wanted to make learning accesible to anyone, no matter who you are and what you do.')?></p>
                     </div>
                 </div>
-                <div class="card column index-card">
+                <div class="card column">
                     <div class="card-header text-center">
                         <h5><?= Yii::t('app','Fun') ?></h5>
                     </div>
@@ -58,7 +57,7 @@ $this->title = 'Skill Swap';
                         <p><?= Yii::t('app','You can learn new stuff by buying articles, which contain information on whatever you want to study.')?></p>
                     </div>
                 </div>
-                <div class="card column index-card">
+                <div class="card column">
                     <div class="card-header text-center">
                         <h5><?= Yii::t('app','Easy to use') ?></h5>
                     </div>
@@ -87,11 +86,11 @@ $this->title = 'Skill Swap';
                     ],
         'options' => [
             'tag' => 'div',
-            'class' => 'flex-row-even card-flex'
+            'class' => 'flex-row-even'
         ],
         'itemOptions' => [
             'tag' => 'div',
-            'class' => 'card index-card',
+            'class' => 'card',
         ],
         'layout' => '{items}{pager}',
         'pager' => [
@@ -119,11 +118,11 @@ $this->title = 'Skill Swap';
                     ],
         'options' => [
             'tag' => 'div',
-            'class' => 'flex-row-even card-flex'
+            'class' => 'flex-row-even'
         ],
         'itemOptions' => [
             'tag' => 'div',
-            'class' => 'card index-card',
+            'class' => 'card',
         ],
         'layout' => '{items}{pager}',
         'pager' => [
