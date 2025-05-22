@@ -412,6 +412,10 @@ button, .btn {
 .navbar .login_logoutbutton {
 	padding-left: 1em;
 }
+.daily_alert {
+	position: fixed;
+}
+
 
 .footer {
 	background-color: var(--bs-gray-100);
@@ -553,6 +557,11 @@ a {
 	margin: 0;
 	background: linear-gradient(180deg,rgba(110, 182, 71, 1) 0%, rgba(124, 206, 80, 1) 50%, rgba(var(--bs-primary-bg-subtle-rgb), 0.0) 100%);
 	color: white;
+}
+.about-us {
+	background-color: var(--bs-gray-100);
+	padding: 1em 30%;
+	text-align: center;
 }
 
 

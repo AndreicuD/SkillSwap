@@ -109,6 +109,14 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
+        <?php if (Yii::$app->session->hasFlash('dailyBonus')): ?>
+            <?php $bonus = Yii::$app->session->getFlash('dailyBonus'); ?>
+            <div class="alert alert-success daily_alert">
+                🎁 You earned <strong><?= $bonus['points'] ?> points</strong> today!
+                <br>
+                🔥 Current streak: <strong><?= $bonus['streak'] ?> days</strong>
+            </div>
+        <?php endif; ?>
         <?= $content ?>
     </div>
 </main>

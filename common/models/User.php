@@ -25,6 +25,7 @@ use yii\db\Expression;
  * @property string $password_reset_token [varchar(254)]
  * @property string $verification_token [varchar(254)]
  * @property integer $last_login [timestamp = current_timestamp()]
+ * @property integer $login_streak [int(11)]
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
  *
@@ -76,6 +77,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['email', 'unique', 'on' => 'create'],
             [['points'], 'required'],
             [['points'], 'integer', 'min' => 0],
+            [['points'], 'default', 'value' => 750, 'on' => 'create'],
             [['points'], 'default', 'value' => 0, 'on' => 'default'],
             [['firstname', 'lastname'], 'unique', 'on' => 'create'],
             ['password_confirmation', 'compare', 'compareAttribute' => 'new_password', 'on' => 'create'],
@@ -192,6 +194,33 @@ class User extends ActiveRecord implements IdentityInterface
             Yii::$app->session->setFlash('error', 'Failed to update points.');
             return false;
         }
+    }
+
+    public function applyDailyLoginBonus()
+    {
+        $now = new \DateTime();
+        $last = $this->last_login ? new \DateTime($this->last_login) : null;
+
+        if ($last && $last->format('Y-m-d') == $now->format('Y-m-d')) {
+            return; // Already received today's bonus
+        }
+
+        if ($last && $last->diff($now)->days === 1) {
+            $this->login_streak += 1;
+        } else {
+            $this->login_streak = 1;
+        }
+
+        $points = rand(200, 500);
+        $this->points += $points;
+        $this->last_login = $now->format('Y-m-d H:i:s');
+
+        $this->save(false);
+
+        Yii::$app->session->setFlash('dailyBonus', [
+            'points' => $points,
+            'streak' => $this->login_streak
+        ]);
     }
 
     /**

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 21, 2025 at 08:10 PM
+-- Generation Time: May 22, 2025 at 08:45 PM
 -- Server version: 11.3.2-MariaDB
 -- PHP Version: 8.2.18
 
@@ -298,14 +298,16 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `transaction`
 --
 
 INSERT INTO `transaction` (`id`, `user_id`, `article_id`, `value`, `created_at`, `updated_at`) VALUES
-(1, 4, 7, 100, '2025-04-24 16:26:03', '2025-04-24 13:26:03');
+(1, 4, 7, 100, '2025-04-24 16:26:03', '2025-04-24 13:26:03'),
+(5, 3, 9, 240, '2025-05-22 19:46:04', '2025-05-22 16:46:04'),
+(6, 3, 8, 157, '2025-05-22 19:46:09', '2025-05-22 16:46:09');
 
 -- --------------------------------------------------------
 
@@ -327,6 +329,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password_reset_token` varchar(254) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `verification_token` varchar(254) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT current_timestamp(),
+  `login_streak` int(11) UNSIGNED NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
@@ -339,12 +342,12 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `firstname`, `lastname`, `status`, `points`, `rating`, `auth_key`, `password_hash`, `password_reset_token`, `verification_token`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, 'urecheatu007@gmail.com', 'Leo', 'Hutanu', 10, 0, 0, '62XosHOiCccwkrTCij676SF_rXyUQLl2', '$2y$13$M8mo4D3ct94rBqDMcqr2uuq8Yz3CTujfxeEg7a13yHETP3NS/apRi', NULL, NULL, '0000-00-00 00:00:00', '2024-05-21 08:05:44', '2024-12-12 19:51:52'),
-(2, 'littlegamerdeiu@gmail.com', 'Hutanu', 'Deiu', 10, 0, 0, 'GlSQdASMDtccXTF67Owwti_Fb8PT8fZV', '$2y$13$plSTsq1fcyMhiUVogIvZ8.Y8qEdQVSFOEIRHQ3eS/A1ANlPomMacC', NULL, NULL, '0000-00-00 00:00:00', '2024-05-23 23:34:23', '2024-12-19 23:09:18'),
-(3, 'andreileontinhutanu@gmail.com', 'Andrei', 'Hutanu', 10, 213, 0, 'itZBnFGaxZWwHu6fn62TsLapxqOGstX3', '$2y$13$8ZQTzorfnsVw3/XL/DXs7u2ENJLUjjVdRXO7SHu1VdN2u/PwWc5UG', 'BECjvL5xg0xgnTCvECHShVWLTwxV6jdE_1720727147', NULL, '0000-00-00 00:00:00', '2024-05-22 00:12:27', '2025-05-21 17:33:45'),
-(4, 'emaildetest@gmail.com', 'Cont', 'De Test', 10, 157, 0, 'pQOgzwxlY5PHkYIWoboNZ0Tn3WalbZ0d', '$2y$13$TgcMnFO3lNTd3.oGLgfGwuVTDopnGZiGu7/SwohzLQXHgwnI/WGba', NULL, NULL, '2025-04-23 18:46:51', '2025-04-23 21:46:51', '2025-04-24 13:30:50'),
-(5, '23452342@gmail.com', 'asd', 'asd', 10, 0, 0, 'mBf2XkFZE61DxO0WJ2j2bXDbGP_J38Sy', '$2y$13$tiWjB57WyFIg6oUDpJdSI.HEAXllGs0jRkhuz/6Ua.vMc2KqyIsda', NULL, NULL, '2025-05-11 17:06:27', '2025-05-11 20:06:27', '2025-05-11 17:06:27');
+INSERT INTO `user` (`id`, `email`, `firstname`, `lastname`, `status`, `points`, `rating`, `auth_key`, `password_hash`, `password_reset_token`, `verification_token`, `last_login`, `login_streak`, `created_at`, `updated_at`) VALUES
+(1, 'urecheatu007@gmail.com', 'Leo', 'Hutanu', 10, 0, 0, '62XosHOiCccwkrTCij676SF_rXyUQLl2', '$2y$13$M8mo4D3ct94rBqDMcqr2uuq8Yz3CTujfxeEg7a13yHETP3NS/apRi', NULL, NULL, '0000-00-00 00:00:00', 0, '2024-05-21 08:05:44', '2024-12-12 19:51:52'),
+(2, 'littlegamerdeiu@gmail.com', 'Hutanu', 'Deiu', 10, 0, 0, 'GlSQdASMDtccXTF67Owwti_Fb8PT8fZV', '$2y$13$plSTsq1fcyMhiUVogIvZ8.Y8qEdQVSFOEIRHQ3eS/A1ANlPomMacC', NULL, NULL, '0000-00-00 00:00:00', 0, '2024-05-23 23:34:23', '2024-12-19 23:09:18'),
+(3, 'andreileontinhutanu@gmail.com', 'Andrei', 'Hutanu', 10, 957, 0, 'itZBnFGaxZWwHu6fn62TsLapxqOGstX3', '$2y$13$8ZQTzorfnsVw3/XL/DXs7u2ENJLUjjVdRXO7SHu1VdN2u/PwWc5UG', 'BECjvL5xg0xgnTCvECHShVWLTwxV6jdE_1720727147', NULL, '2025-05-22 15:51:27', 2, '2024-05-22 00:12:27', '2025-05-22 18:51:27'),
+(4, 'emaildetest@gmail.com', 'Leo', 'Test', 10, 1066, 0, 'pQOgzwxlY5PHkYIWoboNZ0Tn3WalbZ0d', '$2y$13$TgcMnFO3lNTd3.oGLgfGwuVTDopnGZiGu7/SwohzLQXHgwnI/WGba', NULL, NULL, '2025-05-22 15:40:54', 1, '2025-04-23 21:46:51', '2025-05-22 18:40:54'),
+(5, '23452342@gmail.com', 'asd', 'asd', 10, 0, 0, 'mBf2XkFZE61DxO0WJ2j2bXDbGP_J38Sy', '$2y$13$tiWjB57WyFIg6oUDpJdSI.HEAXllGs0jRkhuz/6Ua.vMc2KqyIsda', NULL, NULL, '2025-05-10 17:06:27', 0, '2025-05-11 20:06:27', '2025-05-22 18:39:13');
 
 --
 -- Constraints for dumped tables

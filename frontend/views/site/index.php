@@ -181,13 +181,14 @@ $this->title = 'Skill Swap';
     $this->registerJs($update_js, View::POS_END);
 ?>
 
-<div class="padd-15">
-    <div class="testimonials" style="background:rgb(252, 252, 252); padding: 30px; border-radius: 10px; margin-top: 1rem">
+<br>
+<div class="about-us">
+    <div class="padd-15">
         <div class="title">
             <h1><?= Yii::t('app', 'About us')?></h1>
         </div>
-        <div class="abt-us-text">
-            <div class="abt-us-text"><?=Yii::t('app', 'We are 2 stundents that aspire to do good things to help people online. We managed to create this site, hoping to help peoiple who want to learn things fast.')?></div>
+        <div class="about-us-text">
+            <div><?=Yii::t('app', 'We are 2 students that aspire to do good things to help people online. We managed to create this site, hoping to help people who want to learn things fast.')?></div>
         </div>
     </div>
 </div>
