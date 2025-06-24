@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-reset-password">
     <h1 class="text-center page_title"><?= Html::encode($this->title) ?></h1>
 
-    <p class="text-center">Please choose your new password:</p>
+    <p class="text-center"><?= Yii::t('app', 'Please choose your new password:')?></p>
 
     <div class="row justify-content-center">
         <div class="col-lg-6">

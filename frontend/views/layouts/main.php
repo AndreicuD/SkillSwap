@@ -117,9 +117,9 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
         <?php if (Yii::$app->session->hasFlash('dailyBonus')): ?>
             <?php $bonus = Yii::$app->session->getFlash('dailyBonus'); ?>
             <div class="alert alert-success daily_alert">
-                🎁 You earned <strong><?= $bonus['points'] ?> points</strong> today!
+                🎁 <?= Yii::t('app', 'You earned') ?> <strong><?= $bonus['points'] ?> <?= Yii::t('app', 'points') ?></strong> <?= Yii::t('app', 'today') ?>!
                 <br>
-                🔥 Current streak: <strong><?= $bonus['streak'] ?> days</strong>
+                🔥 <?= Yii::t('app', 'Current streak') ?>: <strong><?= $bonus['streak'] ?> <?= Yii::t('app', 'days') ?></strong>
             </div>
         <?php endif; ?>
         <?= $content ?>
@@ -128,8 +128,8 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
 
 <footer class="footer footer-light mt-auto py-3 text-muted">
     <div class="container">
-        <p class="float-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="float-end">Made with <span>Love</span> by <b>Huțanu Andrei</b> and <b>Roman David</b> 💚</p>
+        <p class="float-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?> - <?= Html::a(Yii::t('app', 'Terms and Conditions'),['/site/terms']) ?> - <?= Html::a(Yii::t('app', 'Privacy Policy'),['/site/privacy']) ?></p>
+        <p class="float-end"><?= Yii::t('app', 'Made with <span>Love</span> by <b>Huțanu Andrei</b> and <b>Roman David</b>') ?> 💚</p>
     </div>
 </footer>
 

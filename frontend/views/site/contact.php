@@ -22,13 +22,13 @@ $this->title = Yii::t('app', 'Contact Us');
         <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['id' => 'contact-form', 'layout' => 'floating']); ?>
 
-                <?= $form->field($model, 'name')->textInput(['autofocus' => true])->label(Yii::t('app', 'Nume')) ?>
+                <?= $form->field($model, 'name')->textInput(['autofocus' => true])->label(Yii::t('app', 'Name')) ?>
 
                 <?= $form->field($model, 'email')->label(Yii::t('app', 'Email')) ?>
 
-                <?= $form->field($model, 'subject')->label(Yii::t('app', 'Subiect')) ?>
+                <?= $form->field($model, 'subject')->label(Yii::t('app', 'Subject')) ?>
 
-                <?= $form->field($model, 'body')->textarea(['rows' => 6, 'style' => 'min-height: 160px'])->label(Yii::t('app', 'Ce vrei sa ne spui?')) ?>
+                <?= $form->field($model, 'body')->textarea(['rows' => 6, 'style' => 'min-height: 160px'])->label(Yii::t('app', 'Tell us something')) ?>
 
                 <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
                     'template' => '<div class="row"><div class="col-lg-3 justify" style="text-align: center;">{image}</div><div style = "padding-top: 1rem;" class="col-lg-6">{input}</div></div>',

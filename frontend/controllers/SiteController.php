@@ -83,6 +83,25 @@ class SiteController extends Controller
     }
 
     /**
+     * Displays terms and conditions page.
+     *
+     * @return mixed
+     */
+    public function actionTerms()
+    {
+        return $this->render('terms');
+    }
+    /**
+     * Displays privacy policy page.
+     *
+     * @return mixed
+     */
+    public function actionPrivacy()
+    {
+        return $this->render('privacy');
+    }
+
+    /**
      * Displays contact page.
      *
      * @return mixed
