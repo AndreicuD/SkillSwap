@@ -188,7 +188,11 @@ $this->title = 'Skill Swap';
             <h1><?= Yii::t('app', 'About us')?></h1>
         </div>
         <div class="about-us-text">
-            <div><?=Yii::t('app', 'We are 2 students that aspire to do good things to help people online. We managed to create this site, hoping to help people who want to learn things fast.')?></div>
+            <div>
+                <?=Yii::t('app', 'We’re two students who wanted to create something useful.
+                We built this with love, curiosity, and the hope that it makes your learning journey a little brighter. 
+                <h2>💡🌍</h2>')?>
+            </div>
         </div>
     </div>
 </div>

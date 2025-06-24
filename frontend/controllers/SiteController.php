@@ -71,6 +71,17 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    /**
+     * Displays faq page.
+     *
+     * @return mixed
+     */
+    public function actionFaq()
+    {
+        return $this->render('faq');
+    }
+
     /**
      * Displays contact page.
      *

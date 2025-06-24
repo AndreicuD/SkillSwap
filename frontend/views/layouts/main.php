@@ -59,12 +59,15 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
             $menuItems = [
                 ['label' => 'Home', 'url' => ['/site/index']],
                 ['label' => 'Contact', 'url' => ['/site/contact']],
+                ['label' => 'FAQ', 'url' => ['/site/faq']],
             ];
         } else {
             $menuItems = [
                 ['label' => 'Home', 'url' => ['/site/index']],
                 ['label' => 'Contact', 'url' => ['/site/contact']],
                 ['label' => 'Articles', 'url' => ['/article/index']],
+                ['label' => 'Courses', 'url' => ['/course/index']],
+                ['label' => 'FAQ', 'url' => ['/site/faq']],
             ];
         }
 
@@ -88,6 +91,8 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
                 echo '</a>';
                 echo '<ul class="dropdown-menu dropdown-menu-lg-end">';
                     echo Html::tag('li',Html::a('My articles',['/user/articles'],['class' => ['dropdown-item']]));
+
+                    echo Html::tag('li',Html::a('My courses',['/user/courses'],['class' => ['dropdown-item']]));
                     
                     echo Html::tag('li',Html::a('My Bookmarks',['/bookmark/index'],['class' => ['dropdown-item']]));
 
