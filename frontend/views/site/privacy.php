@@ -48,7 +48,7 @@ $this->title = Yii::t('app', 'Privacy Policy');
                 <li><?= Yii::t('app', 'Request deletion of your account and related data')?></li>
                 <li><?= Yii::t('app', 'Withdraw consent at any time')?></li>
             </ul>
-            <?= Yii::t('app', 'For any requests, please contact us at: [insert contact email]')?>
+            <?= Yii::t('app', 'For any requests, please contact us using the')?> <?= Html::a(Yii::t('app', 'Contact Us'),['/site/contact']) ?> <?= Yii::t('app', 'page') ?>
 
         <h3><li><?= Yii::t('app', 'Children\'s Privacy')?></li></h3>
             <?= Yii::t('app', 'Skill Swap is not intended for children under the age of 13. We do not knowingly collect data from minors.')?>
