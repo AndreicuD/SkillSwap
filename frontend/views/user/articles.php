@@ -39,7 +39,9 @@ $this->title = Yii::t('app', 'My Articles');
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemView' => '_article',
-        'viewParams' => [],
+        'viewParams' => [
+            'page' => 'user/articles',
+        ],
         'options' => [
             'tag' => 'div',
             //'class' => 'flex-row-start card-slide'

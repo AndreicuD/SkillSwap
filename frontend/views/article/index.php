@@ -45,20 +45,20 @@ $this->title = Yii::t('app', 'Articles');
         ],
     ]); ?>
 
-        <!-- Article Modal -->
-        <div class="modal fade" id="article-blank" tabindex="-1" aria-labelledby="article_title" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5 truncate" id="article_title">Blank Title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
+    <!-- Article Modal -->
+    <div class="modal fade" id="article-blank" tabindex="-1" aria-labelledby="article_title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="article_title">Blank Title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
                 </div>
             </div>
         </div>
+    </div>
 </div>
 
 <?php 

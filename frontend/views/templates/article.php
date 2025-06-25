@@ -77,9 +77,9 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
             type = "button"
             id="article_info_<?=$model->public_id?>" 
             class="card-button btn btn-secondary btn-ajax" 
-            data-modal_title="<?= Yii::t('app', 'Description') ?>" 
+            data-modal_title="<?= $model->title ?>" 
             data-modal_url="<?=Url::to(['article/ajax-info', 'public_id' => $model->public_id]); ?>" >
-            <?= Yii::t('app', 'Description') ?>
+            <?= Yii::t('app', 'Details') ?>
         </button>
         <?php 
             if(Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {

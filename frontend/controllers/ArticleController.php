@@ -36,7 +36,7 @@ class ArticleController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['update', 'edit', 'create', 'delete', 'file-upload', 'file-delete'],
+                        'actions' => ['update', 'edit', 'create', 'delete', 'ajax-delete', 'file-upload', 'file-delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -127,6 +127,22 @@ class ArticleController extends Controller
 
         $this->layout = 'blank';
         return $this->renderAjax('ajax-info', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * see delete confirmation
+     * @param integer $id
+     * @return string
+     */
+    public function actionAjaxDelete($public_id) {
+        $searchModel = Article::findOne(['public_id' => $public_id]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $this->layout = 'blank';
+        return $this->renderAjax('ajax-delete', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
