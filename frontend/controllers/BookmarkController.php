@@ -10,10 +10,13 @@ use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use common\models\User;
 use common\models\Article;
+use common\models\Course;
 use common\models\Category;
 use common\models\Transaction;
-use common\models\Review;
-use common\models\Bookmark;
+use common\models\ArticleReview;
+use common\models\ArticleBookmark;
+use common\models\CourseReview;
+use common\models\CourseBookmark;
 
 /**
  * Bookmark controller
@@ -32,7 +35,7 @@ class BookmarkController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'create', 'delete'],
+                        'actions' => ['index', 'create-article', 'delete-article', 'create-course', 'delete-course'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -65,20 +68,40 @@ class BookmarkController extends Controller
     public function actionIndex()
     {
         $searchModel = new Article();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(['is_public' => 1]);
+        $articleDataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $articleDataProvider->query->andWhere(['is_public' => 1]);
 
         // Get bookmarked articles by current user
-        $bookmarkModel = new Bookmark();
-        $bookmarks = $bookmarkModel->findByUserId(Yii::$app->user->id);
+        $articleBookmarkModel = new ArticleBookmark();
+        $articleBookmarks = $articleBookmarkModel->findByUserId(Yii::$app->user->id);
 
         // Extract article IDs from bookmarks
         $bookmarkedArticleIds = array_map(function ($bookmark) {
             return $bookmark->article_id;
-        }, $bookmarks);
+        }, $articleBookmarks);
 
         // Filter articles to those bookmarked
-        $dataProvider->query->andWhere(['id' => $bookmarkedArticleIds]);
+        $articleDataProvider->query->andWhere(['id' => $bookmarkedArticleIds]);
+
+        //---------------------------------------------
+
+        $searchModel = new Course();
+        $courseDataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $courseDataProvider->query->andWhere(['is_public' => 1]);
+
+        // Get bookmarked courses by current user
+        $courseBookmarkModel = new CourseBookmark();
+        $courseBookmarks = $courseBookmarkModel->findByUserId(Yii::$app->user->id);
+
+        // Extract course IDs from bookmarks
+        $bookmarkedCourseIds = array_map(function ($bookmark) {
+            return $bookmark->course_id;
+        }, $courseBookmarks);
+
+        // Filter articles to those bookmarked
+        $courseDataProvider->query->andWhere(['id' => $bookmarkedCourseIds]);
+
+        //------------------------------------------------
 
         // Optional: update category name
         if ($searchModel->category && !$searchModel->category_name) {
@@ -86,14 +109,18 @@ class BookmarkController extends Controller
         }
 
         $transactionModel = new Transaction();
-        $reviewModel = new Review();
+        $articleReviewModel = new ArticleReview();
+        $courseReviewModel = new CourseReview();
 
         return $this->render('bookmarks', [
             'model' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'articleDataProvider' => $articleDataProvider,
+            'courseDataProvider' => $courseDataProvider,
             'transactionModel' => $transactionModel,
-            'reviewModel' => $reviewModel,
-            'bookmarkModel' => $bookmarkModel,
+            'articleReviewModel' => $articleReviewModel,
+            'articleBookmarkModel' => $articleBookmarkModel,
+            'courseReviewModel' => $courseReviewModel,
+            'courseBookmarkModel' => $courseBookmarkModel,
         ]);
     }
 
@@ -101,11 +128,30 @@ class BookmarkController extends Controller
      * Create a new article bookmark
      * @return void
      */
-    public function actionCreate($id, $page)
+    public function actionCreateArticle($id, $page)
     {   
-        $model = new Bookmark();
+        $model = new ArticleBookmark();
         $model->user_id = Yii::$app->user->identity->id;
         $model->article_id = $id;
+        
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', 'Bookmark has been saved!');
+        } else {
+            Yii::$app->session->setFlash('error', 'Bookmark save failed: ' . json_encode($model->getErrors()));
+        }
+
+        $this->redirect([$page]);
+    }
+    
+    /**
+     * Create a new course bookmark
+     * @return void
+     */
+    public function actionCreateCourse($id, $page)
+    {   
+        $model = new CourseBookmark();
+        $model->user_id = Yii::$app->user->identity->id;
+        $model->course_id = $id;
         
         if ($model->save()) {
             Yii::$app->session->setFlash('success', 'Bookmark has been saved!');
@@ -120,25 +166,42 @@ class BookmarkController extends Controller
      * delete a bookmark
      * @return
      */
-    public function actionDelete($id, $page)
+    public function actionDeleteArticle($id, $page)
     {
-        $model = $this->findModel($id);
+        $articleBookmark = new ArticleBookmark;
+        $model = $articleBookmark->findModel($id);
         if ($model->delete()) {
             Yii::$app->session->setFlash('success', 'The bookmark has been deleted.');
         }
 
         $this->redirect([$page]);
     }
+
+    /**
+     * delete a bookmark
+     * @return
+     */
+    public function actionDeleteCourse($id, $page)
+    {
+        $courseBookmark = new CourseBookmark;
+        $model = $courseBookmark->findModel($id);
+        if ($model->delete()) {
+            Yii::$app->session->setFlash('success', 'The bookmark has been deleted.');
+        }
+
+        $this->redirect([$page]);
+    }
+
     /**
      * Finds the Bookmark based on its id value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id - the id of the model
-     * @return array|Bookmark|ActiveRecord
+     * @return array|ArticleBookmark|ActiveRecord
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(string $id): array|Bookmark|ActiveRecord
+    protected function findModel(string $id): array|ArticleBookmark|ActiveRecord
     {
-        if (($model = Bookmark::find()->where('id = :id', [':id' => $id])->andWhere(['user_id' => Yii::$app->user->id])->one()) !== null) {
+        if (($model = ArticleBookmark::find()->where('id = :id', [':id' => $id])->andWhere(['user_id' => Yii::$app->user->id])->one()) !== null) {
             return $model;
         }
 

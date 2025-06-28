@@ -4,61 +4,47 @@
 
 use yii\helpers\Html;
 use yii\widgets\ListView;
+use kartik\widgets\ActiveForm;
+use yii\bootstrap5\Modal;
 use yii\web\View;
+use common\models\Category;
+use kartik\select2\Select2;
 
-$this->title = Yii::t('app', 'My Bookmarks');
+$this->title = Yii::t('app', 'My Courses');
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+    @media(max-width: 767px) {
+        .new-course-button {
+            text-align: center;
+            width: 100%;
+        }
+    }
+</style>
 <div class="site-index">
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('/templates/search', [
-        'model' => $model,
-        'url' => '/user/bookmarks'
-    ]) ?>
-    <h2><?= Yii::t('app', 'Articles') ?></h2>
-    <?= ListView::widget([
-        'dataProvider' => $articleDataProvider,
-        'itemView' => '/templates/article',
-        'viewParams' => [
-            'transactionModel' => $transactionModel,
-            'reviewModel' => $articleReviewModel,
-            'bookmarkModel' => $articleBookmarkModel,
-            'page' => 'user/bookmarks',
-        ],
-        'options' => [
-            'tag' => 'div',
-            'class' => 'flex-row-start'
-        ],
-        'itemOptions' => [
-            'tag' => 'div',
-            'class' => 'card',
-        ],
-        'layout' => '{items}{pager}',
-        'pager' => [
-            'pageCssClass' => 'page-item',
-            'prevPageCssClass' => 'prev page-item',
-            'nextPageCssClass' => 'next page-item',
-            'firstPageCssClass' => 'first page-item',
-            'lastPageCssClass' => 'last page-item',
-            'linkOptions' => ['class' => 'page-link'],
-            'disabledListItemSubTagOptions' => ['class' => 'page-link'],
-            'options' => ['class' => 'pagination justify-content-center'],
-        ],
-    ]); ?>
+    <div class="group_together">
+        <?= $this->render('/templates/search', [
+            'model' => $model,
+            'url' => '/user/courses'
+        ]) ?>
+    
+        <div class="new-course-button">
+            <?= Html::a(Yii::t('app', 'Create New Course'),['/course/create'],['class' => ['btn btn-secondary rotate_on_hover scale_on_hover mb-3']]) ?>
+        </div>
+    </div>
 
-    <h2><?= Yii::t('app', 'Courses') ?></h2>
+
     <?= ListView::widget([
-        'dataProvider' => $courseDataProvider,
-        'itemView' => '/templates/course',
+        'dataProvider' => $dataProvider,
+        'itemView' => '_course',
         'viewParams' => [
-            'transactionModel' => $transactionModel,
-            'reviewModel' => $courseReviewModel,
-            'bookmarkModel' => $courseBookmarkModel,
-            'page' => 'user/bookmarks',
+            'page' => 'user/courses',
         ],
         'options' => [
             'tag' => 'div',
+            //'class' => 'flex-row-start card-slide'
             'class' => 'flex-row-start'
         ],
         'itemOptions' => [

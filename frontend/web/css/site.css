@@ -746,13 +746,20 @@ a {
 .card_button_pressed svg {
 	fill: black;
 }
+.bottom_left_card_button {
+	left: 0;
+	bottom: -1px;
+	border-radius: 0 50% 0 0;
+}
 .bottom_right_card_button {
 	right: 0;
 	bottom: -1px;
 	border-radius: 50% 0 0 0;
 }
+.bottom_right_card_button svg {
+	margin: 4px;
+}
 .absolute_card_button svg {
-	margin: 6px;
 	border: black;
 }
 .card:hover .card-image img { -webkit-transform: scale(1.1); -ms-transform: scale(1.1); transform: scale(1.1); -webkit-filter: brightness(110%); filter: brightness(110%); }
@@ -812,7 +819,7 @@ a {
 }
 
 .article-content {
-	padding: 0 25%;
+	padding: 0 15%;
 	font-size: 1.1em;
 	overflow:scroll;
 }

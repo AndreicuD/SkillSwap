@@ -13,7 +13,7 @@ use yii\db\Expression;
 
 use common\models\Category;
 /**
- * Article model
+ * Course model
  *
  * @property integer $id [int(auto increment)]
  * @property string $public_id [varchar(36)]
@@ -36,11 +36,11 @@ use common\models\Category;
  *
  *
  */
-class Article extends ActiveRecord
+class Course extends ActiveRecord
 {
     public $cover;
-    public $storage_path = '@frontend/web/files/article';
-    public $storage_uri = '/files/article';
+    public $storage_path = '@frontend/web/files/course';
+    public $storage_uri = '/files/course';
     public $category_name;
     const STATUS_PRIVATE = 0;
     const STATUS_PUBLIC = 1;
@@ -50,7 +50,7 @@ class Article extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return '{{%article}}';
+        return '{{%course}}';
     }
 
     /**
@@ -163,7 +163,7 @@ class Article extends ActiveRecord
     /**
      * Returns the object (with the same id) if found.
      */
-    public static function findIdentity($id): Article|IdentityInterface|null
+    public static function findIdentity($id): Course|IdentityInterface|null
     {
         return static::findOne(['id' => $id]);
     }
@@ -186,7 +186,6 @@ class Article extends ActiveRecord
 
     /**
      * Creates data provider instance with search query applied
-     * used to create lists / grids
      *
      * @param array $params
      * @return ActiveDataProvider
@@ -275,11 +274,11 @@ class Article extends ActiveRecord
 
     public function getReviews()
     {
-        return $this->hasMany(ArticleReview::class, ['article_id' => 'id']);
+        return $this->hasMany(CourseReview::class, ['course_id' => 'id']);
     }
 
    /**
-     * Finds all unique categories from the article table.
+     * Finds all unique categories from the course table.
      *
      * @return array|null
      */
@@ -289,7 +288,7 @@ class Article extends ActiveRecord
     }
 
     /**
-     * Finds articles by user id.
+     * Finds courses by user id.
      *
      * @param string $id
      * @return array|null
@@ -305,7 +304,7 @@ class Article extends ActiveRecord
      * @param string $id
      * @return int
      */
-    public static function profitArticleId($id): int
+    public static function profitCourseId($id): int
     {
         $model =  static::findOne(['id' => $id]);
         return 0.1 * $model->price * $model->bought;
@@ -353,7 +352,7 @@ class Article extends ActiveRecord
                 'type' => 'image',
                 'fileId' => $this->id,
                 'downloadUrl' => $this->getSrc(),
-                'url' => yii\helpers\Url::to(['article/file-delete', 'id' => $this->id]),
+                'url' => yii\helpers\Url::to(['course/file-delete', 'id' => $this->id]),
                 'extra' => [
                     'id' => $this->id,
                 ],

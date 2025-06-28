@@ -7,7 +7,7 @@ use kartik\widgets\ActiveForm;
 use common\models\User;
 use common\models\Transaction;
 use kartik\widgets\StarRating;
-use common\models\ArticleReview;
+use common\models\CourseReview;
 
 /* @var $this yii\web\View */
 /* @var $widget yii\widgets\ListView this widget instance */
@@ -18,7 +18,7 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
 $transactionModel->article_id = $model->id;
 $transactionModel->value = $model->price;
 
-$reviewModel->value = ArticleReview::calculateRating($model->id);
+$reviewModel->value = CourseReview::calculateRating($model->id);
 
 $bookmark_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-bookmark"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z" /></svg>';
 $bookmark = $bookmarkModel->findBookmark(Yii::$app->user->id, $model->id);
@@ -29,7 +29,7 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
 
     <?php $form = ActiveForm::begin([
         'id' => 'bookmark-form' . $model->public_id,
-        'action' => empty($bookmark) ? ['bookmark/create-article', 'id' => $model->id, 'page' => $page] : ['bookmark/delete-article', 'id' => $bookmark->id, 'page' => $page], // Specify the route to the create action
+        'action' => empty($bookmark) ? ['bookmark/create-course', 'id' => $model->id, 'page' => $page] : ['bookmark/delete-course', 'id' => $bookmark->id, 'page' => $page], // Specify the route to the create action
     ]);?>
         <button type="submit" name="bookmark" class="absolute_card_button bottom_right_card_button icon_btn bookmark_button <?= !empty($bookmark) ? 'card_button_pressed' : '' ?>">
             <?=$bookmark_svg?>
@@ -60,30 +60,30 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
         </div>
     </div>
     <p class="card-text gray"><?= Html::encode(User::getUsername($model->user_id)) ?> - 
-    <a class="text-secondary" href="<?= Url::to(['article/index', 'Article[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
+    <a class="text-secondary" href="<?= Url::to(['course/index', 'Course[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
 </div>
 <?php $form = ActiveForm::begin([
-    'id' => 'article-form' . $model->public_id,
+    'id' => 'course-form' . $model->public_id,
     'type' => ActiveForm::TYPE_FLOATING,
     'action' => ['transaction/create'], // Specify the route to the create action
     'method' => 'post',
 ]); ?>
 <?= $form->errorSummary($transactionModel);?>
 
-<?= Html::activeHiddenInput($transactionModel, 'article_id'); ?>
+<?= Html::activeHiddenInput($transactionModel, 'course_id'); ?>
 <?= Html::activeHiddenInput($transactionModel, 'value', ['value' => $model->price]) ?>
 <div class="btn-group w-100">
         <button 
             type = "button"
-            id="article_info_<?=$model->public_id?>" 
+            id="course_info_<?=$model->public_id?>" 
             class="card-button btn btn-secondary btn-ajax" 
             data-modal_title="<?= $model->title ?>" 
-            data-modal_url="<?=Url::to(['article/ajax-info', 'public_id' => $model->public_id]); ?>" >
+            data-modal_url="<?=Url::to(['course/ajax-info', 'public_id' => $model->public_id]); ?>" >
             <?= Yii::t('app', 'Details') ?>
         </button>
         <?php 
             if(Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {
-                echo Html::a(Yii::t('app', 'Read'), [Url::to(['article/read', 'public_id' => $model->public_id])],['class' => ['card-button btn btn-primary']]);
+                echo Html::a(Yii::t('app', 'Read'), [Url::to(['course/read', 'public_id' => $model->public_id])],['class' => ['card-button btn btn-primary']]);
             } else {
                 echo Html::button(Html::encode($model->price) . $point_svg,['class' => ['card-button btn btn-primary'], 'type' => 'submit']);
             }

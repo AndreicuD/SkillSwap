@@ -5,12 +5,12 @@
 use yii\helpers\Html;
 use common\models\User;
 use common\models\Transaction;
-use common\models\ArticleReview;
+use common\models\CourseReview;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\StarRating;
 use yii\widgets\ListView;
 
-$userReviewModel->article_id = $model->id;
+$userReviewModel->course_id = $model->id;
 
 $this->title = $model->title;
 //$this->params['breadcrumbs'][] = $this->title;
@@ -38,7 +38,7 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
                     echo $model->content;
                 } else {
                     echo '<div class="text-center lead">';
-                    echo Yii::t('app', 'You can not acces this article. Check if you have bought it or if you are logged in.');
+                    echo Yii::t('app', 'You can not acces this course. Check if you have bought it or if you are logged in.');
                     echo '<br>';
                     echo '<br>';
                     echo '</div>';
@@ -51,18 +51,18 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
                 <?php 
                     if(Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {
                         
-                        if(ArticleReview::findRating(Yii::$app->user->id, $model->id)) {
+                        if(CourseReview::findRating(Yii::$app->user->id, $model->id)) {
                             $form = ActiveForm::begin([
-                                'id' => 'article-form',
+                                'id' => 'course-form',
                                 'type' => ActiveForm::TYPE_FLOATING,
-                                'action' => ['review/updateArticle', 'public_id' => $model->public_id], // Specify the route to the update  action
+                                'action' => ['review/updateCourse', 'public_id' => $model->public_id], // Specify the route to the update  action
                                 'method' => 'post',
                             ]);
                         } else {
                             $form = ActiveForm::begin([
-                                'id' => 'article-form',
+                                'id' => 'course-form',
                                 'type' => ActiveForm::TYPE_FLOATING,
-                                'action' => ['review/createArticle', 'public_id' => $model->public_id], // Specify the route to the create action
+                                'action' => ['review/createCourse', 'public_id' => $model->public_id], // Specify the route to the create action
                                 'method' => 'post',
                             ]);
                         }
@@ -74,7 +74,7 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
                             'pluginOptions' => ['step' => 0.5]
                         ])->label(false);
                 
-                        echo Html::activeHiddenInput($userReviewModel, 'article_id');
+                        echo Html::activeHiddenInput($userReviewModel, 'course_id');
                 
                         echo '<div class="w-100 text-center">';
                             echo Html::button(Yii::t('app', 'Save Review'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']);

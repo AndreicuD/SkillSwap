@@ -12,18 +12,21 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
 /**
- * Bookmark model
+ * Review model
  *
  * @property integer $id [int(auto increment)]
  * @property integer $user_id [int(11)]
- * @property integer $article_id [int(11)]
+ * @property integer $course_id [int(11)]
+ * @property float $value [float(11)]
+ * @property integer $title [varchar(256)]
+ * @property integer $body [varchar(2048)]
  * 
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
  *
  *
  */
-class Bookmark extends ActiveRecord
+class CourseReview extends ActiveRecord
 {
     const STATUS_PRIVATE = 0;
     const STATUS_PUBLIC = 1;
@@ -33,7 +36,7 @@ class Bookmark extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return '{{%bookmark}}';
+        return '{{%course_review}}';
     }
 
     /**
@@ -42,10 +45,12 @@ class Bookmark extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['user_id', 'article_id'], 'required', 'on' => 'default'],
-            [['user_id', 'article_id'], 'required', 'on' => 'create'],
+            [['user_id', 'course_id'], 'required', 'on' => 'default'],
+            [['user_id', 'course_id', 'value'], 'required', 'on' => 'create'],
+            [['title'], 'string', 'max' => 256],
+            [['body'], 'string', 'max' => 2048],
 
-            [['user_id', 'article_id'], 'safe'],
+            [['user_id', 'course_id', 'value', 'body', 'title'], 'safe'],
         ];
     }
 
@@ -57,7 +62,10 @@ class Bookmark extends ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', 'User ID'),
-            'article_id' => Yii::t('app', 'Article ID'),
+            'course_id' => Yii::t('app', 'Course ID'),
+            'value' => Yii::t('app', 'Value'),
+            'title' => Yii::t('app', 'Title'),
+            'body' => Yii::t('app', 'Body'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
@@ -82,9 +90,34 @@ class Bookmark extends ActiveRecord
     /**
      * Returns the object (with the same id) if found.
      */
-    public static function findBookmark($user_id, $article_id): Bookmark|IdentityInterface|null
+    public static function findRating($user_id, $course_id): CourseReview|IdentityInterface|null
     {
-        return static::findOne(['user_id' => $user_id, 'article_id' => $article_id]);
+        return static::findOne(['user_id' => $user_id, 'course_id' => $course_id]);
+    }
+    /**
+     * Returns the rating for an course found by id.
+     */
+    public static function calculateRating($course_id): float
+    {
+        $rating_median = 0;
+        $ratings = self::findAll(['course_id' => $course_id]);
+        foreach($ratings as $rating) {
+            $rating_median += $rating->value;
+        }
+        if(count($ratings) > 0) {
+            $rating_median /= count($ratings);
+            return round($rating_median, 2);
+        } else {
+            return 0;
+        }
+    }
+    /**
+     * Returns the number of ratings for an course found by id.
+     */
+    public static function countRatings($course_id): int
+    {
+        $ratings = self::findAll(['course_id' => $course_id]);
+        return count($ratings);  
     }
     
     /**
@@ -116,7 +149,10 @@ class Bookmark extends ActiveRecord
         ]);
 
         $query->andFilterWhere(['like', 'user_id', $this->user_id])
-            ->andFilterWhere(['like', 'article_id', $this->article_id])
+            ->andFilterWhere(['like', 'course_id', $this->course_id])
+            ->andFilterWhere(['like', 'value', $this->value])
+            ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'body', $this->body])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);
 
@@ -124,7 +160,7 @@ class Bookmark extends ActiveRecord
     }
 
     /**
-     * Finds bookmarks by user id.
+     * Finds reviews by user id.
      *
      * @param string $id
      * @return array|null
@@ -135,13 +171,18 @@ class Bookmark extends ActiveRecord
     }
 
     /**
-     * Finds bookmarks by article id.
+     * Finds reviews by course id.
      *
      * @param string $id
      * @return array|null
      */
-    public static function findByArticleId($id): null|array
+    public static function findByCourseId($id): ActiveDataProvider
     {
-        return static::findAll(['article_id' => $id]);
+        return new ActiveDataProvider([
+            'query' => static::find()->where(['course_id' => $id]),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
     }
 }

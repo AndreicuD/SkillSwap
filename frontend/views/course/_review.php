@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
-/** @var common\models\ArticleReview $model */
+/** @var common\models\CourseReview $model */
 
 use yii\bootstrap5\Html;
 use kartik\widgets\StarRating;
@@ -13,7 +13,7 @@ use common\models\User;
     <p><b><?= Html::encode(User::getUsername($model->user_id)); ?></b> - <span class="gray"><?= Html::encode($model->updated_at) ?></span></p>
     <div>
         <?php echo StarRating::widget(['model' => $model, 'attribute' => 'value',
-            'options' => ['id' => 'review-' . $model->user_id . $model->article_id . $model->id],
+            'options' => ['id' => 'review-' . $model->user_id . $model->course_id . $model->id],
             'pluginOptions' => [
                 'step' => 0.01,
                 'showCaption' => false,

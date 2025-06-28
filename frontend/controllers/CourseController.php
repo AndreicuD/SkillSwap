@@ -8,19 +8,19 @@ use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
-use common\models\Article;
+use common\models\Course;
 use common\models\Category;
 use common\models\Transaction;
-use common\models\ArticleReview;
-use common\models\ArticleBookmark;
+use common\models\CourseReview;
+use common\models\CourseBookmark;
 use yii\web\UploadedFile;
 use yii\web\Response;
 use yii\helpers\Url;
 
 /**
- * Article controller
+ * Course controller
  */
-class ArticleController extends Controller
+class CourseController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -68,7 +68,7 @@ class ArticleController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new Article();
+        $searchModel = new Course();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andWhere(['is_public' => 1]);
 
@@ -77,32 +77,32 @@ class ArticleController extends Controller
         }
 
         $transactionModel = new Transaction();
-        $reviewModel = new ArticleReview();
-        $bookmarkModel = new ArticleBookmark();
+        $reviewModel = new CourseReview();
+        $bookmarkModel = new CourseBookmark();
 
         return $this->render('index', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
             'transactionModel' => $transactionModel,
             'reviewModel' => $reviewModel,
-            'articleBookmarkModel' => $bookmarkModel,
+            'courseBookmarkModel' => $bookmarkModel,
         ]);
     }
     /**
-     * see article stats
+     * see course stats
      * @param integer $id
      * @return string
      */
     public function actionAjaxStats($public_id) {
-        $searchModel = Article::findOne(['public_id' => $public_id]);
+        $searchModel = Course::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($searchModel->category && !$searchModel->category_name) {
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
-        $reviewModel = new ArticleReview();
-        $reviewModel->value = ArticleReview::calculateRating($searchModel->id);
+        $reviewModel = new CourseReview();
+        $reviewModel->value = CourseReview::calculateRating($searchModel->id);
 
         $this->layout = 'blank';
         return $this->renderAjax('ajax-stats', [
@@ -113,12 +113,12 @@ class ArticleController extends Controller
     }
 
     /**
-     * see article information
+     * see course information
      * @param integer $id
      * @return string
      */
     public function actionAjaxInfo($public_id) {
-        $searchModel = Article::findOne(['public_id' => $public_id]);
+        $searchModel = Course::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($searchModel->category && !$searchModel->category_name) {
@@ -138,7 +138,7 @@ class ArticleController extends Controller
      * @return string
      */
     public function actionAjaxDelete($public_id) {
-        $searchModel = Article::findOne(['public_id' => $public_id]);
+        $searchModel = Course::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $this->layout = 'blank';
@@ -149,12 +149,12 @@ class ArticleController extends Controller
     }
 
     /**
-     * edit article content
+     * edit course content
      * @param integer $id
      * @return string
      */
     public function actionEdit($public_id) {
-        $searchModel = Article::findOne(['public_id' => $public_id]);
+        $searchModel = Course::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($searchModel->category && !$searchModel->category_name) {
@@ -168,24 +168,24 @@ class ArticleController extends Controller
     }
 
     /**
-     * read an article
+     * read a course
      * @param integer $public_id
      * @return string
      */
     public function actionRead($public_id) {
-        $searchModel = Article::findOne(['public_id' => $public_id]);
+        $searchModel = Course::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($searchModel->category && !$searchModel->category_name) {
             $searchModel->category_name = Category::getName($searchModel->category);
         }
 
-        $reviewModel = new ArticleReview;
-        $userReviewModel = ArticleReview::find()
+        $reviewModel = new CourseReview;
+        $userReviewModel = CourseReview::find()
             ->where(['user_id' => Yii::$app->user->id])
-            ->andWhere(['article_id' => $searchModel->id])
+            ->andWhere(['course_id' => $searchModel->id])
             ->one();
-        $reviewDataProvider = $reviewModel->findByArticleId($searchModel->id);
+        $reviewDataProvider = $reviewModel->findByCourseId($searchModel->id);
 
         return $this->render('read', [
             'model' => $searchModel,
@@ -198,17 +198,17 @@ class ArticleController extends Controller
 
 
     /**
-     * update an article
+     * update a course
      * @param integer $id
      * @param string $page
      * @return
      */
     public function actionUpdate($id, $page)
     {
-        $model = Article::findOne(['id' => $id]);
+        $model = Course::findOne(['id' => $id]);
         //$model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $file = UploadedFile::getInstanceByName('Article[cover]');
+            $file = UploadedFile::getInstanceByName('Course[cover]');
             if ($file) {
                 $model->cover_extension = $file->getExtension();
                 if ($model->save()) {
@@ -221,35 +221,35 @@ class ArticleController extends Controller
                 }
             }
 
-            Yii::$app->session->setFlash('success', Yii::t('app', 'Article changes saved succesfully.'));
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Course changes saved succesfully.'));
             if($page == "user") {
-                $this->redirect(['user/articles']);
+                $this->redirect(['user/courses']);
             } else {
-                $this->redirect(['article/edit', 'public_id' => $model->public_id]);
+                $this->redirect(['course/edit', 'public_id' => $model->public_id]);
             }
         } else {
-            Yii::$app->session->setFlash('error', Yii::t('app', 'Failed to save article changes.'));
+            Yii::$app->session->setFlash('error', Yii::t('app', 'Failed to save course changes.'));
         }
         if($page == "user") {
-            $this->redirect(['user/articles']);
+            $this->redirect(['user/courses']);
         } else {
-            $this->redirect(['article/edit', 'public_id' => $model->public_id]);
+            $this->redirect(['course/edit', 'public_id' => $model->public_id]);
         }
     }
 
     /**
-     * Create a new article
+     * Create a new course
      * @return string
      */
     public function actionCreate(): string
     {
-        $model = new Article();
+        $model = new Course();
         $model->user_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model = Article::find()->where('id = :id', [':id' => $model->id])->one();
-            Yii::$app->session->setFlash('success', 'The article has been created.');
-            $this->redirect(['article/edit', 'public_id' => $model->public_id]);
+            $model = Course::find()->where('id = :id', [':id' => $model->id])->one();
+            Yii::$app->session->setFlash('success', 'The course has been created.');
+            $this->redirect(['course/edit', 'public_id' => $model->public_id]);
         }
 
         return $this->render('create' ,[
@@ -265,27 +265,27 @@ class ArticleController extends Controller
     {
         $model = $this->findModel($id);
         if ($model->delete()) {
-            ArticleBookmark::deleteAll(['article_id' => $model->id]);
-            ArticleReview::deleteAll(['article_id' => $model->id]);
-            Yii::$app->session->setFlash('success', 'The article has been deleted.');
+            CourseBookmark::deleteAll(['course_id' => $model->id]);
+            CourseReview::deleteAll(['course_id' => $model->id]);
+            Yii::$app->session->setFlash('success', 'The course has been deleted.');
         }
 
-        $this->redirect(['user/articles']);
+        $this->redirect(['user/courses']);
     }
     /**
-     * Finds the Article based on its id value.
+     * Finds the Course based on its id value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id - the id of the model
-     * @return array|Article|ActiveRecord
+     * @return array|Course|ActiveRecord
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(string $id): array|Article|ActiveRecord
+    protected function findModel(string $id): array|Course|ActiveRecord
     {
-        if (($model = Article::find()->where('id = :id', [':id' => $id])->andWhere(['user_id' => Yii::$app->user->id])->one()) !== null) {
+        if (($model = Course::find()->where('id = :id', [':id' => $id])->andWhere(['user_id' => Yii::$app->user->id])->one()) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested article does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app', 'The requested course does not exist.'));
     }
 
         /**
@@ -296,7 +296,7 @@ class ArticleController extends Controller
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $model = $this->findModel($id);
-        $file = UploadedFile::getInstanceByName('Article[cover]');
+        $file = UploadedFile::getInstanceByName('Course[cover]');
         if ($file) {
             $model->cover_extension = $file->getExtension();
             if ($model->save()) {
@@ -308,7 +308,7 @@ class ArticleController extends Controller
                         'initialPreview' => $model->getSrc(),
                         'initialPreviewConfig' => [
                             [
-                                'url' => Url::to(['article/file-delete', 'id' => $model->id]),
+                                'url' => Url::to(['course/file-delete', 'id' => $model->id]),
                                 'type' => 'image',
                                 'fileId' => $model->id,
                             ]

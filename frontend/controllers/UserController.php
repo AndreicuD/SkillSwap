@@ -16,6 +16,7 @@ use frontend\models\ChangePasswordForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use common\models\Article;
+use common\models\Course;
 use common\models\Category;
 use common\models\User;
 
@@ -43,7 +44,7 @@ class UserController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'profile', 'articles', 'logout', 'settings', 'change-password'],
+                        'actions' => ['index', 'profile', 'articles', 'courses', 'logout', 'settings', 'change-password'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -98,6 +99,26 @@ class UserController extends Controller
         }
 
         return $this->render('articles', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    /**
+     *  Page to show the courses of a user.
+     *
+     * @return mixed
+     */
+    public function actionCourses() 
+    {
+        $searchModel = new Course();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andWhere(['user_id' => Yii::$app->user->id]);
+        
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        return $this->render('courses', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

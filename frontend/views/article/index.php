@@ -21,7 +21,7 @@ $this->title = Yii::t('app', 'Articles');
         'itemView' => '/templates/article',
         'viewParams' => ['transactionModel' => $transactionModel,
                         'reviewModel' => $reviewModel,
-                        'bookmarkModel' => $bookmarkModel,
+                        'bookmarkModel' => $articleBookmarkModel,
                         'page' => 'article/index',
                     ],
         'options' => [

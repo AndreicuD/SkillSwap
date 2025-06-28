@@ -109,7 +109,7 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
 ?>
 
 <main role="main" class="flex-shrink-0">
-    <div class="<?= Yii::$app->requestedRoute == 'site/index' || Yii::$app->requestedRoute == 'article/read' ? '' : 'container' ?>">
+    <div class="<?= Yii::$app->requestedRoute == 'site/index' ? '' : 'container' ?>">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

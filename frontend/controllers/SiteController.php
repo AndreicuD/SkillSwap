@@ -8,8 +8,8 @@ use yii\web\Controller;
 use common\models\Article;
 use common\models\Category;
 use common\models\Transaction;
-use common\models\Review;
-use common\models\Bookmark;
+use common\models\ArticleReview;
+use common\models\ArticleBookmark;
 
 /**
  * Site controller
@@ -49,8 +49,8 @@ class SiteController extends Controller
         }
 
         $transactionModel = new Transaction();
-        $reviewModel = new Review();
-        $bookmarkModel = new Bookmark();
+        $reviewModel = new ArticleReview();
+        $bookmarkModel = new ArticleBookmark();
 
         return $this->render('index', [
             'model' => $searchModel,
