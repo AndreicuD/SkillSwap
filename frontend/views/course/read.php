@@ -1,6 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var \common\models\Course $model */
 
 use yii\helpers\Html;
 use common\models\User;
@@ -35,7 +36,26 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
         <div class="article-content">
             <?php 
                 if(Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {
-                    echo $model->content;
+
+                    $elements = $model->orderedElements;
+                    $first = $elements[0] ?? null;
+
+                    if ($first instanceof \common\models\Article) {
+                        echo "<h3>Article</h3>";
+                        echo Html::encode($first->title);
+                        echo "<div>" . nl2br(Html::encode($first->content)) . "</div>";
+
+                    } elseif ($first instanceof \common\models\Quiz) {
+                        echo "<h3>Quiz</h3>";
+                        echo Html::encode("Quiz with " . count($first->questions) . " questions");
+                        // Optional: show preview of the first question
+                        $question = $first->questions[0] ?? null;
+                        if ($question) {
+                            echo "<p><b>Q:</b> " . Html::encode($question->text) . "</p>";
+                        }
+                    } else {
+                        echo Yii::t('app', 'No elements found for this course.');
+                    }
                 } else {
                     echo '<div class="text-center lead">';
                     echo Yii::t('app', 'You can not acces this course. Check if you have bought it or if you are logged in.');

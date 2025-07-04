@@ -4,12 +4,9 @@
 
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use kartik\editors\Summernote;
-use kartik\editors\Codemirror;
 use kartik\form\ActiveForm;
-use common\models\Category;
-use kartik\select2\Select2;
-use kartik\widgets\FileInput;
+use common\models\Article;
+use common\models\Quiz;
 
 $this->title = $model->title;
 //$this->params['breadcrumbs'][] = $this->title;
@@ -19,80 +16,47 @@ $this->title = $model->title;
 
     <br>
 
-    <?php $form = ActiveForm::begin([
-        'id' => 'course-form',
-        'type' => ActiveForm::TYPE_VERTICAL,
-        'action' => ['course/update', 'id' => $model->id, 'page' => 'edit'], // Specify the route to the create action
-        'method' => 'post',
-    ]); ?>
+    <?php
+    $elements = $model->orderedElements;
 
-    <?= $form->errorSummary($model);?>
-
-    <div class=group_together>
-        <div style="width: 50vw; max-width: 50vw;">
-            <?= Summernote::widget([
-                'name' => Html::getInputName($model, 'content'),
-                'value' => Html::getAttributeValue($model, 'content'),
-                'options' => ['id' => Html::getInputId($model, 'content'), 'class' => 'form-control'],
-                'useKrajeePresets' => true,
-                'pluginOptions' => [
-                    'height' => 500,
-                    'dialogsFade' => true,
-                    'toolbar' => [
-                        ['style1', ['style']],
-                        ['style2', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript']],
-                        ['font', ['fontsize', 'color', 'clear']],
-                        ['para', ['ul', 'ol', 'paragraph', 'height']],
-                        ['insert', ['link', 'picture', 'video', 'table', 'hr']],
-                    ],
-                    'fontSizes' => ['8', '9', '10', '11', '12', '13', '14', '16', '18', '20', '24', '36', '48'],
-                ],
-            ]);?>
+    if (empty($elements)) {
+        echo "<p style='text-align:center'>" . Yii::t('app', 'This course has no content yet. What would you like to add?') . "</p>";
+    ?>
+        <div class="w-100 flex-row-even">
+            <div>
+                <?= $this->render('/course/add_element_card', [
+                    'type' => 'article',
+                    'title' => 'Add an article',
+                    'url' => ['/article/create', 'course_id' => $model->id],
+                ]); ?>
+            </div>
+            <div>
+                <?= $this->render('/course/add_element_card', [
+                    'type' => 'quiz',
+                    'title' => 'Add a quiz',
+                    'url' => ['/quiz/create', 'course_id' => $model->id],
+                ]); ?>
+            </div>
         </div>
-        <div class="w-25">
-            <?= $form->errorSummary($model);?>
-            <?= $form->field($model, 'title')->label(Yii::t('app', 'Title')) ?>
-            <?= $form->field($model, 'description')->textarea(['rows' => 4, 'style' => 'min-height: 160px']) ?>
-            
-            <?= $form->field($model, 'price')->label(Yii::t('app', 'Price')) ?>
-            
-            <?= $form->field($model, 'category_name')->widget(Select2::class, [
-                'data' => Category::getCategories(),
-                'options' => [
-                    'placeholder' => Yii::t('app', 'Category'),
-                ],
-                'pluginOptions' => [
-                    'tags' => true, // allow custom values
-                    'allowClear' => true,
-                    'dropdownParent' => '#course-form',
-                ],
-            ]); ?>
+    <?php
+    } else {        
+        echo "<div style='display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;'>";
 
-            <?= $form->field($model, 'is_public')->checkbox([
-                'uncheck' => '0',
-                'value' => '1',
-            ])->label(Yii::t('app', 'Make Public')); ?>
+        foreach ($elements as $element) {
+            if ($element instanceof Article) {
+                echo $this->render('/course/element_card', [
+                    'type' => 'article',
+                    'title' => $element->title,
+                ]);
+            } elseif ($element instanceof Quiz) {
+                echo $this->render('/course/element_card', [
+                    'type' => 'quiz',
+                    'title' => Yii::t('app', 'Quiz') . ' #' . $element->id,
+                ]);
+            }
+        }
 
-            <?= $form->field($model, 'cover')->widget(FileInput::classname(), [
-                'options' => ['accept' => 'image/*'],
-                'pluginOptions' => [
-                    'showPreview' => false,
-                    'showCaption' => true,
-                    'showRemove' => true,
-                    'showUpload' => false
-                ]
-            ]); ?>
-        </div>
-    </div>
-
-    <br>
-    <div class="group_together">
-        <div style="width: 100%; text-align: center;">
-            <?= Html::a(Yii::t('app', 'Go Back'),['/user/courses'],['class' => ['btn btn-outline-danger rotate_on_hover mb-3']]) ?>
-        </div>
-        <div style="width: 100%; text-align: center;">
-            <?= Html::button(Yii::t('app', 'Submit Changes'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']) ?>
-        </div>
-    </div>
-    <?php ActiveForm::end(); ?>
+        echo "</div>";
+    }
+    ?>
 </div>

@@ -20,7 +20,7 @@ use common\models\Category;
  * @property integer $user_id [int(11)]
  * @property string $title [varchar(254)]
  * @property string $description [varchar(1024)]
- * @property string $content [mediumtext]
+ * @property integer $elements [int(11)]
  * 
  * @property integer $category [int(11)]
  * 
@@ -60,7 +60,7 @@ class Course extends ActiveRecord
     {
         return [
             [['title'], 'required', 'on' => 'default'],
-            [['title', 'content'], 'required', 'on' => 'create'],
+            [['title'], 'required', 'on' => 'create'],
             
             ['is_public', 'default', 'value' => self::STATUS_PUBLIC, 'on' => 'default'],
             ['is_public', 'in', 'range' => [self::STATUS_PUBLIC, self::STATUS_PRIVATE]],
@@ -77,7 +77,7 @@ class Course extends ActiveRecord
             ['title', 'unique', 'on' => 'default'],
             ['title', 'unique', 'on' => 'create'],
 
-            [['title', 'description', 'content', 'category', 'category_name', 'price', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
+            [['title', 'description', 'elements', 'category', 'category_name', 'price', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
         ];
     }
     public function scenarios(): array
@@ -87,7 +87,7 @@ class Course extends ActiveRecord
             'id',
             'title',
             'description',
-            'content',
+            'elements',
             'category',
             'category_name',
             'created_at',
@@ -106,7 +106,7 @@ class Course extends ActiveRecord
             'public_id' => Yii::t('app', 'Public ID'),
             'title' => Yii::t('app', 'Title'),
             'description' => Yii::t('app', 'Description'),
-            'content' => Yii::t('app', 'Content'),
+            'elements' => Yii::t('app', "Element's Number"),
             'category' => Yii::t('app', 'Category'),
             'likes_count' => Yii::t('app', 'Like Count'),
             'is_public' => Yii::t('app', 'Public'),
@@ -159,6 +159,33 @@ class Course extends ActiveRecord
     {
         return $this->hasOne(Category::class, ['id' => 'category']);
     }
+
+    /**
+     * Returns the actual element (Article or Quiz)
+     *
+     * @return Article|Quiz|null
+     */
+    public function getElement()
+    {
+        return match ($this->element_type) {
+            'article' => Article::findOne($this->element_id),
+            'quiz' => Quiz::findOne($this->element_id),
+            default => null,
+        };
+    }
+
+
+    public function getCourseElements()
+    {
+        return $this->hasMany(CourseElement::class, ['course_id' => 'id'])
+            ->orderBy(['sort_index' => SORT_ASC]);
+    }
+
+    public function getOrderedElements(): array
+    {
+        return array_map(fn($e) => $e->getElement(), $this->courseElements);
+    }
+
 
     /**
      * Returns the object (with the same id) if found.
@@ -215,7 +242,7 @@ class Course extends ActiveRecord
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'elements', $this->elements])
             ->andFilterWhere(['like', 'category', $this->category])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);
