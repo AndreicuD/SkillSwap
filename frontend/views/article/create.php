@@ -12,6 +12,7 @@ use kartik\select2\Select2;
 
 $this->title = Yii::t('app', 'Create New Article');
 //$this->params['breadcrumbs'][] = $this->title;
+$model->price = 1000;
 ?>
 <div class="site-index">
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>

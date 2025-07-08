@@ -10,7 +10,7 @@ use yii\web\View;
 use common\models\Category;
 use kartik\select2\Select2;
 
-$this->title = Yii::t('app', 'Create New Article');
+$this->title = Yii::t('app', 'Add Article To Course');
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-index">

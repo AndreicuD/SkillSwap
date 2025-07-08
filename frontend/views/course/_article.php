@@ -25,9 +25,8 @@ $trash_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
     </button>
 </div>
 <div class="card-body">
-    <p class="card-text small gray" style="margin-bottom: 0; align-content: center;"><?= Category::getName($model->category) ?>
-     - <span class="text-secondary"><?= Html::encode($model->getPublicLabel()) ?></span>
-     - <?= Html::encode($model->price) . $point_svg ?>
+    <p class="card-text small gray" style="margin-bottom: 0; align-content: center;">
+        <?= Yii::t('app', 'Spot in course:') . ' ' . $spot ?> 
     </p>
     <h5 class="card-text card-title"><?= Html::encode($model->title) ?></h5>
     <p class="card-text"><?= Html::encode($model->description) ?></p>
@@ -36,9 +35,9 @@ $trash_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
     <button 
         id="article_modal_<?= $model->public_id ?>" 
         class="card-button btn btn-secondary btn-ajax" 
-        data-modal_title="<?=Yii::t('app', 'Stats'); ?>" 
+        data-modal_title="<?=Yii::t('app', 'Change Spot in Course'); ?>" 
         data-modal_url="<?=Url::to(['article/ajax-stats', 'public_id' => $model->public_id]); ?>" >
-        <?= Yii::t('app', 'Stats') ?>
+        <?= Yii::t('app', 'Change Spot') ?>
     </button>
-    <?= Html::a(Yii::t('app', 'Edit Article'),['/article/edit', 'public_id' => $model->public_id],['class' => ['card-button btn btn-primary']]) ?>
+    <?= Html::a(Yii::t('app', 'Edit Article'),['/article/course-edit', 'public_id' => $model->public_id],['class' => ['card-button btn btn-primary']]) ?>
 </div>

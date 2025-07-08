@@ -75,14 +75,14 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
                             $form = ActiveForm::begin([
                                 'id' => 'course-form',
                                 'type' => ActiveForm::TYPE_FLOATING,
-                                'action' => ['review/updateCourse', 'public_id' => $model->public_id], // Specify the route to the update  action
+                                'action' => ['review/update-course', 'public_id' => $model->public_id], // Specify the route to the update  action
                                 'method' => 'post',
                             ]);
                         } else {
                             $form = ActiveForm::begin([
                                 'id' => 'course-form',
                                 'type' => ActiveForm::TYPE_FLOATING,
-                                'action' => ['review/createCourse', 'public_id' => $model->public_id], // Specify the route to the create action
+                                'action' => ['review/create-course', 'public_id' => $model->public_id], // Specify the route to the create action
                                 'method' => 'post',
                             ]);
                         }

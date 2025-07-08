@@ -1,0 +1,6 @@
+NO QUIZ
+no image for articles in course
+cant remove avatar
+daily login streak not working
+logout after 1 hour
+remake ui

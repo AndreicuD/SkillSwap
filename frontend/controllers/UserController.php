@@ -15,6 +15,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ChangePasswordForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
+use yii\web\UploadedFile;
 use common\models\Article;
 use common\models\Course;
 use common\models\Category;
@@ -44,7 +45,7 @@ class UserController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'profile', 'articles', 'courses', 'logout', 'settings', 'change-password'],
+                        'actions' => ['index', 'profile', 'articles', 'courses', 'logout', 'settings', 'change-password', 'file-upload', 'file-delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -182,23 +183,27 @@ class UserController extends Controller
 
     public function actionSettings()
     {
-        $user = User::findOne(['id' => Yii::$app->user->id]);
+        $model = User::findOne(['id' => Yii::$app->user->id]);
         $changePasswordModel = new ChangePasswordForm();
     
-        if ($user->load(Yii::$app->request->post())) {
-            if ($user->validate()) {
-                if ($user->save()) {
-                    Yii::$app->session->setFlash('success', 'The user info was modified succesfuly.');
-                } else {
-                    Yii::$app->session->setFlash('error', 'There was an error saving the user settings.');
+        //$model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $file = UploadedFile::getInstanceByName('User[avatar]');
+            if ($file) {
+                $model->avatar_extension = $file->getExtension();
+                if ($model->save()) {
+                    if (!file_exists($model->getFolder(true))) {
+                        @mkdir($model->getFolder(true), 0777, true);
+                    }
+                    if (file_exists($model->getFolder(true)) && $file->saveAs($model->getFilePath())) {
+                        Yii::$app->session->setFlash('success', Yii::t('app', 'The changes were saved succesfully.'));
+                    }
                 }
-            } else {
-                Yii::$app->session->setFlash('error', 'Failed Validation: ' . json_encode($user->getErrors()));
             }
         }
-    
+
         return $this->render('settings', [
-            'userModel' => $user,
+            'userModel' => $model,
             'changePasswordModel' => $changePasswordModel,
         ]);
     }
@@ -311,5 +316,50 @@ class UserController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+
+    }
+
+    /**
+    * @param integer $id
+    * @return array|false
+    */
+    public function actionFileUpload(int $id): array|false
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+        $file = UploadedFile::getInstanceByName('User[avatar]');
+        if ($file) {
+            $model->cover_extension = $file->getExtension();
+            if ($model->save()) {
+                if (!file_exists($model->getFolder(true))) {
+                    @mkdir($model->getFolder(true), 0777, true);
+                }
+                if (file_exists($model->getFolder(true)) && $file->saveAs($model->getFilePath())) {
+                    return [
+                        'initialPreview' => $model->getSrc(),
+                        'initialPreviewConfig' => [
+                            [
+                                'url' => Url::to(['user/file-delete', 'id' => $model->id]),
+                                'type' => 'image',
+                                'fileId' => $model->id,
+                            ]
+                        ],
+                        'append' => true
+                    ];
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param integer $id
+     * @return bool
+     */
+    public function actionFileDelete(int $id): bool
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+        return unlink($model->getFilePath());
     }
 }

@@ -9,10 +9,13 @@ use yii\web\NotFoundHttpException;
 use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use common\models\Article;
+use common\models\Course;
+use common\models\CourseElement;
 use common\models\Category;
 use common\models\Transaction;
 use common\models\ArticleReview;
 use common\models\ArticleBookmark;
+use common\models\User;
 use yii\web\UploadedFile;
 use yii\web\Response;
 use yii\helpers\Url;
@@ -36,7 +39,7 @@ class ArticleController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['update', 'edit', 'create', 'delete', 'ajax-delete', 'file-upload', 'file-delete'],
+                        'actions' => ['update', 'edit', 'course-edit', 'create', 'create-in-course', 'delete', 'ajax-delete', 'file-upload', 'file-delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -168,6 +171,25 @@ class ArticleController extends Controller
     }
 
     /**
+     * edit article (from a course) content
+     * @param integer $id
+     * @return string
+     */
+    public function actionCourseEdit($public_id) {
+        $searchModel = Article::findOne(['public_id' => $public_id]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        return $this->render('course-edit', [
+            'model' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
      * read an article
      * @param integer $public_id
      * @return string
@@ -258,6 +280,38 @@ class ArticleController extends Controller
     }
 
     /**
+     * Create a new article
+     * @return string
+     */
+    public function actionCreateInCourse($course_id): string
+    {
+        $model = new Article();
+        $model->user_id = Yii::$app->user->id;
+
+        $course = Course::findOne(['id' => $course_id]);
+
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model = Article::find()->where('id = :id', [':id' => $model->id])->one();
+
+            $element = new CourseElement([
+                'course_id' => $course_id,
+                'element_type' => 'article',
+                'element_id' => $model->id,
+            ]);
+            $element->save();
+            
+            Yii::$app->session->setFlash('success', 'The article has been created.');
+            $this->redirect(['article/course-edit', 'public_id' => $model->public_id]);
+        }
+
+        return $this->render('create-in-course' ,[
+            'model' => $model,
+            'course' => $course,
+        ]);
+    }
+
+    /**
      * delete an article
      * @return
      */
@@ -288,10 +342,10 @@ class ArticleController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested article does not exist.'));
     }
 
-        /**
-     * @param integer $id
-     * @return array|false
-     */
+    /**
+    * @param integer $id
+    * @return array|false
+    */
     public function actionFileUpload(int $id): array|false
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -322,9 +376,9 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param integer $id
-     * @return bool
-     */
+    * @param integer $id
+    * @return bool
+    */
     public function actionFileDelete(int $id): bool
     {
         Yii::$app->response->format = Response::FORMAT_JSON;

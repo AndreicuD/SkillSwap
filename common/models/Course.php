@@ -12,6 +12,8 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
 use common\models\Category;
+use common\models\Quiz;
+use common\models\Article;
 /**
  * Course model
  *
@@ -152,7 +154,7 @@ class Course extends ActiveRecord
             }
         }
 
-        return parent::beforeValidate(); // ← call parent method
+        return parent::beforeValidate();
     }
 
     public function getCategory()
@@ -183,7 +185,27 @@ class Course extends ActiveRecord
 
     public function getOrderedElements(): array
     {
-        return array_map(fn($e) => $e->getElement(), $this->courseElements);
+        $elements = [];
+
+        foreach ($this->courseElements as $element) {
+            $content = null;
+
+            if ($element->element_type === 'article') {
+                $content = Article::findOne($element->element_id);
+            } elseif ($element->element_type === 'quiz') {
+                $content = Quiz::findOne($element->element_id);
+            }
+
+            if ($content !== null) {
+                $elements[] = [
+                    'model' => $content,
+                    'type' => $element->element_type,
+                    'sort_index' => $element->sort_index,
+                ];
+            }
+        }
+
+        return $elements;
     }
 
 

@@ -577,7 +577,13 @@ a {
 .trash_btn svg{
 	color: var(--bs-danger);
 }
-
+.avatar {
+	-o-object-fit: cover;
+	   object-fit: cover;
+	border-radius: 50%;
+	border-color: var(--bs-gray-200);
+	border-width: 1px;
+}
 
 /* RANDOM */
 
@@ -813,9 +819,17 @@ a {
 .padd-15 {
 	padding: 0 15%;
 }
+.padd-20 {
+	padding: 0 20%;
+}
+.padd-25 {
+	padding: 0 25%;
+}
 @media(max-width: 767px) {
 	.padd-10 {padding: 0};
 	.padd-15 {padding: 0};
+	.padd-20 {padding: 0};
+	.padd-25 {padding: 0};
 }
 
 .article-content {

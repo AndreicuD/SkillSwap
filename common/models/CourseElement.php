@@ -46,7 +46,6 @@ class CourseElement extends ActiveRecord
             [['course_id', 'element_type', 'element_id'], 'required', 'on' => 'create'],
             
             ['element_type', 'in', 'range' => ['article', 'quiz']],
-            ['sort_index', 'default', 'value' => 0],
             ['element_id', 'unique', 'targetAttribute' => ['course_id', 'element_type', 'element_id'], 'message' => 'This element is already added to the course.'],
         
             ['element_id', 'unique', 'on' => 'default'],
@@ -86,6 +85,20 @@ class CourseElement extends ActiveRecord
             ],
         ];
     }
+
+    public function beforeSave($insert)
+    {
+        if ($insert && (is_null($this->sort_index) || $this->sort_index <= 0)) {
+            $max = self::find()
+                ->where(['course_id' => $this->course_id])
+                ->max('sort_index');
+
+            $this->sort_index = ($max !== null) ? $max + 1 : 1;
+        }
+
+        return parent::beforeSave($insert);
+    }
+
 
     /**
      * Relation to Course

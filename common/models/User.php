@@ -26,6 +26,8 @@ use yii\db\Expression;
  * @property string $verification_token [varchar(254)]
  * @property integer $last_login [timestamp = current_timestamp()]
  * @property integer $login_streak [int(11)]
+ * 
+ * @property string $avatar_extension [varchar(254)]
  * @property integer $created_at [datetime]
  * @property integer $updated_at [timestamp = current_timestamp()]
  *
@@ -38,6 +40,10 @@ use yii\db\Expression;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $avatar;
+    public $storage_path = '@frontend/web/files/user';
+    public $storage_uri = '/files/user';
+
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
@@ -354,6 +360,17 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Finds user by id
+     *
+     * @param string $id
+     * @return static|null
+     */
+    public static function findById($id): null|static
+    {
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
      * Finds user by email
      *
      * @param string $email
@@ -488,5 +505,57 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken(): void
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * @param $path boolean false returns the URI, true returns the path
+     * @return string
+     */
+    public function getFolder(bool $path = false)
+    {
+        $str = str_pad($this->id, 2, '0', STR_PAD_LEFT);
+        return ($path ? Yii::getAlias($this->storage_path) : $this->storage_uri).'/'.$str[0].'/'.$str[1];
+    }
+
+    /**
+     * @return string the uri to the file
+     */
+    public function getSrc()
+    {
+        return $this->getFolder().'/'.$this->id.'.'.$this->avatar_extension;
+    }
+
+    /**
+     * @return string the path to the file
+     */
+    public function getFilePath()
+    {
+        return $this->getFolder(true).'/'.$this->id.'.'.$this->avatar_extension;
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkFileExists(): bool
+    {
+        return file_exists($this->getFilePath());
+    }
+
+    public function getImageDatas()
+    {
+        $src_array = [];
+        if (isset($this->avatar_extension) && !empty($this->avatar_extension)) {
+            $src_array[] = [
+                'type' => 'image',
+                'fileId' => $this->id,
+                'downloadUrl' => $this->getSrc(),
+                'url' => yii\helpers\Url::to(['user/file-delete', 'id' => $this->id]),
+                'extra' => [
+                    'id' => $this->id,
+                ],
+                'key' => 1,
+            ];
+        }
+        return $src_array;
     }
 }

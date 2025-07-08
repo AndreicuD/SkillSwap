@@ -62,7 +62,7 @@ class Article extends ActiveRecord
             [['title'], 'required', 'on' => 'default'],
             [['title', 'content'], 'required', 'on' => 'create'],
             
-            ['is_public', 'default', 'value' => self::STATUS_PUBLIC, 'on' => 'default'],
+            ['is_public', 'default', 'value' => self::STATUS_PRIVATE, 'on' => 'default'],
             ['is_public', 'in', 'range' => [self::STATUS_PUBLIC, self::STATUS_PRIVATE]],
             
 
@@ -311,7 +311,7 @@ class Article extends ActiveRecord
         return 0.1 * $model->price * $model->bought;
     }
 
-        /**
+    /**
      * @param $path boolean false returns the URI, true returns the path
      * @return string
      */
