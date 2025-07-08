@@ -24,8 +24,8 @@ use yii\db\Expression;
  * @property string $password_hash [varchar(254)]
  * @property string $password_reset_token [varchar(254)]
  * @property string $verification_token [varchar(254)]
- * @property integer $last_login [timestamp = current_timestamp()]
- * @property integer $login_streak [int(11)]
+ * @property integer $last_bonus_at [timestamp = current_timestamp()]
+ * @property integer $bonus_streak [int(11)]
  * 
  * @property string $avatar_extension [varchar(254)]
  * @property integer $created_at [datetime]
@@ -202,30 +202,30 @@ class User extends ActiveRecord implements IdentityInterface
         }
     }
 
-    public function applyDailyLoginBonus()
+    public function applyDailyBonus()
     {
         $now = new \DateTime();
-        $last = $this->last_login ? new \DateTime($this->last_login) : null;
+        $last = $this->last_bonus_at ? new \DateTime($this->last_bonus_at) : null;
 
-        if ($last && $last->format('Y-m-d') == $now->format('Y-m-d')) {
-            return; // Already received today's bonus
+        if ($last && $now->getTimestamp() - $last->getTimestamp() < 86400) {
+            return; // Less than 24 hours, no bonus yet
         }
 
-        if ($last && $last->diff($now)->days === 1) {
-            $this->login_streak += 1;
+        if ($last && $now->diff($last)->days === 1) {
+            $this->bonus_streak += 1;
         } else {
-            $this->login_streak = 1;
+            $this->bonus_streak = 1;
         }
 
         $points = rand(200, 500);
         $this->points += $points;
-        $this->last_login = $now->format('Y-m-d H:i:s');
+        $this->last_bonus_at = $now->format('Y-m-d H:i:s');
 
         $this->save(false);
 
         Yii::$app->session->setFlash('dailyBonus', [
             'points' => $points,
-            'streak' => $this->login_streak
+            'streak' => $this->bonus_streak
         ]);
     }
 

@@ -414,6 +414,7 @@ button, .btn {
 }
 .daily_alert {
 	position: fixed;
+	z-index: 9999;
 }
 
 
