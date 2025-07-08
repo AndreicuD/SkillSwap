@@ -2,9 +2,12 @@
 
 namespace frontend\controllers;
 
-use frontend\models\ContactForm;
 use Yii;
 use yii\web\Controller;
+use frontend\components\BaseController;
+
+use frontend\models\ContactForm;
+
 use common\models\Article;
 use common\models\Category;
 use common\models\Transaction;
@@ -14,7 +17,7 @@ use common\models\ArticleBookmark;
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     /**
      * {@inheritdoc}

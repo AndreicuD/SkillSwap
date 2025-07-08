@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use frontend\components\BaseController;
+
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use common\models\User;
@@ -14,7 +16,7 @@ use common\models\Transaction;
 /**
  * Transaction controller
  */
-class TransactionController extends Controller
+class TransactionController extends BaseController
 {
 
     public $enableCsrfValidation = false;

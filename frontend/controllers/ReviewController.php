@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use frontend\components\BaseController;
+
 use yii\helpers\ArrayHelper;
 use common\models\User;
 use common\models\Article;
@@ -14,7 +16,7 @@ use common\models\CourseReview;
 /**
  * Review controller
  */
-class ReviewController extends Controller
+class ReviewController extends BaseController
 {
     /**
      * {@inheritdoc}

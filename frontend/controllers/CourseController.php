@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use frontend\components\BaseController;
+
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\db\ActiveRecord;
@@ -20,7 +22,7 @@ use yii\helpers\Url;
 /**
  * Course controller
  */
-class CourseController extends Controller
+class CourseController extends BaseController
 {
     /**
      * {@inheritdoc}

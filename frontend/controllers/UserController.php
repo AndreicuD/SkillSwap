@@ -8,6 +8,8 @@ use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use frontend\components\BaseController;
+
 use yii\web\Response;
 use yii\filters\AccessControl;
 use frontend\models\LoginForm;
@@ -24,7 +26,7 @@ use common\models\User;
 /**
  * Site controller
  */
-class UserController extends Controller
+class UserController extends BaseController
 {
     /**
      * {@inheritdoc}

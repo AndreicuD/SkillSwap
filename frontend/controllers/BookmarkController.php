@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use frontend\components\BaseController;
+
 use yii\web\NotFoundHttpException;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -21,7 +23,7 @@ use common\models\CourseBookmark;
 /**
  * Bookmark controller
  */
-class BookmarkController extends Controller
+class BookmarkController extends BaseController
 {
     public $enableCsrfValidation = false;
 
