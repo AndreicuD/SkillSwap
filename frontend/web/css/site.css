@@ -585,6 +585,16 @@ a {
 	border-color: var(--bs-gray-200);
 	border-width: 1px;
 }
+.delete_avatar_button {
+	margin-top: 32px;
+	width: 20%;
+}
+@media(max-width: 767px) {
+	.delete_avatar_button {
+		margin-top: 0;
+		width: 100%;
+	}
+}
 
 /* RANDOM */
 

@@ -1,4 +1,3 @@
 NO QUIZ
 no image for articles in course
-cant remove avatar
 remake ui

@@ -47,8 +47,15 @@ $src = $userModel->checkFileExists() ? $userModel ->getSrc() : '/img/default_ava
                         'options' => ['accept' => 'image/*']
                     ]); ?>
                 </div>
-                <input type="" value="<?= Yii::t('app', 'Delete Avatar') ?>" class="btn btn-danger" style="width: 20%; margin-top: 32px; height: 36px;">
+                <div class="delete_avatar_button">
+                    <?= Html::a(Yii::t('app', 'Delete Avatar'),
+                    ['user/delete-avatar'],
+                    [
+                        'class' => ['btn btn-outline-danger rotate_on_hover mb-3'], 
+                    ]) ?>
+                </div>
             </div>
+            <p class="small gray"><?= Yii::t("app", "If you can't see any changes try clearing your cache, or wait and it will eventualy change!") ?></p>
             
             <?= $form->field($userModel, 'firstname')->label(Yii::t('app', 'First Name')) ?>
             <?= $form->field($userModel, 'lastname')->label(Yii::t('app', 'Last Name')) ?>

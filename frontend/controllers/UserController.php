@@ -47,7 +47,7 @@ class UserController extends BaseController
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'profile', 'articles', 'courses', 'logout', 'settings', 'change-password', 'file-upload', 'file-delete'],
+                        'actions' => ['index', 'profile', 'articles', 'courses', 'logout', 'settings', 'change-password', 'file-upload', 'file-delete', 'delete-avatar'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -364,4 +364,22 @@ class UserController extends BaseController
         $model = $this->findModel($id);
         return unlink($model->getFilePath());
     }
+
+    public function actionDeleteAvatar()
+    {
+        $user = Yii::$app->user->identity;
+
+        // Delete file from disk
+        if ($user->checkFileExists()) {
+            @unlink($user->getFilePath());
+            $user->avatar_extension =   '';
+            $user->save(false);
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Avatar has been deleted.'));
+        } else {
+            Yii::$app->session->setFlash('warning', Yii::t('app', 'No avatar found.'));
+        }
+
+        return $this->redirect(['user/settings']);
+    }
+
 }
