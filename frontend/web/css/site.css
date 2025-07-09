@@ -230,6 +230,9 @@
 main > .container, main > .container-fluid {
     padding: 20px 15px 20px;
 }
+.main_container {
+	padding: 20px 15px 20px;
+}
 .not-set {
     color: #c55;
     font-style: italic;
@@ -415,6 +418,51 @@ button, .btn {
 .daily_alert {
 	position: fixed;
 	z-index: 9999;
+}
+.signup_page {
+	display: flex;
+	width: 50%;
+	max-height: 100%;
+	padding: 0 5%;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--bs-gray-100);
+}
+.signup_back {
+	color: var(--bs-body-color);
+	position: fixed;
+	left: 2em;
+	top: 2em;
+	padding: 1em;
+	background-color: white;
+	border-radius: 50%;
+	border-color: var(--bs-gray-200);
+	border-width: 1px;
+	border-style: solid;
+	transition: 0.3s;
+}
+.signup_back:hover {
+	margin-left: 1em;
+}
+.signup_photo {
+	width: 50%;
+	max-height: 100%;
+	overflow: hidden;
+}
+.signup_photo img {
+	object-fit: cover;
+	width: 50vw;
+	height: 100vh;
+	overflow: hidden;
+}
+@media(max-width: 767px) {
+	.signup_photo {
+		display: none;
+	}
+	.signup_page {
+		width: 100%;
+		padding: 20% 5%;
+	}
 }
 
 

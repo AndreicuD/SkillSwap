@@ -24,7 +24,7 @@ $this->title = Yii::t('app', 'My Bookmarks');
             'transactionModel' => $transactionModel,
             'reviewModel' => $articleReviewModel,
             'bookmarkModel' => $articleBookmarkModel,
-            'page' => 'user/bookmarks',
+            'page' => 'bookmark/index',
         ],
         'options' => [
             'tag' => 'div',
@@ -55,7 +55,7 @@ $this->title = Yii::t('app', 'My Bookmarks');
             'transactionModel' => $transactionModel,
             'reviewModel' => $courseReviewModel,
             'bookmarkModel' => $courseBookmarkModel,
-            'page' => 'user/bookmarks',
+            'page' => 'bookmark/index',
         ],
         'options' => [
             'tag' => 'div',

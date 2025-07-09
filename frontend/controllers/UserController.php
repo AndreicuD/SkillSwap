@@ -169,6 +169,7 @@ class UserController extends BaseController
      */
     public function actionSignup()
     {
+        $this->layout = 'signup';
         $model = new SignupForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->signup()) {

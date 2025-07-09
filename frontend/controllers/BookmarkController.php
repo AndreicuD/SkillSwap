@@ -25,7 +25,6 @@ use common\models\CourseBookmark;
  */
 class BookmarkController extends BaseController
 {
-    public $enableCsrfValidation = false;
 
     /**
      * {@inheritdoc}
@@ -128,7 +127,6 @@ class BookmarkController extends BaseController
 
     /**
      * Create a new article bookmark
-     * @return void
      */
     public function actionCreateArticle($id, $page)
     {   
@@ -142,12 +140,11 @@ class BookmarkController extends BaseController
             Yii::$app->session->setFlash('error', 'Bookmark save failed: ' . json_encode($model->getErrors()));
         }
 
-        $this->redirect([$page]);
+        return $this->redirect([$page]);
     }
     
     /**
      * Create a new course bookmark
-     * @return void
      */
     public function actionCreateCourse($id, $page)
     {   
@@ -161,12 +158,11 @@ class BookmarkController extends BaseController
             Yii::$app->session->setFlash('error', 'Bookmark save failed: ' . json_encode($model->getErrors()));
         }
 
-        $this->redirect([$page]);
+        return $this->redirect([$page]);
     }
 
     /**
      * delete a bookmark
-     * @return
      */
     public function actionDeleteArticle($id, $page)
     {
@@ -176,12 +172,11 @@ class BookmarkController extends BaseController
             Yii::$app->session->setFlash('success', 'The bookmark has been deleted.');
         }
 
-        $this->redirect([$page]);
+        return $this->redirect([$page]);
     }
 
     /**
      * delete a bookmark
-     * @return
      */
     public function actionDeleteCourse($id, $page)
     {
@@ -191,7 +186,7 @@ class BookmarkController extends BaseController
             Yii::$app->session->setFlash('success', 'The bookmark has been deleted.');
         }
 
-        $this->redirect([$page]);
+        return $this->redirect([$page]);
     }
 
     /**

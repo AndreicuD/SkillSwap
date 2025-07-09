@@ -140,8 +140,19 @@ class CourseBookmark extends ActiveRecord
      * @param string $id
      * @return array|null
      */
-    public static function findByArticleId($id): null|array
+    public static function findByCourseId($id): null|array
     {
         return static::findAll(['course_id' => $id]);
+    }
+
+    /**
+     * Finds bookmarks by id.
+     *
+     * @param string $id
+     * @return CourseBookmark|null
+     */
+    public static function findModel($id): null|CourseBookmark
+    {
+        return static::findOne(['id' => $id]);
     }
 }

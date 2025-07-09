@@ -61,7 +61,7 @@ class SignupForm extends Model
         $user->lastname = $this->lastname;
         /* 9 = needs validation, 10 = activ */
         $user->status = 10;
-        $user->points = 0;
+        $user->points = 500;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         //$user->generateEmailVerificationToken();

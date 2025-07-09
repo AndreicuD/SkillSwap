@@ -144,4 +144,15 @@ class ArticleBookmark extends ActiveRecord
     {
         return static::findAll(['article_id' => $id]);
     }
+
+    /**
+     * Finds bookmarks by id.
+     *
+     * @param string $id
+     * @return ArticleBookmark|null
+     */
+    public static function findModel($id): null|ArticleBookmark
+    {
+        return static::findOne(['id' => $id]);
+    }
 }

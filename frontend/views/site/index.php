@@ -36,106 +36,108 @@ $this->title = 'Skill Swap';
 <div class="index-description text-center">
     <p class="index-description-text lead"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
 </div>
-<div class="site-index" id="site-index">
-    <div class="padd-15">
-        <div class="why-div">
-            <div class="title why-text"><?= Yii::t('app','Why choose us?') ?></div>
-            <div class="flex-row-even">
-                <div class="card column">
-                    <div class="card-header text-center">
-                        <h5><?= Yii::t('app','To learn') ?></h5>
+<div class="main_container">
+    <div class="site-index" id="site-index">
+        <div class="padd-15">
+            <div class="why-div">
+                <div class="title why-text"><?= Yii::t('app','Why choose us?') ?></div>
+                <div class="flex-row-even">
+                    <div class="card column">
+                        <div class="card-header text-center">
+                            <h5><?= Yii::t('app','To learn') ?></h5>
+                        </div>
+                        <div class="card-body">
+                            <p><?= Yii::t('app','We wanted to make learning accesible to anyone, no matter who you are and what you do.')?></p>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p><?= Yii::t('app','We wanted to make learning accesible to anyone, no matter who you are and what you do.')?></p>
+                    <div class="card column">
+                        <div class="card-header text-center">
+                            <h5><?= Yii::t('app','Fun') ?></h5>
+                        </div>
+                        <div class="card-body">
+                            <p><?= Yii::t('app','You can learn new stuff by buying articles, which contain information on whatever you want to study.')?></p>
+                        </div>
                     </div>
-                </div>
-                <div class="card column">
-                    <div class="card-header text-center">
-                        <h5><?= Yii::t('app','Fun') ?></h5>
-                    </div>
-                    <div class="card-body">
-                        <p><?= Yii::t('app','You can learn new stuff by buying articles, which contain information on whatever you want to study.')?></p>
-                    </div>
-                </div>
-                <div class="card column">
-                    <div class="card-header text-center">
-                        <h5><?= Yii::t('app','Easy to use') ?></h5>
-                    </div>
-                    <div class="card-body">
-                        <p><?= Yii::t('app','We managed to create an intuitive point-based system that allows you to buy articles using points.')?></p>
+                    <div class="card column">
+                        <div class="card-header text-center">
+                            <h5><?= Yii::t('app','Easy to use') ?></h5>
+                        </div>
+                        <div class="card-body">
+                            <p><?= Yii::t('app','We managed to create an intuitive point-based system that allows you to buy articles using points.')?></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<br>
-<hr>
-<br>
-
-<div class="padd-15">
-    <h1 class="title"><?= Yii::t('app', 'Latest Articles') ?></h1>
-    <?= ListView::widget([
-        'dataProvider' => $latestDataProvider,
-        'itemView' => '/templates/article',
-        'viewParams' => ['transactionModel' => $transactionModel,
-                        'reviewModel' => $reviewModel,
-                        'bookmarkModel' => $bookmarkModel,
-                        'page' => 'article/index',
-                    ],
-        'options' => [
-            'tag' => 'div',
-            'class' => 'flex-row-even'
-        ],
-        'itemOptions' => [
-            'tag' => 'div',
-            'class' => 'card',
-        ],
-        'layout' => '{items}{pager}',
-        'pager' => [
-            'pageCssClass' => 'page-item',
-            'prevPageCssClass' => 'prev page-item',
-            'nextPageCssClass' => 'next page-item',
-            'firstPageCssClass' => 'first page-item',
-            'lastPageCssClass' => 'last page-item',
-            'linkOptions' => ['class' => 'page-link'],
-            'disabledListItemSubTagOptions' => ['class' => 'page-link'],
-            'options' => ['class' => 'pagination justify-content-center'],
-        ],
-    ]); ?>
-</div>
-<br>
-<div class="padd-15">
-    <h1 class="title"><?= Yii::t('app', 'Top Rated Articles') ?></h1>
-    <?= ListView::widget([
-        'dataProvider' => $topRatedDataProvider,
-        'itemView' => '/templates/article',
-        'viewParams' => ['transactionModel' => $transactionModel,
-                        'reviewModel' => $reviewModel,
-                        'bookmarkModel' => $bookmarkModel,
-                        'page' => 'article/index',
-                    ],
-        'options' => [
-            'tag' => 'div',
-            'class' => 'flex-row-even'
-        ],
-        'itemOptions' => [
-            'tag' => 'div',
-            'class' => 'card',
-        ],
-        'layout' => '{items}{pager}',
-        'pager' => [
-            'pageCssClass' => 'page-item',
-            'prevPageCssClass' => 'prev page-item',
-            'nextPageCssClass' => 'next page-item',
-            'firstPageCssClass' => 'first page-item',
-            'lastPageCssClass' => 'last page-item',
-            'linkOptions' => ['class' => 'page-link'],
-            'disabledListItemSubTagOptions' => ['class' => 'page-link'],
-            'options' => ['class' => 'pagination justify-content-center'],
-        ],
-    ]); ?>
+    
+    <br>
+    <hr>
+    <br>
+    
+    <div class="padd-15">
+        <h1 class="title"><?= Yii::t('app', 'Latest Articles') ?></h1>
+        <?= ListView::widget([
+            'dataProvider' => $latestDataProvider,
+            'itemView' => '/templates/article',
+            'viewParams' => ['transactionModel' => $transactionModel,
+                            'reviewModel' => $reviewModel,
+                            'bookmarkModel' => $bookmarkModel,
+                            'page' => 'article/index',
+                        ],
+            'options' => [
+                'tag' => 'div',
+                'class' => 'flex-row-even'
+            ],
+            'itemOptions' => [
+                'tag' => 'div',
+                'class' => 'card',
+            ],
+            'layout' => '{items}{pager}',
+            'pager' => [
+                'pageCssClass' => 'page-item',
+                'prevPageCssClass' => 'prev page-item',
+                'nextPageCssClass' => 'next page-item',
+                'firstPageCssClass' => 'first page-item',
+                'lastPageCssClass' => 'last page-item',
+                'linkOptions' => ['class' => 'page-link'],
+                'disabledListItemSubTagOptions' => ['class' => 'page-link'],
+                'options' => ['class' => 'pagination justify-content-center'],
+            ],
+        ]); ?>
+    </div>
+    <br>
+    <div class="padd-15">
+        <h1 class="title"><?= Yii::t('app', 'Top Rated Articles') ?></h1>
+        <?= ListView::widget([
+            'dataProvider' => $topRatedDataProvider,
+            'itemView' => '/templates/article',
+            'viewParams' => ['transactionModel' => $transactionModel,
+                            'reviewModel' => $reviewModel,
+                            'bookmarkModel' => $bookmarkModel,
+                            'page' => 'article/index',
+                        ],
+            'options' => [
+                'tag' => 'div',
+                'class' => 'flex-row-even'
+            ],
+            'itemOptions' => [
+                'tag' => 'div',
+                'class' => 'card',
+            ],
+            'layout' => '{items}{pager}',
+            'pager' => [
+                'pageCssClass' => 'page-item',
+                'prevPageCssClass' => 'prev page-item',
+                'nextPageCssClass' => 'next page-item',
+                'firstPageCssClass' => 'first page-item',
+                'lastPageCssClass' => 'last page-item',
+                'linkOptions' => ['class' => 'page-link'],
+                'disabledListItemSubTagOptions' => ['class' => 'page-link'],
+                'options' => ['class' => 'pagination justify-content-center'],
+            ],
+        ]); ?>
+    </div>
 </div>
 
 <!-- Article Modal -->

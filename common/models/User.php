@@ -76,6 +76,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             [['item_name'], 'default', 'value' => 'member', 'on' => 'create'],
             [['points'], 'default', 'value' => 500, 'on' => 'create'],
+            [['avatar_extension'], 'default', 'value' => 'png', 'on' => 'create'],
             [['firstname', 'lastname'], 'string', 'max' => 254],
             ['email', 'email', 'on' => 'default'],
             ['email', 'email', 'on' => 'create'],
