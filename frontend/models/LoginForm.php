@@ -59,7 +59,7 @@ class LoginForm extends Model
     {
         if ($this->validate()) {
             $bool = Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 0.5 : 0);
-            Yii::$app->user->identity->applyDailyLoginBonus();
+            Yii::$app->user->identity->applyDailyBonus();
 
             return $bool;
         }

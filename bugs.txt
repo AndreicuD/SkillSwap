@@ -1,3 +1,5 @@
 NO QUIZ
 no image for articles in course
+can't read course !!!! 
+^- or cant get course elements
 remake ui

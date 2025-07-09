@@ -57,8 +57,14 @@ $src = $userModel->checkFileExists() ? $userModel ->getSrc() : '/img/default_ava
             </div>
             <p class="small gray"><?= Yii::t("app", "If you can't see any changes try clearing your cache, or wait and it will eventualy change!") ?></p>
             
-            <?= $form->field($userModel, 'firstname')->label(Yii::t('app', 'First Name')) ?>
-            <?= $form->field($userModel, 'lastname')->label(Yii::t('app', 'Last Name')) ?>
+            <div class="group_together">
+                <div class="w-50">
+                    <?= $form->field($userModel, 'firstname')->label(Yii::t('app', 'First Name')) ?>
+                </div>
+                <div class="w-50">
+                    <?= $form->field($userModel, 'lastname')->label(Yii::t('app', 'Last Name')) ?>
+                </div>
+            </div>
             <?= $form->field($userModel, 'email')->label(Yii::t('app', 'Email')) ?>
     
             <div class="row">
