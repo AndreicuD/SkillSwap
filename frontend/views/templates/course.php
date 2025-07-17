@@ -59,7 +59,7 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
             </span>
         </div>
     </div>
-    <p class="card-text gray"><?= Html::encode(User::getUsername($model->user_id)) ?> - 
+    <p class="card-text gray"><a href="<?= Url::to(['user/index', 'public_id' => User::getPublicId($model->user_id)])?>" ><?= Html::encode(User::getUsername($model->user_id)) ?> </a> - 
     <a class="text-secondary" href="<?= Url::to(['course/index', 'Course[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
 </div>
 <?php $form = ActiveForm::begin([

@@ -38,7 +38,7 @@ class UserController extends BaseController
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['reset-password', 'request-password-reset', 'verify-email', 'resend-verification-email'],
+                        'actions' => ['index', 'reset-password', 'request-password-reset', 'verify-email', 'resend-verification-email'],
                         'allow' => true,
                     ],
                     [
@@ -47,7 +47,7 @@ class UserController extends BaseController
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'profile', 'articles', 'courses', 'logout', 'settings', 'change-password', 'file-upload', 'file-delete', 'delete-avatar'],
+                        'actions' => ['profile', 'articles', 'courses', 'logout', 'settings', 'change-password', 'file-upload', 'file-delete', 'delete-avatar'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -81,10 +81,13 @@ class UserController extends BaseController
      *
      * @return mixed
      */
-    public function actionIndex()
-    {
-        $model = User::findOne(['id' => Yii::$app->user->id]);
-
+    public function actionIndex($public_id)
+    {   
+        if($public_id) {
+            $model = User::findOne(['public_id' => $public_id]);
+        } else {
+            $model = User::findOne(['id' => Yii::$app->user->id]);
+        }
 
         return $this->render('index', [
             'user' => $model,

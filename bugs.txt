@@ -7,3 +7,5 @@ can't read course !!!!
 ^- or cant get course elements
 
 remake ui
+
+remake titlu pe telefon la citit

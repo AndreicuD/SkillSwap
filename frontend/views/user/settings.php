@@ -32,7 +32,7 @@ $src = $userModel->checkFileExists() ? $userModel ->getSrc() : '/img/default_ava
             </div>
             
             <div class="group_together">
-                <div style="width: 80%">
+                <div class="w-80">
                     <?= $form->field($userModel, 'avatar')->widget(FileInput::classname(), [
                         'name' => 'avatar',
                         'pluginOptions' => [
@@ -66,13 +66,15 @@ $src = $userModel->checkFileExists() ? $userModel ->getSrc() : '/img/default_ava
                 </div>
             </div>
             <?= $form->field($userModel, 'email')->label(Yii::t('app', 'Email')) ?>
-    
+            
+            <?= $form->field($userModel, 'description')->textarea(['rows' => 4, 'style' => 'min-height: 160px']) ?>
+
             <div class="row">
                 <div class="col">
-                    <input type="submit" value="<?= Yii::t('app', 'Save Changes') ?>" class="btn btn-primary">
+                    <input type="submit" value="<?= Yii::t('app', 'Save Changes') ?>" class="btn btn-primary rotate_on_hover scale_on_hover">
                 </div>
                 <div class="col">
-                    <input type="reset" value="<?= Yii::t('app', 'Reset') ?>" class="btn btn-warning">
+                    <input type="reset" value="<?= Yii::t('app', 'Reset') ?>" class="btn btn-warning rotate_on_hover">
                 </div>
             </div>
             <?php ActiveForm::end(); ?>
@@ -95,7 +97,7 @@ $src = $userModel->checkFileExists() ? $userModel ->getSrc() : '/img/default_ava
             <?= $passwordForm->field($changePasswordModel, 'confirm_password')->passwordInput()->label('Confirm New Password') ?>
             <p class="small_gray_text"><?= Yii::t('app', 'Forgot you current password? Change it ') ?><?=Html::a(Yii::t('app', 'here'), Url::to(['user/request-password-reset'])); ?>.</p>
 
-            <input type="submit" value="<?= Yii::t('app', 'Change Password') ?>" class="btn btn-primary">
+            <input type="submit" value="<?= Yii::t('app', 'Change Password') ?>" class="btn btn-primary scale_on_hover rotate_on_hover">
             <?php ActiveForm::end(); ?>
         </div> 
     </div>

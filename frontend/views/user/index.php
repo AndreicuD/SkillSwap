@@ -9,7 +9,7 @@ use common\models\User;
 
 $src = $user->checkFileExists() ? $user ->getSrc() : '/img/default_avatar.png';
 
-$this->title = User::getUsername(Yii::$app->user->identity->id) . ' Profile';
+$this->title = User::getUsername($user->id) . ' Profile';
 $this->registerJs(
     new JsExpression(
         <<<JS
@@ -31,7 +31,7 @@ JS
             <div class="text-center">
                 <img class='avatar' src="<?=$src?>" alt="<?= Yii::t('app', 'User Avatar') ?>" width="250" height="250">
             </div>
-            <h5 class="mt-2 mb-1"><?= Html::encode(User::getUsername(Yii::$app->user->identity->id)) ?></h5>  
+            <h5 class="mt-2 mb-1"><?= Html::encode(User::getUsername($user->id)) ?></h5>  
         </div>
 
         <div class="mb-2">
@@ -48,26 +48,30 @@ JS
         <?php endif; ?>
 
         <div class="list-group">
-            <?= Html::a(Yii::t('app', 'Articole'), ['profile/articles', 'id' => $user->id], [
+            <?= Html::a(Yii::t('app', 'Articles'), ['profile/articles', 'id' => $user->id], [
                 'class' => 'list-group-item list-group-item-action ajax-link'
             ]) ?>
-            <?= Html::a(Yii::t('app', 'Cursuri'), ['profile/courses', 'id' => $user->id], [
+            <?= Html::a(Yii::t('app', 'Courses'), ['profile/courses', 'id' => $user->id], [
                 'class' => 'list-group-item list-group-item-action ajax-link'
             ]) ?>
-            <?= Html::a(Yii::t('app', 'Stats'), ['profile/stats', 'id' => $user->id], [
-                'class' => 'list-group-item list-group-item-action ajax-link'
-            ]) ?>
+            <?php if (!Yii::$app->user->isGuest && Yii::$app->user->id == $user->id): ?>
+                <?= Html::a(Yii::t('app', 'Stats'), ['profile/stats', 'id' => $user->id], [
+                    'class' => 'list-group-item list-group-item-action ajax-link'
+                ]) ?>
+            <?php endif; ?>
         </div>
 
         <hr>
         <?php if (Yii::$app->user->id === $user->id): ?>
-            <?= Html::a(Yii::t('app', 'Settings'), ['/user/settings'], [
-                'class' => 'd-block mb-2 text-muted'
-            ]) ?>
-            <?= Html::a(Yii::t('app', 'Logout'), ['/site/logout'], [
-                'data-method' => 'post',
-                'class' => 'd-block text-danger'
-            ]) ?>
+            <div class="group_together">
+                <?= Html::a(Yii::t('app', 'Settings'), ['/user/settings'], [
+                    'class' => 'btn btn-primary scale_on_hover rotate_on_hover'
+                ]) ?>
+                <?= Html::a(Yii::t('app', 'Logout'), ['/user/logout'], [
+                    'data-method' => 'post',
+                    'class' => 'btn btn-danger rotate_on_hover'
+                ]) ?>
+            </div>
         <?php endif; ?>
     </div>
 

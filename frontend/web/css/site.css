@@ -649,6 +649,9 @@ a {
 }
 
 /* RANDOM */
+.w-80 {
+	width: 80%;
+}
 
 /* this requires a fixed width */
 .truncate {
@@ -676,6 +679,12 @@ a {
 	.group_together {
 		-ms-flex-wrap: wrap;
 		    flex-wrap: wrap;
+	}
+	.group_together .w-50 {
+		width: 100% !important; 
+	}
+	.group_together .w-80 {
+		width: 100% !important; 
 	}
 }
 .hide {
@@ -909,6 +918,7 @@ a {
 .article-image {
 	position: relative;
 	overflow: hidden;
+	border-radius: 40px;
 }
 .article-image img{
 	width: 100%;

@@ -90,9 +90,12 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
                     echo Yii::$app->user->identity->points . $point_svg;
                 echo '</a>';
                 echo '<ul class="dropdown-menu dropdown-menu-lg-end">';
-                    echo Html::tag('li',Html::a('My articles',['/user/articles'],['class' => ['dropdown-item']]));
+                    echo Html::tag('li',Html::a('My Account',['/user', 'public_id' => User::getPublicId(Yii::$app->user->identity->id)],['class' => ['dropdown-item']]));
+                    echo Html::tag('li',Html::tag('hr', '', ['class' => 'dropdown-divider']));
 
-                    echo Html::tag('li',Html::a('My courses',['/user/courses'],['class' => ['dropdown-item']]));
+                    echo Html::tag('li',Html::a('My Articles',['/user/articles'],['class' => ['dropdown-item']]));
+
+                    echo Html::tag('li',Html::a('My Courses',['/user/courses'],['class' => ['dropdown-item']]));
                     
                     echo Html::tag('li',Html::a('My Bookmarks',['/bookmark/index'],['class' => ['dropdown-item']]));
 

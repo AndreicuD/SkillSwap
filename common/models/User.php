@@ -14,6 +14,7 @@ use yii\db\Expression;
  * User model
  *
  * @property integer $id [int(auto increment)]
+ * @property string $public_id [varchar(36)]
  * @property string $email [varchar(254)]
  * @property string $firstname [varchar(254)]
  * @property string $lastname [varchar(254)]
@@ -78,8 +79,10 @@ class User extends ActiveRecord implements IdentityInterface
             [['item_name'], 'default', 'value' => 'member', 'on' => 'create'],
             [['points'], 'default', 'value' => 500, 'on' => 'create'],
             [['description'], 'default', 'value' => null, 'on' => 'create'],
+            [['description'], 'string', 'max' => 2048],
             [['avatar_extension'], 'default', 'value' => 'png', 'on' => 'create'],
             [['firstname', 'lastname'], 'string', 'max' => 254],
+            [['public_id'], 'string', 'max' => 36],
             ['email', 'email', 'on' => 'default'],
             ['email', 'email', 'on' => 'create'],
             ['email', 'unique', 'on' => 'default'],
@@ -90,8 +93,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['points'], 'default', 'value' => 0, 'on' => 'default'],
             [['firstname', 'lastname'], 'unique', 'on' => 'create'],
             ['password_confirmation', 'compare', 'compareAttribute' => 'new_password', 'on' => 'create'],
-            [['points', 'auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'password', 'newsletter_subscription'], 'safe'],
-            [['id', 'email', 'firstname', 'lastname', 'phone', 'item_name'], 'safe', 'on' => 'search'],
+            [['points', 'auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'password', 'newsletter_subscription', 'public_id'], 'safe'],
+            [['id', 'email', 'firstname', 'lastname', 'phone', 'item_name', 'public_id'], 'safe', 'on' => 'search'],
         ];
     }
 
@@ -102,6 +105,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'public_id' => Yii::t('app', 'Public ID'),
             'email' => Yii::t('app', 'Email'),
             'firstname' => Yii::t('app', 'First name'),
             'lastname' => Yii::t('app', 'Last name'),
@@ -324,6 +328,7 @@ class User extends ActiveRecord implements IdentityInterface
         $query->andFilterWhere(['like', '{{%user}}.email', $this->email])
             ->andFilterWhere(['like', '{{%user}}.firstname', $this->firstname])
             ->andFilterWhere(['like', '{{%user}}.lastname', $this->lastname])
+            ->andFilterWhere(['like', '{{%user}}.public_id', $this->public_id])
             ->andFilterWhere(['like', '{{%user}}.phone', $this->phone])
             ->andFilterWhere(['like', '{{%user}}.birth_date', $this->birth_date])
             ->andFilterWhere(['like', '{{%user}}.created_at', $this->created_at])
@@ -350,6 +355,17 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $object = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
         return $object ? $object->firstname . ' ' . $object->lastname[0] : 'User not found';
+    }
+    /**
+     * Finds public_id by id
+     *
+     * @param string $id
+     * @return string|null
+     */
+    public static function getPublicId($id): null|string
+    {
+        $object = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return $object->public_id;
     }
 
     /**
