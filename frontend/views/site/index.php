@@ -14,7 +14,7 @@ $this->title = 'Skill Swap';
     <div class="hero-text" id="hero-text">
         <h1>SkillSwap</h1>
         <p><?= Yii::t('app', 'Discover your new hobby!') ?></p>
-        <div class="btn-group" role="group">
+        <div class="btn-group shadows" role="group">
             <?php 
                 if (Yii::$app->user->isGuest){
                     echo Html::a(Yii::t('app', 'Join Us'),['/user/signup'],['class' => ['btn btn-secondary btn-lg']]);
