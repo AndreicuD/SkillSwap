@@ -65,7 +65,7 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
 <?php $form = ActiveForm::begin([
     'id' => 'article-form' . $model->public_id,
     'type' => ActiveForm::TYPE_FLOATING,
-    'action' => ['transaction/create'], // Specify the route to the create action
+    'action' => ['transaction/create', 'page' => 'article/index'], // Specify the route to the create action
     'method' => 'post',
 ]); ?>
 <?= $form->errorSummary($transactionModel);?>

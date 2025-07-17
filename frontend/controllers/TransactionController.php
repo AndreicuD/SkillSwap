@@ -60,7 +60,7 @@ class TransactionController extends BaseController
      * Create a new article transaction
      * @return yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($page)
     {   
         $model = new Transaction();
         $model->user_id = Yii::$app->user->identity->id;
@@ -71,6 +71,7 @@ class TransactionController extends BaseController
             if(!$item) {
                 $item = Course::findOne(['id' => $model->course_id]);
             }
+
             $owner = User::findOne(['id' => $item->user_id]);
 
             $user = User::findOne(Yii::$app->user->id);
@@ -78,7 +79,7 @@ class TransactionController extends BaseController
             // Check if the user has enough points
             if ($user->points < $model->value) {
                 Yii::$app->session->setFlash('error', 'You do not have enough points to complete this transaction.');
-                return $this->redirect(['site/index']);
+                return $this->redirect([$page]);
             }
             
             $newPoints = $user->points - $model->value;
@@ -89,17 +90,17 @@ class TransactionController extends BaseController
             // Save the transaction
             if (!$model->save()) {
                 Yii::$app->session->setFlash('error', 'Transaction failed: ' . json_encode($model->getErrors()));
-                return $this->redirect(['site/index']);
+                return $this->redirect([$page]);
             }
 
             // Only save the user if there were changes to the points
             if (!$owner->updateUserPoints($item->user_id, $owner_newPoints) || !$user->updateUserPoints(Yii::$app->user->id, $newPoints)) {
                 Yii::$app->session->setFlash('error', 'User update failed: ' . json_encode($user->getErrors()));
-                return $this->redirect(['site/index']);
+                return $this->redirect([$page]);
             }
 
             Yii::$app->session->setFlash('success', 'Transaction completed!');
-            return $this->redirect(['site/index']);
+            return $this->redirect([$page]);
         }
     }
 
