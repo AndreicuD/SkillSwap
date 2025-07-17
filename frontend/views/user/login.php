@@ -32,7 +32,7 @@ $this->title = Yii::t('app', 'Login');
                 </div>
                 <br>
                 <div class="form-group" style="text-align: center;">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary shadows', 'name' => 'login-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>
