@@ -83,7 +83,12 @@ class UserController extends BaseController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = User::findOne(['id' => Yii::$app->user->id]);
+
+
+        return $this->render('index', [
+            'user' => $model,
+        ]);
     }
 
     /**
