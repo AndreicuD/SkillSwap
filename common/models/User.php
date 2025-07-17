@@ -17,6 +17,7 @@ use yii\db\Expression;
  * @property string $email [varchar(254)]
  * @property string $firstname [varchar(254)]
  * @property string $lastname [varchar(254)]
+ * @property string $description [varchar(2048)]
  * @property integer $status [smallint = 10]
  * @property integer $points [int(11)]
  * @property integer $rating [int(11)]
@@ -76,6 +77,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             [['item_name'], 'default', 'value' => 'member', 'on' => 'create'],
             [['points'], 'default', 'value' => 500, 'on' => 'create'],
+            [['description'], 'default', 'value' => null, 'on' => 'create'],
             [['avatar_extension'], 'default', 'value' => 'png', 'on' => 'create'],
             [['firstname', 'lastname'], 'string', 'max' => 254],
             ['email', 'email', 'on' => 'default'],
@@ -103,6 +105,7 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => Yii::t('app', 'Email'),
             'firstname' => Yii::t('app', 'First name'),
             'lastname' => Yii::t('app', 'Last name'),
+            'description' => Yii::t('app', 'Description'),
             'status' => Yii::t('app', 'Status'),
             'points' => Yii::t('app', 'Points'),
             'Rating' => Yii::t('app', 'Rating'),

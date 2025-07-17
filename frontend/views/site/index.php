@@ -12,7 +12,7 @@ $this->title = 'Skill Swap';
 ?>
 <div class="hero user-select-none">
     <div class="hero-text" id="hero-text">
-        <h1>Skill Swap</h1>
+        <h1>SkillSwap</h1>
         <p><?= Yii::t('app', 'Discover your new hobby!') ?></p>
         <div class="btn-group" role="group">
             <?php 
@@ -83,7 +83,7 @@ $this->title = 'Skill Swap';
             'viewParams' => ['transactionModel' => $transactionModel,
                             'reviewModel' => $reviewModel,
                             'bookmarkModel' => $bookmarkModel,
-                            'page' => 'article/index',
+                            'page' => 'site/index',
                         ],
             'options' => [
                 'tag' => 'div',
@@ -115,7 +115,7 @@ $this->title = 'Skill Swap';
             'viewParams' => ['transactionModel' => $transactionModel,
                             'reviewModel' => $reviewModel,
                             'bookmarkModel' => $bookmarkModel,
-                            'page' => 'article/index',
+                            'page' => 'site/index',
                         ],
             'options' => [
                 'tag' => 'div',
