@@ -20,18 +20,33 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
 <div class="site-index">
     
     <div class="user-select-none">
-        <div class="article-title-sm">
+
+        <div class="article-title-sm phone-disappear">
+            <p class="text-center article-title phone-disappear"><?= Html::encode($this->title) ?></p>
+            <p class="text-center article-user phone-disappear">- <?= Html::encode(User::getUsername($model->user_id)) ?> -</p>
+        </div>
+        <div class="article-image phone-disappear">
+            <img src="<?=$src?>" alt="<?= Html::encode($this->title) ?>">
+            <div class="article-title-area phone-disappear">
+                <p class="text-center article-title phone-disappear"><?= Html::encode($this->title) ?></p>
+                <p class="text-center article-user phone-disappear">- <?= Html::encode(User::getUsername($model->user_id)) ?> -</p>
+            </div>
+        </div>
+
+        <div class="article-title-sm phone-appear">
+            <div class="article-image">
+                <img src="<?=$src?>" alt="<?= Html::encode($this->title) ?>">
+                <div class="article-title-area">
+                    <p class="text-center article-title"><?= Html::encode($this->title) ?></p>
+                    <p class="text-center article-user">- <?= Html::encode(User::getUsername($model->user_id)) ?> -</p>
+                </div>
+            </div>
             <p class="text-center article-title"><?= Html::encode($this->title) ?></p>
             <p class="text-center article-user">- <?= Html::encode(User::getUsername($model->user_id)) ?> -</p>
         </div>
-        <div class="article-image">
-            <img src="<?=$src?>" alt="<?= Html::encode($this->title) ?>">
-            <div class="article-title-area">
-                <p class="text-center article-title"><?= Html::encode($this->title) ?></p>
-                <p class="text-center article-user">- <?= Html::encode(User::getUsername($model->user_id)) ?> -</p>
-            </div>
-        </div>
+
         <br>
+        <hr>
         <div class="article-content">
             <?php 
                 if(Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {

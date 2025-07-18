@@ -676,6 +676,14 @@ a {
 	}
 }
 
+@media(max-width: 767px) {
+    .phone-disappear {
+        display: none !important;
+    }
+    .phone-appear {
+        display: block;
+    }
+}
 /* this requires a fixed width */
 .truncate {
 	white-space: nowrap;
@@ -1089,3 +1097,13 @@ a {
 	box-shadow: 0 0 0 0 rgba(0,0,0,0.1)
 }
 
+@media (max-width:767px) {
+	.hero-arrow {
+		display: none;
+	}
+	.article-title-sm {
+		padding-top: 0;
+		padding-bottom: 1em;
+		border-radius: 40px;
+	}
+}
