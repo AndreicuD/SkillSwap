@@ -10,6 +10,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
+use common\models\Article;
 use common\models\Course;
 use common\models\Category;
 use common\models\Transaction;
