@@ -28,7 +28,7 @@ JS
 );
 ?>
 <div class="container-fluid d-flex group_together">
-    <div class="p-3 border-end" style="min-width: 280px; max-width: 300px;">
+    <div class="p-3" style="min-width: 280px; max-width: 300px;">
         <div class="text-center">
             <div class="text-center">
                 <img class='avatar' src="<?=$src?>" alt="<?= Yii::t('app', 'User Avatar') ?>" width="250" height="250">
