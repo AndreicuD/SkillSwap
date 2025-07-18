@@ -59,6 +59,11 @@ JS
         </div>
         
         <div class="list-group">
+            <?php if (Yii::$app->user->id == $user->id): ?>
+                <?= Html::a(Yii::t('app', 'Quick Info'), ['profile/info', 'id' => $user->id], [
+                    'class' => 'list-group-item list-group-item-action ajax-link'
+                ]) ?>
+            <?php endif; ?>
             <?= Html::a(Yii::t('app', 'Articles'), ['profile/articles', 'id' => $user->id], [
                 'class' => 'list-group-item list-group-item-action ajax-link'
             ]) ?>
@@ -80,21 +85,23 @@ JS
                 ]) ?>
                 <?= Html::a(Yii::t('app', 'Logout'), ['/user/logout'], [
                     'data-method' => 'post',
-                    'class' => 'btn btn-danger rotate_on_hover'
+                    'class' => 'btn btn-danger scale_on_hover rotate_on_hover'
                 ]) ?>
             </div>
         <?php endif; ?>
     </div>
 
     <div id="ajax-container" class="flex-fill p-4">
-        <?php if (Yii::$app->user->id === $user->id): ?>
-            <div>
-                <h1><?= Yii::t('app', 'Welcome') ?>, <?= Html::encode($user->firstname) ?>!🤘</h1>
-                <hr>
-            </div>
+        <?php if (Yii::$app->user->id == $user->id): ?>
+            <div id="bonus-section"></div>
+            <?php
+            $bonusUrl = Url::to(['profile/info', 'id' => $user->id]);
+            $this->registerJs(<<<JS
+                $.get('$bonusUrl', function(data) {
+                    $('#bonus-section').html(data);
+                });
+            JS);
+            ?>
         <?php endif; ?>
-        <divclass="text-muted">
-            <?= Yii::t('app', 'Select a section to view.') ?>
-        </div>
     </div>
 </div>

@@ -41,7 +41,7 @@ class ProfileController extends BaseController
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['stats'],
+                        'actions' => ['stats', 'info'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -65,6 +65,31 @@ class ProfileController extends BaseController
             ],
         ];
     }
+
+    public function actionInfo($id)
+    {
+        $user = User::findOne($id);
+        if (!$user) {
+            throw new NotFoundHttpException('User not found.');
+        }
+
+        $lastBonusAt = strtotime($user->last_bonus_at);
+        $nextBonusAt = $lastBonusAt + 86400; // 24 hours in seconds
+
+        $now = time();
+        $remainingSeconds = max($nextBonusAt - $now, 0);
+
+        return $this->renderAjax('_info', [
+            'user' => $user,
+            'bonusData' => [
+                'last_bonus_at' => $user->last_bonus_at,
+                'next_bonus_at' => date('Y-m-d H:i:s', $nextBonusAt),
+                'remaining_seconds' => $remainingSeconds,
+                'streak' => $user->bonus_streak,
+            ]
+        ]);
+    }
+
 
     /**
      * see articles in profile

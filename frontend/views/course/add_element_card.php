@@ -13,13 +13,11 @@ $svg = [
 ];
 ?>
 
-<a href="<?= Url::to($url) ?>" class="add-element-card" style="text-decoration: none;">
-    <div style="border: 2px dashed #888; border-radius: 8px; padding: 24px; text-align: center; width: 200px; margin: 10px; cursor: pointer; transition: background 0.2s ease;">
-        <div class="card-icon" style="margin-bottom: 12px; color: #555;">
-            <?= $svg[$type] ?? '' ?>
-        </div>
-        <div class="card-title" style="font-weight: bold; font-size: 16px; color: #444;">
-            <?= Html::encode($title) ?>
-        </div>
+<a href="<?= Url::to($url) ?>" class="w-50 card add-element-card scale_on_hover rotate_on_hover" style="text-decoration: none;">
+    <div class="card-icon" style="margin-bottom: 12px; color: #555;">
+        <?= $svg[$type] ?? '' ?>
+    </div>
+    <div class="card-title" style="font-weight: bold; font-size: 16px; color: #444;">
+        <?= Html::encode($title) ?>
     </div>
 </a>

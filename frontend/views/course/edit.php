@@ -25,52 +25,22 @@ $trash_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
 
     <div class="padd-10">
         <div class="w-100 flex-row-even">
-            <div class="scale_on_hover rotate_on_hover">
-                <?= $this->render('/course/add_element_card', [
-                    'type' => 'article',
-                    'title' => 'Add an article',
-                    'url' => ['/article/create-in-course', 'course_id' => $model->id],
-                ]); ?>
-            </div>
-            <div class="scale_on_hover rotate_on_hover">
-                <?= $this->render('/course/add_element_card', [
-                    'type' => 'quiz',
-                    'title' => 'Add a quiz',
-                    'url' => ['/quiz/create', 'course_id' => $model->id],
-                ]); ?>
-            </div>
+            <?= $this->render('/course/add_element_card', [
+                'type' => 'article',
+                'title' => 'Add an article',
+                'url' => ['/article/create-in-course', 'course_id' => $model->id],
+            ]); ?>
+            <?= $this->render('/course/add_element_card', [
+                'type' => 'quiz',
+                'title' => 'Add a quiz',
+                'url' => ['/quiz/create', 'course_id' => $model->id],
+            ]); ?>
         </div> 
         
         <hr>
-        
-        <?php
-        /*echo "<div class='flex-row-start'>";
-    
-        foreach ($elements as $entry) {
-            $element = $entry['model'];
-            $sortIndex = $entry['sort_index'];
-    
-            if ($element instanceof Article) {
-                echo '<div class="card">';
-                echo $this->render('/course/_article', [
-                    'model' => $element,
-                    'spot' => $sortIndex,
-                    'page' => ['user/courses'],
-                ]);
-                echo '</div>';
-            } elseif ($element instanceof Quiz) {
-                echo $this->render('/course/element_card', [
-                    'type' => 'quiz',
-                    'title' => Yii::t('app', 'Quiz') . ' #' . $element->id,
-                ]);
-            }
-        }
-    
-        echo "</div>";*/
-        ?>
     
         <table class="table sortable-table ">
-            <thead>
+            <thead class="course_table_head">
                 <tr>
                     <th class="course_element_id">#</th>
                     <th class="course_element_type"><?= Yii::t('app', 'Type')?></th>
