@@ -58,7 +58,7 @@ $trash_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
                         <td><?= Html::encode($element['model']->title ?? 'Untitled') ?></td>
                         <td>
                             <?php if ($element['type'] === 'article'): ?>
-                                <?= Html::a('Edit', ['/article/course-edit', 'public_id' => $element['model']->public_id], ['class' => 'btn btn-primary']) ?>
+                                <?= Html::a('Edit', ['/article/course-edit', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id], ['class' => 'btn btn-primary']) ?>
                                 <button 
                                     id="article_modal_<?= $model->public_id ?>" 
                                     class="btn btn-danger btn-ajax" 
@@ -67,7 +67,14 @@ $trash_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
                                     <?=$trash_svg?>
                                 </button>
                             <?php elseif ($element['type'] === 'quiz'): ?>
-                                <?= Html::a('Edit', ['/quiz/course-edit', 'public_id' => $element['model']->public_id], ['class' => 'btn btn-sm btn-outline-primary']) ?>
+                                <?= Html::a('Edit', ['/quiz/edit', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id], ['class' => 'btn btn-primary']) ?>
+                                <button 
+                                    id="article_modal_<?= $model->public_id ?>" 
+                                    class="btn btn-danger btn-ajax" 
+                                    data-modal_title='<?=Yii::t("app", "Delete"); ?> "<?=$element['model']->title?>"'
+                                    data-modal_url="<?=Url::to(['quiz/ajax-delete', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id]); ?>" >
+                                    <?=$trash_svg?>
+                                </button>
                             <?php endif; ?>
                         </td>
                     </tr>

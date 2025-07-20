@@ -177,7 +177,7 @@ class ArticleController extends BaseController
      * @param integer $id
      * @return string
      */
-    public function actionCourseEdit($public_id) {
+    public function actionCourseEdit($public_id, $course_id) {
         $searchModel = Article::findOne(['public_id' => $public_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -188,6 +188,7 @@ class ArticleController extends BaseController
         return $this->render('course-edit', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
+            'course_id' => $course_id,
         ]);
     }
 

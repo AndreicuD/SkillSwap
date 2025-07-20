@@ -195,6 +195,25 @@
 	--bs-btn-disabled-bg: var(--secondary-color);
 	--bs-btn-disabled-border-color: var(--secondary-color);
 }
+.btn-outline-primary {
+	--bs-btn-color: var(--primary-color);
+	--bs-btn-border-color: var(--primary-color);
+}
+.btn-outline-primary:hover {
+	--bs-btn-color: #fff;
+	border-color: var(--primary-color);
+	background-color: var(--primary-color);
+}
+.btn-outline-secondary {
+	--bs-btn-color: var(--secondary-color);
+	--bs-btn-border-color: var(--secondary-color);
+}
+.btn-outline-secondary:hover {
+	--bs-btn-color: #fff;
+	border-color: var(--secondary-color);
+	background-color: var(--secondary-color);
+}
+
 .dropdown-menu {
 	--bs-dropdown-zindex: 1000;
 	--bs-dropdown-min-width: 10rem;
@@ -652,10 +671,16 @@ a {
 .w-80 {
 	width: 80%;
 }
+.w-20 {
+	width: 20%;
+}
 .phone-appear {
 	display: none;
 }
 @media(max-width: 767px) {
+	.w-20 {
+		width: 100%;
+	}
 	.phone-disappear {
 		display: none;
 	}
@@ -1054,7 +1079,7 @@ a {
 	border-radius: 0 40px 0 0;
 }
 .course_table_head th {
-	background-color: rgba(var(--bs-primary-bg-subtle-rgb), 1);
+	background-color: var(--bs-gray-100);
 }
 .course_element_id {
 	width: 30px;

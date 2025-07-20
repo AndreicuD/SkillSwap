@@ -21,6 +21,7 @@ use common\models\User;
 use yii\web\UploadedFile;
 use yii\web\Response;
 use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
 
 /**
  * Profile controller
@@ -41,7 +42,7 @@ class ProfileController extends BaseController
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['stats', 'info'],
+                        'actions' => ['stats', 'info', 'follow-toggle', 'following', 'followers'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -160,4 +161,29 @@ class ProfileController extends BaseController
             'profit' => $profit,
         ]);
     }
+
+    /**
+     * Summary of actionFollowers
+     * @param mixed $user_id
+     * @return string;
+     */
+    public function actionFollowers($user_id)
+    {
+        $followers = Follower::find()->where(['followed_id' => $user_id])->with('follower')->all();
+
+        return $this->renderAjax('_user_list', ['users' => array_map(fn($f) => $f->follower, $followers)]);
+    }
+
+    /**
+     * Summary of actionFollowing
+     * @param mixed $user_id
+     * @return string
+     */
+    public function actionFollowing($user_id)
+    {
+        $following = Follower::find()->where(['follower_id' => $user_id])->with('followed')->all();
+
+        return $this->renderAjax('_user_list', ['users' => array_map(fn($f) => $f->followed, $following)]);
+    }
+
 }

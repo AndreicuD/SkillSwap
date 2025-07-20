@@ -29,7 +29,7 @@ $this->title = $model->title;
     <?= $form->errorSummary($model);?>
 
     <div class=group_together>
-        <div class="w-50">
+        <div class="w-80">
             <?= Summernote::widget([
                 'name' => Html::getInputName($model, 'content'),
                 'value' => Html::getAttributeValue($model, 'content'),
@@ -49,7 +49,7 @@ $this->title = $model->title;
                 ],
             ]);?>
         </div>
-        <div class="w-50">
+        <div class="w-20">
             <?= $form->errorSummary($model);?>
             <?= $form->field($model, 'title')->label(Yii::t('app', 'Title')) ?>
             <?= $form->field($model, 'description')->textarea(['rows' => 4, 'style' => 'min-height: 160px']) ?>
@@ -59,7 +59,7 @@ $this->title = $model->title;
     <br>
     <div class="group_together">
         <div style="width: 100%; text-align: center;">
-            <?= Html::a(Yii::t('app', 'Go Back'),['/courses/edit', 'public_id' => $model->public_id],['class' => ['btn btn-outline-danger rotate_on_hover mb-3']]) ?>
+            <?= Html::a(Yii::t('app', 'Go Back'),['/course/edit', 'public_id' => $course_id],['class' => ['btn btn-outline-danger rotate_on_hover mb-3']]) ?>
         </div>
         <div style="width: 100%; text-align: center;">
             <?= Html::button(Yii::t('app', 'Submit Changes'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']) ?>

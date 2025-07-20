@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\widgets\Pjax;
 use common\models\User;
+use common\models\Follow;
 
 $src = $user->checkFileExists() ? $user ->getSrc() : '/img/default_avatar.png';
 
@@ -26,7 +27,81 @@ $this->registerJs(
 JS
     )
 );
+
+$isFollowing = !Yii::$app->user->isGuest && Follow::find()
+    ->where(['from_user_id' => Yii::$app->user->id, 'to_user_id' => $user->id])
+    ->exists();
+
+$followerCount = $user->getFollowers()->count();
+$followingCount = $user->getFollowing()->count();
+
+$this->registerJs(<<<JS
+$(document).on('click', '.follow-toggle-btn', function () {
+    const \$btn = $(this);
+    const userId = \$btn.data('user-id');
+
+    if (!userId) {
+        alert('No user ID found.');
+        return;
+    }
+
+    $.post('/follow/toggle?id=' + userId, {
+        _csrf: yii.getCsrfToken()
+    }, function (data) {
+        console.log('Response:', data);
+        if (data.success) {
+            if (data.following) {
+                document.getElementById('follower-count').innerText++;
+                \$btn.text('Unfollow')
+                    .removeClass('btn-secondary')
+                    .addClass('btn-outline-secondary');
+            } else {
+                document.getElementById('follower-count').innerText--;
+                \$btn.text('Follow')
+                    .removeClass('btn-outline-secondary')
+                    .addClass('btn-secondary');
+            }
+        } else {
+            alert('Server error: ' + (data.message || 'unknown'));
+        }
+    }).fail(function () {
+        alert('AJAX request failed.');
+    });
+});
+JS);
+
+
+$js = <<<JS
+$('.open-follow-modal').on('click', function(e) {
+    e.preventDefault();
+
+    const userId = $(this).data('user-id');
+    const type = $(this).data('type');
+    const modal = $('#followModal');
+    const modalBody = $('#followModalBody');
+    const modalTitle = $('#followModalLabel');
+
+    modalTitle.text(type === 'followers' ? 'Followers' : 'Following');
+    modalBody.html('<p class="text-center">Loading...</p>');
+    modal.modal('show');
+
+    $.ajax({
+        url: '/follow/' + type,
+        data: { id: userId },
+        success: function(response) {
+            modalBody.html(response);
+        },
+        error: function() {
+            modalBody.html('<p class="text-danger text-center">Failed to load content.</p>');
+        }
+    });
+});
+JS;
+
+$this->registerJs($js);
+
 ?>
+
 <div class="container-fluid d-flex group_together">
     <div class="p-3" style="min-width: 280px; max-width: 300px;">
         <div class="text-center">
@@ -43,20 +118,37 @@ JS
         </div>
         
         <?php if (!Yii::$app->user->isGuest && Yii::$app->user->id !== $user->id): ?>
-            <?= Html::a(Yii::t('app', 'Follow'), ['profile/follow', 'id' => $user->id], [
-                'class' => 'btn btn-outline-primary btn-sm w-100 mb-3 ajax-link',
-                'data-method' => 'post'
-                ]) ?>
+            <div id="follow-btn-container" style="padding-bottom: 16px;">
+                <?= Html::button(
+                    $isFollowing ? 'Unfollow' : 'Follow',
+                    [
+                        'class' => 'btn w-100 follow-toggle-btn ' . ($isFollowing ? 'btn-outline-secondary' : 'btn-secondary'),
+                        'data-user-id' => $user->id,
+                    ]
+                ) ?>
+            </div>
         <?php endif; ?>
+
         <div class="group_together text-center gray">
             <div style="width: 49%">
-                <p>Followers: 4</p>
+                <p>
+                    <a href="#" class="open-follow-modal text-decoration-none" style="color: inherit;" data-type="followers" data-user-id="<?= $user->id ?>">
+                        <?= Yii::t('app', 'Followers') ?>
+                        <span class="badge bg-secondary" id="follower-count"><?= $followerCount ?></span>
+                    </a>
+                </p>
             </div>
             <div class="vr phone-disappear" style="margin-bottom: 16px;"></div>
             <div style="width: 49%">
-                <p>Following: 1</p>
+                <p>
+                    <a href="#" class="open-follow-modal text-decoration-none" style="color: inherit;" data-type="following" data-user-id="<?= $user->id ?>">
+                        <?= Yii::t('app', 'Following') ?>
+                        <span class="badge bg-secondary" id="following-count"><?= $followingCount ?></span>
+                    </a>
+                </p>
             </div>
         </div>
+        
         
         <div class="list-group">
             <?php if (Yii::$app->user->id == $user->id): ?>
@@ -102,6 +194,31 @@ JS
                 });
             JS);
             ?>
+        <?php else: ?>
+            <div id="article-section"></div>
+            <?php
+            $articlesUrl = Url::to(['profile/articles', 'id' => $user->id]);
+            $this->registerJs(<<<JS
+                $.get('$articlesUrl', function(data) {
+                    $('#article-section').html(data);
+                });
+            JS);
+            ?>
         <?php endif; ?>
     </div>
+</div>
+
+<!-- Follow Modal -->
+<div class="modal fade" id="followModal" tabindex="-1" role="dialog" aria-labelledby="followModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="followModalLabel"><?= Yii::t('app', 'Loading...') ?></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="followModalBody">
+        <p class="text-center"><?= Yii::t('app', 'Loading...') ?></p>
+      </div>
+    </div>
+  </div>
 </div>

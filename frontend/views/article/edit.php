@@ -29,7 +29,7 @@ $this->title = $model->title;
     <?= $form->errorSummary($model);?>
 
     <div class=group_together>
-        <div class="w-50">
+        <div class="w-80">
             <?= Summernote::widget([
                 'name' => Html::getInputName($model, 'content'),
                 'value' => Html::getAttributeValue($model, 'content'),
@@ -49,7 +49,7 @@ $this->title = $model->title;
                 ],
             ]);?>
         </div>
-        <div class="w-50">
+        <div class="w-20">
             <?= $form->errorSummary($model);?>
             <?= $form->field($model, 'title')->label(Yii::t('app', 'Title')) ?>
             <?= $form->field($model, 'description')->textarea(['rows' => 4, 'style' => 'min-height: 160px']) ?>

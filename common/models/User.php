@@ -10,6 +10,8 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
+use common\models\Follow;
+
 /**
  * User model
  *
@@ -162,6 +164,18 @@ class User extends ActiveRecord implements IdentityInterface
     public function getRoleName(): string
     {
         return $this->role->item_name ?? 'member';
+    }
+
+    public function getFollowers()
+    {
+        return $this->hasMany(User::class, ['id' => 'from_user_id'])
+            ->viaTable('follow', ['to_user_id' => 'id']);
+    }
+
+    public function getFollowing()
+    {
+        return $this->hasMany(User::class, ['id' => 'to_user_id'])
+            ->viaTable('follow', ['from_user_id' => 'id']);
     }
 
     /**
@@ -343,6 +357,21 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null): ?IdentityInterface
     {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+    /**
+     * Summary of isFollowing
+     * @param mixed $userId
+     * @return bool
+     */
+    public function isFollowing($userId)
+    {
+        return Follow::find()
+            ->where([
+                'from_user_id' => $this->id,
+                'to_user_id' => $userId,
+            ])
+            ->exists();
     }
 
     /**
