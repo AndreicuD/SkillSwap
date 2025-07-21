@@ -51,7 +51,7 @@ JS);
         $isFollowing = Yii::$app->user->identity->isFollowing($u->id);
     ?>
     <div class="group_together mb-2">
-        <a href="<?= Url::to(['/user/index', 'public_id' => $u->public_id]) ?>" class="d-flex align-items-center mb-2">
+        <a href="<?= Url::to(['/user/index', 'public_id' => $u->public_id]) ?>" class="d-flex align-items-center mb-2 text-decoration-none" style="color: inherit;">
             <img src="<?= $src ?>" width="32" height="32" class="rounded-circle me-2">
             <span><?= Html::encode(User::getUsername($u->id)) ?></span>
         </a>

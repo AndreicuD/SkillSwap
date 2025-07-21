@@ -5,6 +5,8 @@ namespace common\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "quiz_question".
@@ -12,7 +14,6 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $id [int(11)]
  * @property integer $quiz_id [int(11)]
  * @property string $text [text]
- * @property int $choices [int(11)]
  * @property string $created_at [datetime]
  * @property string $updated_at [timestamp]
  *
@@ -25,18 +26,26 @@ class QuizQuestion extends ActiveRecord
         return 'quiz_question';
     }
 
-    public function behaviors()
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors(): array
     {
         return [
-            TimestampBehavior::class,
+            'timestamp' => [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
     public function rules()
     {
         return [
-            [['quiz_id', 'text', 'choices'], 'required'],
-            [['quiz_id', 'choices'], 'integer'],
+            [['quiz_id', 'text'], 'required'],
+            [['quiz_id'], 'integer'],
             [['text'], 'string', 'max' => 1000],
         ];
     }
@@ -47,7 +56,6 @@ class QuizQuestion extends ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'quiz_id' => Yii::t('app', 'Quiz ID'),
             'text' => Yii::t('app', 'Question Text'),
-            'choices' => Yii::t('app', 'Number of Choices'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
@@ -56,6 +64,16 @@ class QuizQuestion extends ActiveRecord
     public function getQuiz()
     {
         return $this->hasOne(Quiz::class, ['id' => 'quiz_id']);
+    }
+
+    /**
+     * Gets the choices for this question.
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChoices()
+    {
+        return $this->hasMany(QuizChoice::class, ['question_id' => 'id'])->orderBy(['id' => SORT_ASC]);
     }
 
     public static function findByQuizId($quizId)

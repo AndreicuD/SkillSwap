@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\QuizQuestion;
 use Yii;
 use yii\web\Controller;
 use frontend\components\BaseController;
@@ -33,7 +34,10 @@ class QuizController extends BaseController
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['create', 'edit', 'update', 'ajax-delete', 'delete'],
+                        'actions' => [
+                            'create', 'edit', 'update', 'ajax-delete', 'delete',
+                            'create-question'
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -109,34 +113,29 @@ class QuizController extends BaseController
 
     /**
      * Create a new quiz question
-     * @return string
+     * @return void
      */
-    public function actionCreateQuestion($quiz_id): string
+    public function actionCreateQuestion($quiz_id)
     {
-        $model = new Quiz();
-        $model->quiz_id = $quiz_id;
-
-        $quiz = Quiz::findOne(['id' => $quiz_id]);
-
-        if ($model->save()) {
-            $model = Quiz::find()->where('id = :id', [':id' => $model->id])->one();
-
-            $element = new CourseElement([
-                'course_id' => $course_id,
-                'element_type' => 'quiz',
-                'element_id' => $model->id,
-            ]);
-            $element->save();
-            
-            Yii::$app->session->setFlash('success', 'The quiz has been created.');
-            $this->redirect(['quiz/edit', 'public_id' => $model->public_id]);
+        $quiz = Quiz::findOne(['public_id' => $quiz_id]);
+        if (!$quiz) {
+            throw new NotFoundHttpException("Quiz not found.");
         }
 
-        return $this->render('create' ,[
-            'model' => $model,
-            'course' => $course,
-        ]);
+        $model = new QuizQuestion();
+        $model->quiz_id = $quiz->id;
+        $model->text = Yii::t('app','What is the question?');
+
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', 'The question has been created.');
+        } else {
+            Yii::error($model->getErrors(), __METHOD__);
+            Yii::$app->session->setFlash('error', 'There was an error creating the question.');
+        }
+
+        return $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
     }
+
 
     /**
      * edit quiz content
