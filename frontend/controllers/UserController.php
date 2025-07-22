@@ -9,6 +9,7 @@ use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use frontend\components\BaseController;
+use yii\db\Query;
 
 use yii\web\Response;
 use yii\filters\AccessControl;
@@ -103,8 +104,17 @@ class UserController extends BaseController
     {
         $searchModel = new Article();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(['user_id' => Yii::$app->user->id]);
-        
+
+        // Subquery: all article IDs already used in courses
+        $subQuery = (new Query())
+            ->select('element_id')
+            ->from('course_element')
+            ->where(['element_type' => 'article']);
+
+        $dataProvider->query
+            ->andWhere(['user_id' => Yii::$app->user->id])           // only user's articles
+            ->andWhere(['not in', 'id', $subQuery]);                 // exclude those in courses
+
         if ($searchModel->category && !$searchModel->category_name) {
             $searchModel->category_name = Category::getName($searchModel->category);
         }
@@ -114,6 +124,8 @@ class UserController extends BaseController
             'dataProvider' => $dataProvider,
         ]);
     }
+
+
     /**
      *  Page to show the courses of a user.
      *
