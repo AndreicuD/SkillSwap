@@ -1098,12 +1098,14 @@ a {
 
 .quiz-question {
 	width: 50% !important;
-	flex: unset;
-	max-width: unset;
+	flex: 0 0 calc(50% - 0.75em);
+	max-width: calc(50% - 0.75em);
 }
 @media(max-width: 767px) {
 	.quiz-question {
 		width: 100%;
+		flex: 0 0 calc(100% - 1em);
+		max-width: calc(100% - 1em);
 	}
 }
 

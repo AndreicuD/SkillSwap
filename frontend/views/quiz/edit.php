@@ -30,7 +30,7 @@ $this->title = $model->title;
         
             <div class="group_together">
                 <div style="width: 100%; text-align: center;">
-                    <?= Html::a(Yii::t('app', 'Go Back'),['/course/edit', 'public_id' => $course_id],['class' => ['btn btn-outline-danger rotate_on_hover mb-3']]) ?>
+                    <?= Html::a(Yii::t('app', 'Go Back'),['/course/edit', 'public_id' => $model->course->public_id],['class' => ['btn btn-outline-danger rotate_on_hover mb-3']]) ?>
                 </div>
                 <div style="width: 100%; text-align: center;">
                     <?= Html::button(Yii::t('app', 'Save New Title'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']) ?>
@@ -41,6 +41,7 @@ $this->title = $model->title;
         
         <hr>
         <div class="padd-15 text-center">
+            <p class="gray text-sm">Any question you save that has no answers <span style="color: red;">will be skipped</span> for the user!</p>
             <?= Html::a(Yii::t('app', 'Add New Question'),['/quiz/create-question', 'quiz_id' => $model->public_id],['class' => ['btn btn-outline-secondary scale_on_hover mb-3']]) ?>
         </div>
 
@@ -63,27 +64,26 @@ $this->title = $model->title;
 
                     <hr style="margin: 0 0 1em; padding: 0;">
 
-                    <div class="text-center">
+                    <div class="text-center mb-3">
                         <?= Html::a(Yii::t('app', 'Add Choice'), ['quiz/create-choice', 'question_id' => $question->id], ['class' => 'btn btn-outline-secondary w-100']) ?>
                     </div>
                     
-                    <div class="row mt-3">
+                    <div class="flex-row-even">
                         <?php foreach ($question->choices as $choice): ?>
-                            <div class="col-md-6 mb-3">
-                                <div class="p-3 border rounded">
-                                    <?php $cForm = ActiveForm::begin([
-                                        'action' => ['quiz/update-choice', 'id' => $choice->id],
-                                        'method' => 'post',
-                                    ]); ?>
-    
-                                    <?= $cForm->field($choice, 'text')->textInput()->label(Yii::t('app', 'Choice Text')) ?>
-    
-                                    <?= $cForm->field($choice, 'correct')->checkbox(['label' => Yii::t('app', 'correct?')]) ?>
-    
-                                    <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-success']) ?>
-    
-                                    <?php ActiveForm::end(); ?>
-                                </div>
+                            <div class="card quiz-question p-2">
+                                <?php $cForm = ActiveForm::begin([
+                                    'action' => ['quiz/update-choice', 'id' => $choice->id],
+                                    'type' => ActiveForm::TYPE_FLOATING,
+                                    'method' => 'post',
+                                ]); ?>
+
+                                <?= $cForm->field($choice, 'text')->textInput()->label(Yii::t('app', 'Choice Text')) ?>
+
+                                <?= $cForm->field($choice, 'correct')->checkbox(['label' => Yii::t('app', 'Correct Answer')]) ?>
+
+                                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-primary w-100']) ?>
+
+                                <?php ActiveForm::end(); ?>
                             </div>
                         <?php endforeach; ?>
                     </div>

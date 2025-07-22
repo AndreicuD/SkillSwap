@@ -35,8 +35,6 @@ $this->title = 'Skill Swap';
 
 <div class="index-description text-center">
     <p class="index-description-text lead"><?= Yii::t('app', 'Every day is an oportunity to learn! Here you can learn anything from anyone, anyday. Come join us now!') ?></p>
-</div>
-<div class="main_container">
     <div class="site-index" id="site-index">
         <div class="padd-15">
             <div class="why-div">
@@ -68,12 +66,11 @@ $this->title = 'Skill Swap';
                     </div>
                 </div>
             </div>
+            <br>    
         </div>
     </div>
-    
-    <br>
-    <hr>
-    <br>
+</div>
+<div class="main_container">
     
     <div class="padd-15">
         <h1 class="title"><?= Yii::t('app', 'Latest Articles') ?></h1>

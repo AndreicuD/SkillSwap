@@ -104,7 +104,7 @@ class QuizController extends BaseController
             $element->save();
             
             Yii::$app->session->setFlash('success', 'The quiz has been created.');
-            $this->redirect(['quiz/edit', 'public_id' => $model->public_id]);
+            $this->redirect(['quiz/edit', 'public_id' => $model->public_id, 'course_id' => $course->public_id]);
         }
 
         return $this->render('create' ,[
@@ -135,7 +135,7 @@ class QuizController extends BaseController
      * @param integer $id
      * @return Response
      */
-    public function actionUpdate($public_id, $course_id): Response 
+    public function actionUpdate($public_id, $course_id) 
     {
         $model = Quiz::findOne(['public_id' => $public_id]);
 
