@@ -23,6 +23,11 @@ use common\models\Article;
 use common\models\Course;
 use common\models\Category;
 use common\models\User;
+use common\models\Transaction;
+use common\models\ArticleBookmark;
+use common\models\ArticleReview;
+use common\models\CourseBookmark;
+use common\models\CourseReview;
 
 /**
  * Site controller
@@ -48,7 +53,7 @@ class UserController extends BaseController
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['profile', 'articles', 'courses', 'logout', 'settings', 'change-password', 'file-upload', 'file-delete', 'delete-avatar'],
+                        'actions' => ['profile', 'articles', 'courses', 'articles-bought', 'courses-bought', 'logout', 'settings', 'change-password', 'file-upload', 'file-delete', 'delete-avatar'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -144,6 +149,88 @@ class UserController extends BaseController
         return $this->render('courses', [
             'model' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     *  Page to show the articles bought of a user.
+     *
+     * @return mixed
+     */
+    public function actionArticlesBought() 
+    {
+        $searchModel = new Article();
+        $articleDataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $articleDataProvider->query->andWhere(['is_public' => 1]);
+
+        // Get bought articles by current user
+        $articleTransactionModel = new Transaction();
+        $articleTransactions = $articleTransactionModel->findByUserId(Yii::$app->user->id);
+
+        // Extract article IDs from transactions
+        $boughtArticleIds = array_map(function ($transaction) {
+            return $transaction->article_id;
+        }, $articleTransactions);
+
+        // Filter articles to those bookmarked
+        $articleDataProvider->query->andWhere(['id' => $boughtArticleIds]);
+
+        
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        $transactionModel = new Transaction();
+        $reviewModel = new ArticleReview();
+        $bookmarkModel = new ArticleBookmark();
+
+        return $this->render('articles-bought', [
+            'model' => $searchModel,
+            'dataProvider' => $articleDataProvider,
+            'transactionModel' => $transactionModel,
+            'reviewModel' => $reviewModel,
+            'articleBookmarkModel' => $bookmarkModel,
+        ]);
+    }
+
+    /**
+     *  Page to show the courses bought of a user.
+     *
+     * @return mixed
+     */
+    public function actionCoursesBought() 
+    {
+        $searchModel = new Course();
+        $courseDataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $courseDataProvider->query->andWhere(['is_public' => 1]);
+
+        // Get bought courses by current user
+        $courseTransactionModel = new Transaction();
+        $courseTransactions = $courseTransactionModel->findByUserId(Yii::$app->user->id);
+
+        // Extract course IDs from transactions
+        $boughtCourseIds = array_map(function ($transaction) {
+            return $transaction->course_id;
+        }, $courseTransactions);
+
+        // Filter courses to those bookmarked
+        $courseDataProvider->query->andWhere(['id' => $boughtCourseIds]);
+
+        
+        if ($searchModel->category && !$searchModel->category_name) {
+            $searchModel->category_name = Category::getName($searchModel->category);
+        }
+
+        $transactionModel = new Transaction();
+        $reviewModel = new CourseReview();
+        $bookmarkModel = new CourseBookmark();
+
+        return $this->render('courses-bought', [
+            'model' => $searchModel,
+            'dataProvider' => $courseDataProvider,
+            'transactionModel' => $transactionModel,
+            'reviewModel' => $reviewModel,
+            'courseBookmarkModel' => $bookmarkModel,
         ]);
     }
 

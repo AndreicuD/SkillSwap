@@ -3,6 +3,6 @@ can't read course !!!!
 
 certificate
 
-statistici
+tranzactii
 
-sortable
+statistici

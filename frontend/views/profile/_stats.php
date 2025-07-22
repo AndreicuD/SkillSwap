@@ -1,5 +1,5 @@
 <?php
-$this->registerJsFile('https://cdn.jsdelivr.net/npm/chart.js', ['position' => \yii\web\View::POS_END]);
+$this->registerJsFile('@web/js/chart.js', ['position' => \yii\web\View::POS_END]);
 ?>
 
 <canvas id="statsChart" height="120"></canvas>
@@ -20,5 +20,5 @@ $this->registerJs("
             }]
         }
     });
-");
+", \yii\web\View::POS_READY);
 ?>

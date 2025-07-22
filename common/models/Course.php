@@ -198,7 +198,8 @@ class Course extends ActiveRecord
             }
 
             if ($content !== null) {
-                $elements[] = [
+                $elements[$element->id] = [
+                    'id' => $element->id,
                     'model' => $content,
                     'type' => $element->element_type,
                     'sort_index' => $element->sort_index,

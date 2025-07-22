@@ -101,6 +101,12 @@ $point_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24" 
 
                     echo Html::tag('li',Html::tag('hr', '', ['class' => 'dropdown-divider']));
 
+                    echo Html::tag('li',Html::a('Bought Articles',['/user/articles-bought'],['class' => ['dropdown-item']]));
+                    
+                    echo Html::tag('li',Html::a('Bought Courses',['/user/courses-bought'],['class' => ['dropdown-item']]));
+
+                    echo Html::tag('li',Html::tag('hr', '', ['class' => 'dropdown-divider']));
+
                     echo Html::tag('li',Html::a('Settings',['/user/settings'],['class' => ['dropdown-item']]));
                     
                     echo Html::tag('li',Html::a('Logout',['/user/logout'],['class' => ['btn btn-link logout text-decoration-none']]),['class' => ['d-flex login_logoutbutton']]);
