@@ -19,6 +19,52 @@ $svg = [
     'article' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-news"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" /><path d="M8 8l4 0" /><path d="M8 12l4 0" /><path d="M8 16l4 0" /></svg>'
 ];
 $trash_svg = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>';
+
+$this->registerJsFile('https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js', [
+    'position' => View::POS_END,
+]);
+
+$sortable_update_url = Url::to(['course/update-sort-order', 'course_id' => $model->public_id]);
+
+$sortable_js = <<<JS
+const courseList = document.getElementById('course-elements-list');
+
+Sortable.create(courseList, {
+    animation: 150,
+    handle: '.element-row',
+    onEnd: function (/**Event*/evt) {
+        const rows = document.querySelectorAll('#course-elements-list .element-row');
+        const order = [];
+
+        rows.forEach((row, index) => {
+            order.push({
+                id: row.dataset.elementId,
+                sort_index: index + 1
+            });
+        });
+
+        // Send the new order to server via AJAX
+        $.ajax({
+            type: 'POST',
+            url: '$sortable_update_url',
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                order: order
+            },
+            success: function(response) {
+                console.log("Sort order saved");
+            },
+            error: function(xhr) {
+                alert('Failed to save sort order');
+            }
+        });
+    }
+});
+JS;
+$this->registerJs($sortable_js, View::POS_END);
+
 ?>
 <div class="site-index">
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>

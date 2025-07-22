@@ -19,7 +19,7 @@ use common\models\CourseBookmark;
 use yii\web\UploadedFile;
 use yii\web\Response;
 use yii\helpers\Url;
-
+use common\models\CourseElement;
 /**
  * Course controller
  */
@@ -39,7 +39,7 @@ class CourseController extends BaseController
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['update', 'edit', 'create', 'delete', 'ajax-delete', 'file-upload', 'file-delete'],
+                        'actions' => ['update', 'edit', 'create', 'delete', 'ajax-delete', 'file-upload', 'file-delete', 'update-sort-order'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -378,4 +378,63 @@ class CourseController extends BaseController
         ]);
         $pdf->render();
     }
+
+    public function actionUpdateSortOrder($course_id)
+    {
+        print_r(json_encode(Yii::$app->request->post()));
+        exit(0);
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        try {
+            $order = Yii::$app->request->post('order', []);
+
+            if (!is_array($order)) {
+                throw new \Exception("Invalid order data");
+            }
+
+            foreach ($order as $item) {
+                $elementId = $item['id'] ?? null;
+                $sortIndex = $item['sort_index'] ?? null;
+
+                if ($elementId === null || $sortIndex === null) {
+                    continue;
+                }
+
+                $element = CourseElement::findOne(['id' => $elementId, 'course_id' => $course_id]);
+
+                if (!$element) {
+                    Yii::warning("CourseElement not found for ID: $elementId and course_id: $course_id");
+                    continue;
+                }
+
+                $element->sort_index = (int)$sortIndex;
+                if (!$element->save()) {
+                    Yii::error("Failed to save CourseElement ID $elementId: " . json_encode($element->getErrors()));
+                }
+            }
+
+            // ✅ Optional: normalize sort_index to 10, 20, 30,...
+            $normalized = CourseElement::find()
+                ->where(['course_id' => $course_id])
+                ->orderBy(['sort_index' => SORT_ASC])
+                ->all();
+
+            $i = 10;
+            foreach ($normalized as $item) {
+                $item->sort_index = $i;
+                $item->save(false); // skip validation
+                $i += 10;
+            }
+
+            return ['status' => 'success'];
+        } catch (\Throwable $e) {
+            Yii::error("Sort update error: " . $e->getMessage());
+            return [
+                'status' => 'error',
+                'message' => 'An error occurred while updating sort order',
+                'debug' => YII_DEBUG ? $e->getMessage() : null,
+            ];
+        }
+    }
+
 }

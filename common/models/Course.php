@@ -183,6 +183,7 @@ class Course extends ActiveRecord
             ->orderBy(['sort_index' => SORT_ASC]);
     }
 
+
     public function getOrderedElements(): array
     {
         $elements = [];
