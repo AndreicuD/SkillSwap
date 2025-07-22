@@ -334,4 +334,48 @@ class CourseController extends BaseController
         $model = $this->findModel($id);
         return unlink($model->getFilePath());
     }
+
+    /**
+     * Summary of actionTestPdf
+     * @return void
+     */
+    public function actionTestPdf() {
+        $pdf = new Pdf([
+            //'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+            'mode' => Pdf::MODE_UTF8,
+            'format' => 'A4',
+            'orientation' => 'L',
+            //'marginLeft' => $this->margin_left,
+            //'marginRight' => $this->margin_right,
+            //'marginTop' => $this->margin_top,
+            //'marginBottom' => $this->margin_bottom,
+            //'marginHeader' => $this->margin_header,
+            //'marginFooter' => $this->margin_footer,
+            'destination' => Pdf::DEST_BROWSER,
+            'content' =>  Yii::$app->controller->renderPartial('//document/pdf', ['content' => 'aici e continutul']),
+            'filename' => 'nume.pdf',
+            'options' => [
+                'mode' => 'utf-8',
+                /*'fontDir' => array_merge($fontDirs, [
+                    Yii::getAlias('@frontend').DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'fonts',
+                ]),
+                'fontdata' => $fontData + [ // lowercase letters only in font key
+                        'montserrat' => [
+                            'R' => 'Montserrat-Regular.ttf',
+                        ]
+                    ],
+                'default_font' => 'montserrat'*/
+            ],
+            /*'methods' => [
+                'SetTitle' => $this->name,
+                'SetSubject' => $this->name,
+                'SetHeader' => [],
+                'SetFooter' => ['{PAGENO}/{nbpg}'],
+                'SetAuthor' => '',
+                'SetCreator' => '',
+                'SetKeywords' => '',
+            ]*/
+        ]);
+        $pdf->render();
+    }
 }

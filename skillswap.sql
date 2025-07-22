@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 21, 2025 at 08:04 AM
+-- Generation Time: Jul 22, 2025 at 10:38 AM
 -- Server version: 11.3.2-MariaDB
 -- PHP Version: 8.2.18
 
@@ -455,12 +455,24 @@ DROP TABLE IF EXISTS `quiz_choice`;
 CREATE TABLE IF NOT EXISTS `quiz_choice` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) NOT NULL,
-  `text` text NOT NULL,
+  `text` text DEFAULT NULL,
   `correct` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `quiz_choice`
+--
+
+INSERT INTO `quiz_choice` (`id`, `question_id`, `text`, `correct`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Type your choice', 0, '2025-07-22 12:11:30', '2025-07-22 09:11:30'),
+(2, 1, 'Choice Text', 0, '2025-07-22 12:14:48', '2025-07-22 09:14:48'),
+(3, 2, 'Choice Text', 0, '2025-07-22 12:23:26', '2025-07-22 09:23:26'),
+(4, 2, 'Choice Text', 0, '2025-07-22 12:23:27', '2025-07-22 09:23:27'),
+(5, 2, 'Choice Text', 0, '2025-07-22 12:23:28', '2025-07-22 09:23:28'),
+(6, 2, 'Choice Text', 0, '2025-07-22 12:23:29', '2025-07-22 09:23:29');
 
 -- --------------------------------------------------------
 
@@ -476,14 +488,15 @@ CREATE TABLE IF NOT EXISTS `quiz_question` (
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `quiz_question`
 --
 
 INSERT INTO `quiz_question` (`id`, `quiz_id`, `text`, `created_at`, `updated_at`) VALUES
-(1, 1, 'What is the question?', '2025-07-20 22:46:07', '2025-07-20 19:46:07');
+(1, 1, 'Random question', '2025-07-20 22:46:07', '2025-07-22 09:03:16'),
+(2, 1, 'Type your question', '2025-07-22 12:23:24', '2025-07-22 09:23:24');
 
 -- --------------------------------------------------------
 
@@ -553,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id`, `public_id`, `email`, `firstname`, `lastname`, `description`, `status`, `points`, `rating`, `auth_key`, `password_hash`, `password_reset_token`, `verification_token`, `last_bonus_at`, `bonus_streak`, `avatar_extension`, `created_at`, `updated_at`) VALUES
 (1, 'aa72ffe9-6300-11f0-a0ef-309c233d53c1', 'urecheatu007@gmail.com', 'Leo', 'Hutanu', NULL, 10, 0, 0, '62XosHOiCccwkrTCij676SF_rXyUQLl2', '$2y$13$M8mo4D3ct94rBqDMcqr2uuq8Yz3CTujfxeEg7a13yHETP3NS/apRi', NULL, NULL, '0000-00-00 00:00:00', 0, '', '2024-05-21 08:05:44', '2024-12-12 19:51:52'),
 (2, 'aa7300d8-6300-11f0-a0ef-309c233d53c1', 'littlegamerdeiu@gmail.com', 'Hutanu', 'Deiu', NULL, 10, 0, 0, 'GlSQdASMDtccXTF67Owwti_Fb8PT8fZV', '$2y$13$plSTsq1fcyMhiUVogIvZ8.Y8qEdQVSFOEIRHQ3eS/A1ANlPomMacC', NULL, NULL, '0000-00-00 00:00:00', 0, '', '2024-05-23 23:34:23', '2024-12-19 23:09:18'),
-(3, 'aa73015b-6300-11f0-a0ef-309c233d53c1', 'andreileontinhutanu@gmail.com', 'Andrei', 'Hutanu', 'Hi! 👋 I\'m a highschool student in Bucharest and I like creating things (be it music 🎵, photos 📸 or programming projects) :D', 10, 4851, 0, 'itZBnFGaxZWwHu6fn62TsLapxqOGstX3', '$2y$13$8ZQTzorfnsVw3/XL/DXs7u2ENJLUjjVdRXO7SHu1VdN2u/PwWc5UG', 'BECjvL5xg0xgnTCvECHShVWLTwxV6jdE_1720727147', NULL, '2025-07-20 09:40:02', 4, 'png', '2024-05-22 00:12:27', '2025-07-20 12:40:02'),
+(3, 'aa73015b-6300-11f0-a0ef-309c233d53c1', 'andreileontinhutanu@gmail.com', 'Andrei', 'Hutanu', 'Hi! 👋 I\'m a highschool student in Bucharest and I like creating things (be it music 🎵, photos 📸 or programming projects) :D', 10, 5062, 0, 'itZBnFGaxZWwHu6fn62TsLapxqOGstX3', '$2y$13$8ZQTzorfnsVw3/XL/DXs7u2ENJLUjjVdRXO7SHu1VdN2u/PwWc5UG', 'BECjvL5xg0xgnTCvECHShVWLTwxV6jdE_1720727147', NULL, '2025-07-21 16:15:42', 5, 'png', '2024-05-22 00:12:27', '2025-07-21 19:15:42'),
 (4, 'aa7301c4-6300-11f0-a0ef-309c233d53c1', 'emaildetest@gmail.com', 'Leo', 'Test', NULL, 10, 4223, 0, 'qZrepfYyP_OecYRIxrGVtEDVBfBicU3u', '$2y$13$JUs5OYEsWfvH/Hswdy2nrOXCOzDqPk3q2OukmMSZfqwRdRyUJG67G', NULL, NULL, '2025-07-20 09:46:32', 1, 'jpg', '2025-04-23 21:46:51', '2025-07-20 12:46:32'),
 (5, 'aa730225-6300-11f0-a0ef-309c233d53c1', '23452342@gmail.com', 'asd', 'asd', NULL, 10, 0, 0, 'mBf2XkFZE61DxO0WJ2j2bXDbGP_J38Sy', '$2y$13$tiWjB57WyFIg6oUDpJdSI.HEAXllGs0jRkhuz/6Ua.vMc2KqyIsda', NULL, NULL, '2025-05-10 17:06:27', 0, '', '2025-05-11 20:06:27', '2025-05-22 18:39:13'),
 (7, 'aa730271-6300-11f0-a0ef-309c233d53c1', '1234@gmail.com', 'Ceva', 'Cont-De-Test', NULL, 10, 1872, 0, 'Rz_LUR_Gd68-cd9SW6LG7RqSOoyARILO', '$2y$13$C3fA/9DOd.Spb3to50qxVOga2o9iWHTIkANUNoLvyHuWBBhU3ChUe', NULL, NULL, '2025-07-20 09:46:26', 1, 'jpg', '2025-07-09 18:41:33', '2025-07-20 12:46:26');

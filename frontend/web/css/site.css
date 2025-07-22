@@ -822,7 +822,6 @@ a {
 }
 .card:hover {
 	scale: 1.05;
-	border-radius: 25px;
 	translate: 0 -3px;
 	box-shadow: 0 8px 2px 0 rgba(0,0,0,0.1)
 }
@@ -1094,6 +1093,17 @@ a {
 @media(max-width: 767px) {
 	.course_element_actions {
 		width: 60px;
+	}
+}
+
+.quiz-question {
+	width: 50% !important;
+	flex: unset;
+	max-width: unset;
+}
+@media(max-width: 767px) {
+	.quiz-question {
+		width: 100%;
 	}
 }
 

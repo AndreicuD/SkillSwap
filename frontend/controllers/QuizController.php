@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\QuizChoice;
 use common\models\QuizQuestion;
 use Yii;
 use yii\web\Controller;
@@ -36,7 +37,8 @@ class QuizController extends BaseController
                     [
                         'actions' => [
                             'create', 'edit', 'update', 'ajax-delete', 'delete',
-                            'create-question'
+                            'create-question', 'update-question',
+                            'create-choice', 'update-choice'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -111,31 +113,6 @@ class QuizController extends BaseController
         ]);
     }
 
-    /**
-     * Create a new quiz question
-     * @return void
-     */
-    public function actionCreateQuestion($quiz_id)
-    {
-        $quiz = Quiz::findOne(['public_id' => $quiz_id]);
-        if (!$quiz) {
-            throw new NotFoundHttpException("Quiz not found.");
-        }
-
-        $model = new QuizQuestion();
-        $model->quiz_id = $quiz->id;
-        $model->text = Yii::t('app','What is the question?');
-
-        if ($model->save()) {
-            Yii::$app->session->setFlash('success', 'The question has been created.');
-        } else {
-            Yii::error($model->getErrors(), __METHOD__);
-            Yii::$app->session->setFlash('error', 'There was an error creating the question.');
-        }
-
-        return $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
-    }
-
 
     /**
      * edit quiz content
@@ -156,11 +133,11 @@ class QuizController extends BaseController
     /**
      * update quiz content
      * @param integer $id
-     * @return string
+     * @return Response
      */
-    public function actionUpdate($public_id, $course_id) {
+    public function actionUpdate($public_id, $course_id): Response 
+    {
         $model = Quiz::findOne(['public_id' => $public_id]);
-        $dataProvider = $model->search(Yii::$app->request->queryParams);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', Yii::t('app', 'Quiz changes saved succesfully.'));
@@ -186,4 +163,95 @@ class QuizController extends BaseController
 
         $this->redirect(['course/edit', 'public_id' => $course_id]);
     }
+
+    /**
+     * Create a new quiz question
+     * @return Response
+     */
+    public function actionCreateQuestion($quiz_id)
+    {
+        $quiz = Quiz::findOne(['public_id' => $quiz_id]);
+        if (!$quiz) {
+            throw new NotFoundHttpException("Quiz not found.");
+        }
+
+        $model = new QuizQuestion();
+        $model->quiz_id = $quiz->id;
+        $model->text = Yii::t('app','Type your question');
+
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', 'The question has been created.');
+        } else {
+            Yii::error($model->getErrors(), __METHOD__);
+            Yii::$app->session->setFlash('error', 'There was an error creating the question.');
+        }
+
+        return $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
+    }
+
+    /**
+     * update quiz question
+     * @param integer $id
+     * @return string
+     */
+    public function actionUpdateQuestion($id) {
+        $model = QuizQuestion::findOne(['id' => $id]);
+        $quiz = $model->quiz;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Question changes saved succesfully.'));
+        } else {
+            Yii::$app->session->setFlash('error', Yii::t('app', 'Failed to save question changes.'));
+        }
+
+        $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
+    }
+
+    /**
+     * Create a new question choice
+     * @return Response
+     */
+    public function actionCreateChoice($question_id)
+    {
+        $question = QuizQuestion::findOne(['id' => $question_id]);
+        if (!$question) {
+            throw new NotFoundHttpException("Question not found.");
+        }
+
+        $model = new QuizChoice();
+        $model->question_id = $question->id;
+        $model->text = 'Choice Text';
+        $model->correct = 0;
+
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', 'The choice has been created.');
+        } else {
+            Yii::error($model->getErrors(), __METHOD__);
+            print_r($model->getErrors());
+            exit(0);
+            Yii::$app->session->setFlash('error', 'There was an error creating the choice.');
+        }
+        $quiz = $question->quiz;
+
+        return $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
+    }
+
+    /**
+     * update question choice
+     * @param integer $id
+     * @return string
+     */
+    public function actionUpdateChoice($id) {
+        $model = QuizChoice::findOne(['id' => $id]);
+        $quiz = $model->question->quiz;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Question changes saved succesfully.'));
+        } else {
+            Yii::$app->session->setFlash('error', Yii::t('app', 'Failed to save question changes.'));
+        }
+
+        $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
+    }
+
 }

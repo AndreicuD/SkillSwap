@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "quiz_choice".
@@ -25,16 +26,27 @@ class QuizChoice extends ActiveRecord
         return 'quiz_choice';
     }
 
-    public function behaviors()
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors(): array
     {
         return [
-            TimestampBehavior::class,
+            'timestamp' => [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
     public function rules()
     {
         return [
+            [['question_id'], 'required', 'on' => 'create'],
+            ['correct', 'default', 'value' => 0, 'on' => 'create'],
+            ['text', 'default', 'value' => '', 'on' => 'create'],
             [['question_id', 'text', 'correct'], 'required'],
             [['question_id', 'correct'], 'integer'],
             [['text'], 'string', 'max' => 1000],

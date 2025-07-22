@@ -45,44 +45,51 @@ $this->title = $model->title;
         </div>
 
 
+        <div class="flex-row-even">
+            <?php foreach ($model->questions as $question): ?>
+                <div class="card quiz-question mb-4 p-2">
+                    <?php $qForm = ActiveForm::begin([
+                        'action' => ['quiz/update-question', 'id' => $question->id],
+                        'method' => 'post',
+                        'options' => ['class' => 'd-flex flex-row-even align-items-center']
+                    ]); ?>
+                    <div clas='w-20'>
+                        <?= $qForm->field($question, 'text')->textInput(['class' => 'w-100'])->label(false) ?>
+                    </div>
+                    <div class="w-20">
+                        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'mb-3 btn btn-primary w-100']) ?>
+                    </div>
+                    <?php ActiveForm::end(); ?>
 
-        <?php foreach ($model->questions as $question): ?>
-            <div class="card mb-4 p-3 border rounded shadow-sm">
-                <?php $qForm = ActiveForm::begin([
-                    'action' => ['question/update', 'id' => $question->id],
-                    'method' => 'post',
-                    'options' => ['class' => 'd-flex justify-content-between align-items-center gap-2']
-                ]); ?>
-                    <?= $qForm->field($question, 'text')->textInput(['style' => 'flex: 1'])->label(false) ?>
-                    <?= Html::submitButton(Yii::t('app', 'Save Btn'), ['class' => 'btn btn-primary']) ?>
-                <?php ActiveForm::end(); ?>
+                    <hr style="margin: 0 0 1em; padding: 0;">
 
-                <div class="text-end mt-2">
-                    <?= Html::a(Yii::t('app', 'Add Choice'), ['choice/create', 'question_id' => $question->id], ['class' => 'btn btn-outline-secondary btn-sm']) ?>
-                </div>
-
-                <div class="row mt-3">
-                    <?php foreach ($question->choices as $choice): ?>
-                        <div class="col-md-6 mb-3">
-                            <div class="p-3 border rounded">
-                                <?php $cForm = ActiveForm::begin([
-                                    'action' => ['choice/update', 'id' => $choice->id],
-                                    'method' => 'post',
-                                ]); ?>
-
-                                <?= $cForm->field($choice, 'text')->textInput()->label(Yii::t('app', 'Choice Text')) ?>
-
-                                <?= $cForm->field($choice, 'is_correct')->checkbox(['label' => Yii::t('app', 'correct?')]) ?>
-
-                                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-success']) ?>
-
-                                <?php ActiveForm::end(); ?>
+                    <div class="text-center">
+                        <?= Html::a(Yii::t('app', 'Add Choice'), ['quiz/create-choice', 'question_id' => $question->id], ['class' => 'btn btn-outline-secondary w-100']) ?>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <?php foreach ($question->choices as $choice): ?>
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 border rounded">
+                                    <?php $cForm = ActiveForm::begin([
+                                        'action' => ['quiz/update-choice', 'id' => $choice->id],
+                                        'method' => 'post',
+                                    ]); ?>
+    
+                                    <?= $cForm->field($choice, 'text')->textInput()->label(Yii::t('app', 'Choice Text')) ?>
+    
+                                    <?= $cForm->field($choice, 'correct')->checkbox(['label' => Yii::t('app', 'correct?')]) ?>
+    
+                                    <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-success']) ?>
+    
+                                    <?php ActiveForm::end(); ?>
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
 
     </div>
 </div>
