@@ -22,7 +22,6 @@ use common\models\Article;
  * @property integer $user_id [int(11)]
  * @property string $title [varchar(254)]
  * @property string $description [varchar(1024)]
- * @property integer $elements [int(11)]
  * 
  * @property integer $category [int(11)]
  * 
@@ -79,7 +78,7 @@ class Course extends ActiveRecord
             ['title', 'unique', 'on' => 'default'],
             ['title', 'unique', 'on' => 'create'],
 
-            [['title', 'description', 'elements', 'category', 'category_name', 'price', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
+            [['title', 'description', 'category', 'category_name', 'price', 'likes_count', 'is_public', 'public_id', 'user_id', 'id'], 'safe'],
         ];
     }
     public function scenarios(): array
@@ -108,7 +107,6 @@ class Course extends ActiveRecord
             'public_id' => Yii::t('app', 'Public ID'),
             'title' => Yii::t('app', 'Title'),
             'description' => Yii::t('app', 'Description'),
-            'elements' => Yii::t('app', "Element's Number"),
             'category' => Yii::t('app', 'Category'),
             'likes_count' => Yii::t('app', 'Like Count'),
             'is_public' => Yii::t('app', 'Public'),
@@ -266,7 +264,6 @@ class Course extends ActiveRecord
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'elements', $this->elements])
             ->andFilterWhere(['like', 'category', $this->category])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);

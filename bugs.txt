@@ -1,3 +1,6 @@
 certificate(make secure???)
 
 statistici
+
+no choice on question
+error
