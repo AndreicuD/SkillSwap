@@ -11,7 +11,7 @@ $this->title = Yii::t('app', 'Terms and Conditions');
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>
 
     <br>
-    <b><?= Yii::t('app', 'Last updated: [June 24, 2025]')?></b>
+    <b><?= Yii::t('app', 'Last updated: [July 26, 2025]')?></b>
     <hr>
     <?= Yii::t('app', 'Welcome to Skill Swap. By accessing or using our website (the “Platform”), you agree to be bound by these Terms of Service (“Terms”). Please read them carefully.')?>
     <ol>
@@ -29,6 +29,9 @@ $this->title = Yii::t('app', 'Terms and Conditions');
         <h3><li><?= Yii::t('app', 'User Content')?></li></h3>
             <?= Yii::t('app', 'All content you upload remains your intellectual property. However, by publishing content on Skill Swap, you grant us a non-exclusive, worldwide, royalty-free license to use, host, and display that content as part of the platform’s functionality.')?>
             <?= Yii::t('app', 'We reserve the right to remove any content or suspend user accounts that violate these Terms.')?>
+            <br>
+            <br>
+            <?= Yii::t('app', 'Skill Swap is a platform that allows users to upload and share their own content, such as articles, images, and other materials. We are not responsible for the content posted by users and do not monitor all user submissions. Users are solely responsible for ensuring that any content they upload does not infringe on copyrights, trademarks, or other intellectual property rights. By using the platform, you agree that Skill Swap will not be held liable for any copyright violations or legal issues resulting from user-generated content, including but not limited to the use of copyrighted photos, videos, or text.')?>
         
         <h3><li><?= Yii::t('app', 'Account Termination')?></li></h3>
             <?= Yii::t('app', 'We may suspend or terminate your access to the Platform at any time if you violate these Terms, or if we are required to do so by law.')?>
