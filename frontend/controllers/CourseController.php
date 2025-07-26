@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use common\models\Article;
 use common\models\Course;
+use common\models\User;
 use common\models\Category;
 use common\models\Transaction;
 use common\models\CourseReview;
@@ -341,7 +342,8 @@ class CourseController extends BaseController
      * Summary of actionTestPdf
      * @return void
      */
-    public function actionTestPdf() {
+    public function actionTestPdf($course_id, $user_id) {
+        $course = Course::findOne(['id' => $course_id]);
         $pdf = new Pdf([
             //'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
             'mode' => Pdf::MODE_UTF8,
@@ -354,7 +356,7 @@ class CourseController extends BaseController
             //'marginHeader' => $this->margin_header,
             //'marginFooter' => $this->margin_footer,
             'destination' => Pdf::DEST_BROWSER,
-            'content' =>  Yii::$app->controller->renderPartial('//document/pdf', ['content' => 'aici e continutul']),
+            'content' =>  Yii::$app->controller->renderPartial('//document/pdf', ['title' => $course->title, 'user' => User::getName($user_id)]),
             'filename' => 'nume.pdf',
             'options' => [
                 'mode' => 'utf-8',

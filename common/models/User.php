@@ -385,6 +385,18 @@ class User extends ActiveRecord implements IdentityInterface
         $object = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
         return $object ? $object->firstname . ' ' . $object->lastname[0] : 'User not found';
     }
+
+    /**
+     * Finds name by id
+     *
+     * @param string $id
+     * @return string|null
+     */
+    public static function getName($id): null|string
+    {
+        $object = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return $object ? $object->firstname . ' ' . $object->lastname : 'User not found';
+    }
     /**
      * Finds public_id by id
      *

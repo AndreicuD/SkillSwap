@@ -62,7 +62,9 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
     <p class="card-text gray"><a href="<?= Url::to(['user/index', 'public_id' => User::getPublicId($model->user_id)])?>" ><?= Html::encode(User::getUsername($model->user_id)) ?> </a> - 
     <a class="text-secondary" href="<?= Url::to(['course/index', 'Course[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
 </div>
-<?= Html::a('Test pdf', ['course/test-pdf']) ?>
+
+<?= Html::a('Test pdf', ['course/test-pdf', 'course_id' => $model->id, 'user_id' => Yii::$app->user->id], ['target' => '_blank']) ?>
+
 <?php $form = ActiveForm::begin([
     'id' => 'course-form' . $model->public_id,
     'type' => ActiveForm::TYPE_FLOATING,

@@ -2,8 +2,9 @@
 $this->registerJsFile('@web/js/chart.js', ['position' => \yii\web\View::POS_END]);
 ?>
 
+<h1><?= Yii::t('app', 'Stats') ?></h1>
+<hr>
 <canvas id="statsChart" height="120"></canvas>
-
 <?php
 $this->registerJs("
     const ctx = document.getElementById('statsChart').getContext('2d');

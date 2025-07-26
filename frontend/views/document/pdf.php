@@ -1,1 +1,3 @@
-<body><h1><?= $content ?></h1></body>
+<body>
+    <h1><?= $title ?></h1>
+</body>
