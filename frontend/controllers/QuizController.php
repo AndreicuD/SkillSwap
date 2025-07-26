@@ -36,7 +36,7 @@ class QuizController extends BaseController
                 'rules' => [
                     [
                         'actions' => [
-                            'create', 'edit', 'update', 'ajax-delete', 'delete',
+                            'create', 'edit', 'update', 'ajax-delete', 'delete', 'submit',
                             'create-question', 'update-question', 'delete-question',
                             'create-choice', 'update-choice', 'delete-choice',
                         ],
@@ -80,6 +80,45 @@ class QuizController extends BaseController
             'course_id' => $course_id,
         ]);
     }
+
+    /**
+     * submit answers to questions of a quiz
+     * @return Yii\web\Response
+     */
+    public function actionSubmit()
+    {
+        $quizId = Yii::$app->request->post('quiz_id');
+        $submittedAnswers = Yii::$app->request->post('answers');
+
+        $quiz = Quiz::findOne($quizId);
+        $questions = $quiz->questions;
+
+        $score = 0;
+        $results = [];
+
+        foreach ($questions as $question) {
+            $correctAnswers = $question->getChoices()->where(['correct' => 1])->all();
+
+            $correctAnswerIds = array_map(fn($c) => $c->id, $correctAnswers);
+            $userAnswerIds = $submittedAnswers[$question->id] ?? null;
+            
+            sort($userAnswerIds);
+            sort($correctAnswerIds);
+            
+            
+            $isCorrect = $userAnswerIds == $correctAnswerIds;
+            $results[$question->id] = $isCorrect;
+            if ($isCorrect) {
+                $score++;
+            }
+
+            // TO DO: Save user progress to a new table
+        }
+
+        Yii::$app->session->setFlash('success', "You scored $score / " . count($questions));
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
 
     /**
      * Create a new quiz

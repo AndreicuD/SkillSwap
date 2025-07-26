@@ -1102,6 +1102,9 @@ a {
 	}
 }
 
+.quiz-choice {
+	border-radius: 40px;
+}
 .quiz-question {
 	width: 50% !important;
 	flex: 0 0 calc(50% - 0.75em);

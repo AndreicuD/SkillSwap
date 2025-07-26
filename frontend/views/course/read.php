@@ -72,9 +72,57 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
 
                             if ($content instanceof Article) {
                                 echo "<div>" . $content->content . "</div>";
+
                             } elseif ($content instanceof Quiz) {
-                                echo "<p><b>" . Yii::t('app', 'Quiz contains') . ":</b> " . count($content->questions) . " " . Yii::t('app', 'questions') . "</p>";
-                                echo Html::a(Yii::t('app', 'Start Quiz'), ['quiz/view', 'id' => $content->id], ['class' => 'btn btn-primary']);
+                                $form = ActiveForm::begin([
+                                    'action' => ['quiz/submit'],
+                                    'method' => 'post',
+                                    'options' => ['class' => 'quiz-form'],
+                                ]);
+                                
+                                echo Html::hiddenInput('quiz_id', $content->id);
+                                
+                                foreach ($content->questions as $qIndex => $question) {
+                                    echo "<div class='mb-3'>";
+                                    echo "<b>Q" . ($qIndex + 1) . ":</b> " . Html::encode($question->text);
+                                    echo '<br>';
+                                    echo '<br>';
+
+
+                                    echo "<div class='flex-row-even'>"; // Start row for card layout
+
+                                        foreach ($question->choices as $choice) {
+                                            $inputName = "answers[{$question->id}][]"; // checkbox array for multiple correct answers
+                                            $choiceId = "choice-{$choice->id}";
+
+                                            echo "<div class='card quiz-question quiz-choice'>";
+
+                                            echo Html::checkbox($inputName, false, [
+                                                'value' => $choice->id,
+                                                'id' => $choiceId,
+                                                'class' => 'btn-check',
+                                                'autocomplete' => 'off',
+                                            ]);
+
+                                            echo Html::label(
+                                                Html::encode($choice->text),
+                                                $choiceId,
+                                                [
+                                                    'class' => 'btn w-100 text-start p-3 shadow-sm',
+                                                ]
+                                            );
+
+                                            echo "</div>";
+                                        }
+
+                                    echo "</div>";
+
+                                    echo "</div><hr>";
+                                }
+
+                                echo Html::submitButton(Yii::t('app', 'Submit Quiz'), ['class' => 'btn btn-primary']);
+                                ActiveForm::end();
+
                             } else {
                                 echo "<p class='text-muted'>" . Yii::t('app', 'Unknown element type.') . "</p>";
                             }
