@@ -5,6 +5,8 @@
 
 use yii\helpers\Html;
 use common\models\User;
+use common\models\Article;
+use common\models\Quiz;
 use common\models\Transaction;
 use common\models\CourseReview;
 use kartik\widgets\ActiveForm;
@@ -37,28 +39,54 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
             <?php 
                 if (Transaction::findTransaction(Yii::$app->user->id, $model->id) || $model->user_id == Yii::$app->user->id) {
 
-                    $elements = $model->orderedElements;
+                    $elements = $model->courseElements;
 
                     if (!empty($elements)) {
-                        foreach ($elements as $element) {
-                            echo "<hr>";
+                        echo '<div class="accordion" id="courseAccordion">';
 
-                            if ($element instanceof Article) {
-                                echo "<h3>" . Html::encode($element->title) . "</h3>";
-                                echo "<div>" . nl2br(Html::encode($element->content)) . "</div>";
+                        foreach ($elements as $index => $element) {
+                            $content = null;
+                            $elementId = 'element' . $index;
 
-                            } elseif ($element instanceof Quiz) {
-                                echo "<h3>" . Html::encode("Quiz") . "</h3>";
-                                echo Html::encode("This quiz contains " . count($element->questions) . " questions.");
+                            if ($element->element_type === 'article') {
+                                $content = Article::findOne($element->element_id);
+                            } elseif ($element->element_type === 'quiz') {
+                                $content = Quiz::findOne($element->element_id);
+                            }
 
-                                $question = $element->questions[0] ?? null;
-                                if ($question) {
-                                    echo "<p><b>Q:</b> " . Html::encode($question->text) . "</p>";
-                                }
+                            $title = ($content instanceof Article || $content instanceof Quiz)
+                                ? Html::encode($content->title)
+                                : Yii::t('app', 'Unknown element');
+                            
+                            $index += 1;
+                            echo <<<HTML
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading{$elementId}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{$elementId}" aria-expanded="false" aria-controls="collapse{$elementId}">
+                                            <h4>{$index}. {$title}</h4>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{$elementId}" class="accordion-collapse collapse" aria-labelledby="heading{$elementId}" data-bs-parent="#courseAccordion">
+                                        <div class="accordion-body">
+                            HTML;
+
+                            if ($content instanceof Article) {
+                                echo "<div>" . $content->content . "</div>";
+                            } elseif ($content instanceof Quiz) {
+                                echo "<p><b>" . Yii::t('app', 'Quiz contains') . ":</b> " . count($content->questions) . " " . Yii::t('app', 'questions') . "</p>";
+                                echo Html::a(Yii::t('app', 'Start Quiz'), ['quiz/view', 'id' => $content->id], ['class' => 'btn btn-primary']);
                             } else {
                                 echo "<p class='text-muted'>" . Yii::t('app', 'Unknown element type.') . "</p>";
                             }
+
+                            echo <<<HTML
+                                        </div>
+                                    </div>
+                                </div>  
+                            HTML;
                         }
+
+                        echo '</div>';
                     } else {
                         echo "<p class='text-muted'>" . Yii::t('app', 'No elements found for this course.') . "</p>";
                     }
