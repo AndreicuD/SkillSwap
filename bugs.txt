@@ -1,7 +1,7 @@
 can't read course !!!! 
 ^- or cant get course elements
 
-certificate
+certificate(make secure???)
 
 tranzactii
 

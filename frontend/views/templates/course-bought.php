@@ -63,7 +63,7 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
     <a class="text-secondary" href="<?= Url::to(['course/index', 'Course[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
 </div>
 
-<?= Html::a('Test pdf', ['course/test-pdf', 'course_id' => $model->id, 'user_id' => Yii::$app->user->id], ['target' => '_blank']) ?>
+<?= Html::a('Generate Certificate', ['course/pdf', 'id' => $model->public_id], ['target' => '_blank']) ?>
 
 <?php $form = ActiveForm::begin([
     'id' => 'course-form' . $model->public_id,

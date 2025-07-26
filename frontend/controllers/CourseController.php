@@ -22,6 +22,7 @@ use yii\web\Response;
 use yii\helpers\Url;
 use common\models\CourseElement;
 use kartik\mpdf\Pdf;
+use Mpdf\Mpdf;
 
 /**
  * Course controller
@@ -42,7 +43,7 @@ class CourseController extends BaseController
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['update', 'edit', 'create', 'delete', 'ajax-delete', 'file-upload', 'file-delete', 'update-sort-order', 'test-pdf'],
+                        'actions' => ['update', 'edit', 'create', 'delete', 'ajax-delete', 'file-upload', 'file-delete', 'update-sort-order', 'pdf'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -339,48 +340,29 @@ class CourseController extends BaseController
     }
 
     /**
-     * Summary of actionTestPdf
-     * @return void
+     * Generate a certificate pdf
+     * $id is the courses public id
+     * @return string
      */
-    public function actionTestPdf($course_id, $user_id) {
-        $course = Course::findOne(['id' => $course_id]);
-        $pdf = new Pdf([
-            //'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
-            'mode' => Pdf::MODE_UTF8,
-            //'format' => 'A4',
-            'orientation' => 'L',
-            'marginLeft' => 0,
-            'marginRight' => 0,
-            'marginTop' => 0,
-            'marginBottom' => 0,
-            //'marginHeader' => $this->margin_header,
-            //'marginFooter' => $this->margin_footer,
-            'destination' => Pdf::DEST_BROWSER,
-            'content' =>  Yii::$app->controller->renderPartial('//document/pdf', ['title' => $course->title, 'user' => User::getName($user_id)]),
-            'filename' => 'nume.pdf',
-            'options' => [
-                'mode' => 'utf-8',
-                /*'fontDir' => array_merge($fontDirs, [
-                    Yii::getAlias('@frontend').DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'fonts',
-                ]),
-                'fontdata' => $fontData + [ // lowercase letters only in font key
-                        'montserrat' => [
-                            'R' => 'Montserrat-Regular.ttf',
-                        ]
-                    ],
-                'default_font' => 'montserrat'*/
-            ],
-            'methods' => [
-                'SetTitle' => 'certificate',
-                'SetSubject' => 'certificate',
-                'SetHeader' => [],
-                //'SetFooter' => ['{PAGENO}/{nbpg}'],
-                'SetAuthor' => '',
-                'SetCreator' => '',
-                'SetKeywords' => '',
-            ]
+    public function actionPdf($id) {
+        $course = Course::findOne(['public_id' => $id]);
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4-L',
+            'margin_left' => 0,
+            'margin_right' => 0,
+            'margin_top' => 0,
+            'margin_bottom' => 0,
         ]);
-        return $pdf->render();
+
+        $html = $this->renderPartial('//document/pdf', [
+            'title' => $course->title,
+            'user' => User::getName(Yii::$app->user->id),
+        ]);
+
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('certificate.pdf', \Mpdf\Output\Destination::INLINE);
     }
 
     public function actionUpdateSortOrder($course_id)
