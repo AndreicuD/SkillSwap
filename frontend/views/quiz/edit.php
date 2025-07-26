@@ -58,14 +58,14 @@ $this->title = $model->title;
                         <?= $qForm->field($question, 'text')->textInput(['class' => 'w-100'])->label(false) ?>
                     </div>
                     <div class="w-20">
-                        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'mb-3 btn btn-primary w-100']) ?>
+                        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'mb-3 btn btn-primary w-100 scale_on_hover rotate_on_hover']) ?>
                     </div>
                     <?php ActiveForm::end(); ?>
 
                     <hr style="margin: 0 0 1em; padding: 0;">
 
                     <div class="text-center mb-3">
-                        <?= Html::a(Yii::t('app', 'Add Choice'), ['quiz/create-choice', 'question_id' => $question->id], ['class' => 'btn btn-outline-secondary w-100']) ?>
+                        <?= Html::a(Yii::t('app', 'Add Choice'), ['quiz/create-choice', 'question_id' => $question->id], ['class' => 'btn btn-outline-secondary w-100 rotate_on_hover']) ?>
                     </div>
                     
                     <div class="flex-row-even">
@@ -81,11 +81,15 @@ $this->title = $model->title;
 
                                 <?= $cForm->field($choice, 'correct')->checkbox(['label' => Yii::t('app', 'Correct Answer')]) ?>
 
-                                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-primary w-100']) ?>
+                                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-primary w-100 mb-1']) ?>
 
                                 <?php ActiveForm::end(); ?>
+                                <?= Html::a(Yii::t('app', 'Delete Choice'), ['quiz/delete-choice', 'id' => $choice->id], ['class' => 'btn btn-sm btn-outline-danger w-100']) ?>
                             </div>
                         <?php endforeach; ?>
+                    </div>
+                    <div class="text-center mb-3">
+                        <?= Html::a(Yii::t('app', 'Delete Question'), ['quiz/delete-question', 'id' => $question->id], ['class' => 'btn btn-danger w-100 rotate_on_hover']) ?>
                     </div>
                 </div>
             <?php endforeach; ?>

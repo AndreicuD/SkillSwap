@@ -228,7 +228,7 @@ class ArticleController extends BaseController
      * @param string $page
      * @return
      */
-    public function actionUpdate($id, $page)
+    public function actionUpdate($id, $page, $course_id = '')
     {
         $model = Article::findOne(['id' => $id]);
         //$model = $this->findModel($id);
@@ -257,6 +257,8 @@ class ArticleController extends BaseController
         }
         if($page == "user") {
             $this->redirect(['user/articles']);
+        } else if ($page == 'course-edit') {
+            $this->redirect(['article/course-edit', 'public_id' => $model->public_id, 'course_id' => $course_id]);
         } else {
             $this->redirect(['article/edit', 'public_id' => $model->public_id]);
         }
@@ -324,11 +326,17 @@ class ArticleController extends BaseController
         if ($model->delete()) {
             ArticleBookmark::deleteAll(['article_id' => $model->id]);
             ArticleReview::deleteAll(['article_id' => $model->id]);
+            CourseElement::deleteAll([
+                'and',
+                ['element_type' => 'article'],
+                ['element_id' => $model->id]
+            ]);
             Yii::$app->session->setFlash('success', 'The article has been deleted.');
         }
 
         $this->redirect(['user/articles']);
     }
+
     /**
      * Finds the Article based on its id value.
      * If the model is not found, a 404 HTTP exception will be thrown.

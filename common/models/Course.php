@@ -68,7 +68,7 @@ class Course extends ActiveRecord
             ['is_public', 'in', 'range' => [self::STATUS_PUBLIC, self::STATUS_PRIVATE]],
             
 
-            ['price', 'number', 'min' => 500, 'max' => 1200],
+            ['price', 'number', 'min' => 1500, 'max' => 5000],
             ['price', 'default', 'value' => 1000],
             ['category', 'default', 'value' => 1, 'on' => 'create'],
             

@@ -22,7 +22,7 @@ $this->title = $model->title;
     <?php $form = ActiveForm::begin([
         'id' => 'article-form-course',
         'type' => ActiveForm::TYPE_VERTICAL,
-        'action' => ['article/update', 'id' => $model->id, 'page' => 'edit'], // Specify the route to the create action
+        'action' => ['article/update', 'id' => $model->id, 'page' => 'course-edit', 'course_id' => $course_id], // Specify the route to the create action
         'method' => 'post',
     ]); ?>
 

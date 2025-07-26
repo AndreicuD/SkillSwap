@@ -1090,9 +1090,15 @@ a {
 .course_element_actions {
 	width: 125px;
 }
+.course-left {
+	padding-right: 10%;
+}
 @media(max-width: 767px) {
 	.course_element_actions {
 		width: 60px;
+	}
+	.course-left {
+		padding-right: unset;
 	}
 }
 

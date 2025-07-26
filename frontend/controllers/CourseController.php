@@ -210,7 +210,7 @@ class CourseController extends BaseController
      * @param string $page
      * @return
      */
-    public function actionUpdate($id, $page)
+    public function actionUpdate($id, $page='other')
     {
         $model = Course::findOne(['id' => $id]);
         //$model = $this->findModel($id);

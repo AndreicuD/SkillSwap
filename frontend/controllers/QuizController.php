@@ -37,8 +37,8 @@ class QuizController extends BaseController
                     [
                         'actions' => [
                             'create', 'edit', 'update', 'ajax-delete', 'delete',
-                            'create-question', 'update-question',
-                            'create-choice', 'update-choice'
+                            'create-question', 'update-question', 'delete-question',
+                            'create-choice', 'update-choice', 'delete-choice',
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -149,15 +149,28 @@ class QuizController extends BaseController
     }
 
     /**
-     * delete an article
+     * delete a quiz
      * @return
      */
     public function actionDelete($id, $course_id)
     {
         $model = Quiz::findOne(['id' => $id]);
         if ($model->delete()) {
-            //QuizQuestion::deleteAll(['article_id' => $model->id]);
-            //QuizChoice::deleteAll(['article_id' => $model->id]);
+            $questionIds = QuizQuestion::find()
+                ->select('id')
+                ->where(['quiz_id' => $model->id])
+                ->column();
+            if (!empty($questionIds)) {
+                QuizChoice::deleteAll(['in', 'question_id', $questionIds]);
+            }
+
+            QuizQuestion::deleteAll(['quiz_id' => $model->id]);
+
+            CourseElement::deleteAll([
+                'and',
+                ['element_type' => 'quiz'],
+                ['element_id' => $model->id]
+            ]);
             Yii::$app->session->setFlash('success', 'The quiz has been deleted.');
         }
 
@@ -208,6 +221,23 @@ class QuizController extends BaseController
     }
 
     /**
+     * delete a quiz question
+     * @return
+     */
+    public function actionDeleteQuestion($id)
+    {
+        $model = QuizQuestion::findOne(['id' => $id]);
+        $quiz = $model->quiz;
+        if ($model->delete()) {
+            QuizChoice::deleteAll(['question_id' => $id]);
+
+            Yii::$app->session->setFlash('success', 'The quiz question has been deleted.');
+        }
+
+        return $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
+    }
+
+    /**
      * Create a new question choice
      * @return Response
      */
@@ -254,4 +284,18 @@ class QuizController extends BaseController
         $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
     }
 
+    /**
+     * delete a question choice
+     * @return
+     */
+    public function actionDeleteChoice($id)
+    {
+        $model = QuizChoice::findOne(['id' => $id]);
+        $quiz = $model->question->quiz;
+        if ($model->delete()) {
+            Yii::$app->session->setFlash('success', 'The quiz choice has been deleted.');
+        }
+
+        return $this->redirect(['quiz/edit', 'public_id' => $quiz->public_id, 'course_id' => $quiz->course_id]);
+    }
 }

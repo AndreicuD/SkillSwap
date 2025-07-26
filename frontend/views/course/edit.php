@@ -8,6 +8,9 @@ use yii\web\View;
 use yii\helpers\ArrayHelper;
 use kartik\form\ActiveForm;
 use common\models\Article;
+use common\models\Category;
+use kartik\select2\Select2;
+use kartik\widgets\FileInput;
 use common\models\Quiz;
 
 $this->title = $model->title;
@@ -68,72 +71,127 @@ $this->registerJs($sortable_js, View::POS_END);
 ?>
 <div class="site-index">
     <h1 style="text-align: center;" class="page_title"><?= Html::encode($this->title) ?></h1>
-
-    <div class="padd-10">
-        <div class="w-100 flex-row-even">
-            <?= $this->render('/course/add_element_card', [
-                'type' => 'article',
-                'title' => 'Add an article',
-                'url' => ['/article/create-in-course', 'course_id' => $model->id],
-            ]); ?>
-            <?= $this->render('/course/add_element_card', [
-                'type' => 'quiz',
-                'title' => 'Add a quiz',
-                'url' => ['/quiz/create', 'course_id' => $model->id],
-            ]); ?>
-        </div> 
-        
-        <hr>
     
-        <table class="table sortable-table ">
-            <thead class="course_table_head">
-                <tr>
-                    <th class="course_element_id">#</th>
-                    <th class="course_element_type"><?= Yii::t('app', 'Type')?></th>
-                    <th><?= Yii::t('app', 'Title')?></th>
-                    <th class="course_element_actions"><?= Yii::t('app', 'Actions')?></th>
-                </tr>
-            </thead>
-            <tbody id="course-elements-list">
-                <?php if (!empty($model->orderedElements)) { ?>
-                    <?php $position = 1; ?>
-                    <?php foreach ($model->orderedElements as $element_id => $element): ?>
-                        <tr class="element-row" data-element-id="<?= $element_id ?>">
-                            <td><div class="sort-handler d-flex"><?= $sortable_svg ?> <?= $position; ?></div></td>
-                            <td>
-                                <?= $svg[$element['type']]?>
-                            </td>
-                            <td><?= Html::encode($element['model']->title ?? 'Untitled') ?></td>
-                            <td>
-                                <?php if ($element['type'] === 'article'): ?>
-                                    <?= Html::a('Edit', ['/article/course-edit', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id], ['class' => 'btn btn-primary']) ?>
-                                    <button 
-                                        id="article_modal_<?= $model->public_id ?>" 
-                                        class="btn btn-danger btn-ajax" 
-                                        data-modal_title='<?=Yii::t("app", "Delete"); ?> "<?=$element['model']->title?>"'
-                                        data-modal_url="<?=Url::to(['article/ajax-delete', 'public_id' => $element['model']->public_id]); ?>" >
-                                        <?=$trash_svg?>
-                                    </button>
-                                <?php elseif ($element['type'] === 'quiz'): ?>
-                                    <?= Html::a('Edit', ['/quiz/edit', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id], ['class' => 'btn btn-primary']) ?>
-                                    <button 
-                                        id="article_modal_<?= $model->public_id ?>" 
-                                        class="btn btn-danger btn-ajax" 
-                                        data-modal_title='<?=Yii::t("app", "Delete"); ?> "<?=$element['model']->title?>"'
-                                        data-modal_url="<?=Url::to(['quiz/ajax-delete', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id]); ?>" >
-                                        <?=$trash_svg?>
-                                    </button>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                        <?php $position++; ?>
-                    <?php endforeach; ?>
-                <?php } else { ?>
-                    <p class="note"><?= Yii::t('app', 'There are no elements defined for this course') ?></p>
-                <?php } ?>
-            </tbody>
-        </table>
+    <br>
+
+    <div class="group_together">
+        <div class="w-80 course-left">
+            <div class="w-100 flex-row-even">
+                <?= $this->render('/course/add_element_card', [
+                    'type' => 'article',
+                    'title' => 'Add an article',
+                    'url' => ['/article/create-in-course', 'course_id' => $model->id],
+                ]); ?>
+                <?= $this->render('/course/add_element_card', [
+                    'type' => 'quiz',
+                    'title' => 'Add a quiz',
+                    'url' => ['/quiz/create', 'course_id' => $model->id],
+                ]); ?>
+            </div> 
+            
+        
+            <table class="table sortable-table ">
+                <thead class="course_table_head">
+                    <tr>
+                        <th class="course_element_id">#</th>
+                        <th class="course_element_type"><?= Yii::t('app', 'Type')?></th>
+                        <th><?= Yii::t('app', 'Title')?></th>
+                        <th class="course_element_actions"><?= Yii::t('app', 'Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody id="course-elements-list">
+                    <?php if (!empty($model->orderedElements)) { ?>
+                        <?php $position = 1; ?>
+                        <?php foreach ($model->orderedElements as $element_id => $element): ?>
+                            <tr class="element-row" data-element-id="<?= $element_id ?>">
+                                <td><div class="sort-handler d-flex"><?= $sortable_svg ?> <?= $position; ?></div></td>
+                                <td>
+                                    <?= $svg[$element['type']]?>
+                                </td>
+                                <td><?= Html::encode($element['model']->title ?? 'Untitled') ?></td>
+                                <td>
+                                    <?php if ($element['type'] === 'article'): ?>
+                                        <?= Html::a('Edit', ['/article/course-edit', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id], ['class' => 'btn btn-primary']) ?>
+                                        <button 
+                                            id="article_modal_<?= $model->public_id ?>" 
+                                            class="btn btn-danger btn-ajax" 
+                                            data-modal_title='<?=Yii::t("app", "Delete"); ?> "<?=$element['model']->title?>"'
+                                            data-modal_url="<?=Url::to(['article/ajax-delete', 'public_id' => $element['model']->public_id]); ?>" >
+                                            <?=$trash_svg?>
+                                        </button>
+                                    <?php elseif ($element['type'] === 'quiz'): ?>
+                                        <?= Html::a('Edit', ['/quiz/edit', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id], ['class' => 'btn btn-primary']) ?>
+                                        <button 
+                                            id="article_modal_<?= $model->public_id ?>" 
+                                            class="btn btn-danger btn-ajax" 
+                                            data-modal_title='<?=Yii::t("app", "Delete"); ?> "<?=$element['model']->title?>"'
+                                            data-modal_url="<?=Url::to(['quiz/ajax-delete', 'public_id' => $element['model']->public_id, 'course_id' => $model->public_id]); ?>" >
+                                            <?=$trash_svg?>
+                                        </button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php $position++; ?>
+                        <?php endforeach; ?>
+                    <?php } else { ?>
+                        <p class="note"><?= Yii::t('app', 'There are no elements defined for this course') ?></p>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="w-20">
+            <?php $form = ActiveForm::begin([
+                'id' => 'course-form',
+                'type' => ActiveForm::TYPE_VERTICAL,
+                'action' => ['course/update', 'id' => $model->id], // Specify the route to the create action
+                'method' => 'post',
+            ]); ?>
+            <?= $form->errorSummary($model);?>
+            <?= $form->field($model, 'title')->label(Yii::t('app', 'Title')) ?>
+            <?= $form->field($model, 'description')->textarea(['rows' => 4, 'style' => 'min-height: 160px']) ?>
+            
+            <?= $form->field($model, 'price')->label(Yii::t('app', 'Price')) ?>
+            
+            <?= $form->field($model, 'category_name')->widget(Select2::class, [
+                'data' => Category::getCategories(),
+                'options' => [
+                    'placeholder' => Yii::t('app', 'Category'),
+                ],
+                'pluginOptions' => [
+                    'tags' => true, // allow custom values
+                    'allowClear' => true,
+                    'dropdownParent' => '#course-form',
+                ],
+            ]); ?>
+
+            <?= $form->field($model, 'is_public')->checkbox([
+                'uncheck' => '0',
+                'value' => '1',
+            ])->label(Yii::t('app', 'Make Public')); ?>
+
+            <?= $form->field($model, 'cover')->widget(FileInput::classname(), [
+                'options' => ['accept' => 'image/*'],
+                'pluginOptions' => [
+                    'showPreview' => false,
+                    'showCaption' => true,
+                    'showRemove' => true,
+                    'showUpload' => false
+                ]
+            ]); ?>
+
+            <div class="group_together">
+                <div style="width: 100%; text-align: center;">
+                    <?= Html::a(Yii::t('app', 'Go Back'),['/user/courses'],['class' => ['btn btn-outline-danger rotate_on_hover mb-3']]) ?>
+                </div>
+                <div style="width: 100%; text-align: center;">
+                    <?= Html::button(Yii::t('app', 'Save'),['class' => ['btn btn-primary rotate_on_hover scale_on_hover mb-3'], 'type' => 'submit']) ?>
+                </div>
+            </div>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
+    
 
     <!-- Article Modal -->
     <div class="modal fade" id="article-blank" tabindex="-1" aria-labelledby="article_title" aria-hidden="true">

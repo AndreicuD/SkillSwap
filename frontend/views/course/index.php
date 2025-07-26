@@ -14,7 +14,7 @@ $this->title = Yii::t('app', 'Courses');
 
     <?= $this->render('/templates/search', [
         'model' => $model,
-        'url' => '/article/index'
+        'url' => '/course/index'
     ]) ?>
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
