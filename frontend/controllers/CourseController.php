@@ -68,6 +68,13 @@ class CourseController extends BaseController
             ],
         ];
     }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'pdf') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
+    }
 
     /**
      * Displays index.
@@ -345,8 +352,15 @@ class CourseController extends BaseController
      * $id is the courses public id
      * @return string
      */
-    public function actionPdf($id) {
+    public function actionPdf() {
+        //Yii::$app->request->validateCsrfToken(); // optional
+        $id = Yii::$app->request->post('id');
         $course = Course::findOne(['public_id' => $id]);
+        
+        if (!$course) {
+            throw new NotFoundHttpException('Course not found.');
+        }
+
         $progress = CourseProgress::find()
             ->alias('cp')
             ->joinWith('element e') // assumes getElement() relation is defined

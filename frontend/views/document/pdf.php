@@ -45,18 +45,11 @@ $imageUrl = str_replace($_SERVER['DOCUMENT_ROOT'], '', $imagePath);
 
             <h3 style="font-size: 24px; font-style: italic; margin-bottom: 2em;"><?= $title ?></h3>
 
-            <p style="font-size: 16px; margin-bottom: 4em;">Awarded on <?= date('F j, Y') ?></p>
+            <p style="font-size: 16px; margin-bottom: 4em;">Awarded on <?= date('F j, Y', strtotime($date)) ?></p>
 
-            <div style="display: flex; justify-content: space-between; margin-top: 4em; padding: 0 2em;">
-                <div style="text-align: center;">
-                    <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;"></div>
-                    <p style="margin-top: 0.5em;">Authorized Signature</p>
-                </div>
-
-                <div style="text-align: center;">
-                    <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;"></div>
-                    <p style="margin-top: 0.5em;">Skill Swap</p>
-                </div>
+            <div style="text-align: center; margin-top: 8em;">
+                <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;"></div>
+                <p style="margin-top: 0.5em;">Skill Swap</p>
             </div>
         </div>
     </body>

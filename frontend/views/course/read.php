@@ -52,7 +52,25 @@ $unlockedElementSortIndex = $progress->element->sort_index ?? 1;
 
                 if($progress) {
                     if($progress->completed_at) {
-                        echo '<h3 class="text-center">' . Yii::t('app', 'Congratulations! You completed this course! You can get your certificate ') . ' ' . Html::a(Yii::t('app', 'here'), ['course/pdf', 'id' => $model->public_id], ['target' => '_blank']) . ' ' . Yii::t('app', 'or on the') . ' ' . Html::a(Yii::t('app', 'Bought Courses Page'), ['user/courses-bought']) . '</h3>';
+                        echo Html::beginForm(['course/pdf'], 'post', [
+                            'id' => 'certificate-form-' . $model->id,
+                            'target' => '_blank',
+                            'style' => 'display: inline;',
+                        ]);
+                        echo Html::hiddenInput('id', $model->public_id);
+                        
+                        echo '<h3 class="text-center">';
+                        echo Yii::t('app', 'Congratulations! You completed this course! You can get your certificate ');
+                        echo Html::submitButton('<b>' . Yii::t('app', 'here') . '</b>', [
+                            'class' => 'btn btn-link p-0 fs-3',
+                            'style' => 'border:none; background:none; padding:0; font-weight:normal; cursor:pointer;',
+                            'target' => '_blank'
+                        ]);
+                        echo ' ' . Yii::t('app', 'or on the') . ' ';
+                        echo Html::a(Yii::t('app', 'Bought Courses Page'), ['user/courses-bought']);
+                        echo '</h3>';
+
+                        echo Html::endForm();
                         echo '<br>';
                     }
                 }

@@ -71,8 +71,15 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
         ->where(['cp.course_id' => $model->id, 'cp.user_id' => Yii::$app->user->id])
         ->one();
     if($progress) {
-        if($progress->completed_at) {
-            echo Html::a('Generate Certificate', ['course/pdf', 'id' => $model->public_id], ['target' => '_blank', 'class' => 'btn btn-warning rounded-0 w-100']);
+        if($progress->completed_at) {         
+            echo Html::beginForm(['course/pdf'], 'post', [
+                'id' => 'certificate-form-' . $model->id,
+                'target' => '_blank',
+                'style' => 'display: inline;',
+            ]);
+            echo Html::hiddenInput('id', $model->public_id);
+            echo Html::submitButton('Generate Certificate', ['class' => 'btn btn-warning rounded-0 w-100']);
+            echo Html::endForm();
         }
     }
 ?>

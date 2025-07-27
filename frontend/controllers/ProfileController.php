@@ -151,9 +151,37 @@ class ProfileController extends BaseController
 
     public function actionStats($id)
     {
-        // example dummy data for now
-        $profit = [120, 200, 90, 400, 300, 150, 210];
-        $labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        // Last 7 days dates
+        $days = [];
+        $labels = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $day = date('Y-m-d', strtotime("-$i days"));
+            $days[] = $day;
+            $labels[] = date('D', strtotime($day));
+        }
+
+        // Initialize profit array
+        $profit = array_fill(0, 7, 0);
+
+        // Step 1: Get all article and course IDs owned by this user (creator)
+        $articleIds = Article::find()->select('id')->where(['user_id' => $id])->column();
+        $courseIds = Course::find()->select('id')->where(['user_id' => $id])->column();
+
+        // Step 2: Find transactions for those article or course IDs created in last 7 days
+        $transactions = Transaction::find()
+            ->where(['article_id' => $articleIds])
+            ->orWhere(['course_id' => $courseIds])
+            ->andWhere(['>=', 'DATE(created_at)', $days[0]])
+            ->all();
+
+        // Step 3: Sum profit per day
+        foreach ($transactions as $transaction) {
+            $day = date('Y-m-d', strtotime($transaction->created_at));
+            $index = array_search($day, $days);
+            if ($index !== false) {
+                $profit[$index] += $transaction->value;
+            }
+        }
 
         $this->layout = 'blank';
         return $this->renderAjax('_stats', [
