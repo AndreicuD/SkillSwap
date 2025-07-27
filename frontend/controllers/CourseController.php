@@ -21,6 +21,7 @@ use yii\web\UploadedFile;
 use yii\web\Response;
 use yii\helpers\Url;
 use common\models\CourseElement;
+use common\models\CourseProgress;
 use kartik\mpdf\Pdf;
 use Mpdf\Mpdf;
 
@@ -43,7 +44,7 @@ class CourseController extends BaseController
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['update', 'edit', 'create', 'delete', 'ajax-delete', 'file-upload', 'file-delete', 'update-sort-order', 'pdf'],
+                        'actions' => ['update', 'edit', 'create', 'delete', 'ajax-delete', 'file-upload', 'file-delete', 'update-sort-order', 'pdf', 'unlock-next'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -346,6 +347,16 @@ class CourseController extends BaseController
      */
     public function actionPdf($id) {
         $course = Course::findOne(['public_id' => $id]);
+        $progress = CourseProgress::find()
+            ->alias('cp')
+            ->joinWith('element e') // assumes getElement() relation is defined
+            ->where(['cp.course_id' => $course->id, 'cp.user_id' => Yii::$app->user->id])
+            ->one();
+        if($progress) {
+            if($progress->completed_at) {
+                $date = $progress->completed_at;
+            }
+        }
 
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
@@ -359,6 +370,7 @@ class CourseController extends BaseController
         $html = $this->renderPartial('//document/pdf', [
             'title' => $course->title,
             'user' => User::getName(Yii::$app->user->id),
+            'date' => $date,
         ]);
 
         $mpdf->WriteHTML($html);
@@ -388,6 +400,43 @@ class CourseController extends BaseController
                 'debug' => YII_DEBUG ? $e->getMessage() : null,
             ];
         }
+    }
+
+
+    public function actionUnlockNext()
+    {
+        $userId = Yii::$app->user->id;
+        $courseId = Yii::$app->request->post('course_id');
+        $currentElementId = Yii::$app->request->post('current_element_id');
+
+        $currentElement = CourseElement::findOne(['element_id' => $currentElementId]);
+
+        $nextElement = CourseElement::find()
+            ->where(['course_id' => $courseId])
+            ->andWhere(['>', 'sort_index', $currentElement->sort_index])
+            ->orderBy(['sort_index' => SORT_ASC])
+            ->one();
+
+        if ($nextElement) {
+            if ($existent = CourseProgress::find()
+            ->where([
+                'user_id' => $userId,
+                'course_id' => $courseId,
+            ])->one()) {
+                $existent->element_id = $nextElement->id;
+                $existent->update(false);
+            } else {
+                $progress = new CourseProgress();
+                $progress->user_id = $userId;
+                $progress->course_id = $courseId;
+                $progress->element_id = $nextElement->id;
+                $progress->save(false);
+            }
+        }
+
+        $course = Course::findOne(['id' => $courseId]);
+
+        return $this->redirect(['course/read', 'public_id' => $course->public_id]);
     }
 
 }

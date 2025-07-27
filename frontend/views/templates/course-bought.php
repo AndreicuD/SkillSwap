@@ -8,6 +8,7 @@ use common\models\User;
 use common\models\Transaction;
 use kartik\widgets\StarRating;
 use common\models\CourseReview;
+use common\models\CourseProgress;
 
 /* @var $this yii\web\View */
 /* @var $widget yii\widgets\ListView this widget instance */
@@ -63,7 +64,18 @@ $src = $model->checkFileExists() ? $model->getSrc() : '/img/default.png';
     <a class="text-secondary" href="<?= Url::to(['course/index', 'Course[category_name]' => Category::getName($model->category)])?>"><?= Category::getName($model->category) ?></a></p>
 </div>
 
-<?= Html::a('Generate Certificate', ['course/pdf', 'id' => $model->public_id], ['target' => '_blank']) ?>
+<?php 
+    $progress = CourseProgress::find()
+        ->alias('cp')
+        ->joinWith('element e') // assumes getElement() relation is defined
+        ->where(['cp.course_id' => $model->id, 'cp.user_id' => Yii::$app->user->id])
+        ->one();
+    if($progress) {
+        if($progress->completed_at) {
+            echo Html::a('Generate Certificate', ['course/pdf', 'id' => $model->public_id], ['target' => '_blank', 'class' => 'btn btn-warning rounded-0 w-100']);
+        }
+    }
+?>
 
 <?php $form = ActiveForm::begin([
     'id' => 'course-form' . $model->public_id,

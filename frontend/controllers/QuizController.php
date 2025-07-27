@@ -19,6 +19,8 @@ use common\models\User;
 use yii\web\UploadedFile;
 use yii\web\Response;
 use yii\helpers\Url;
+use common\models\QuizAttempt;
+use common\models\CourseProgress;
 
 /**
  * Quiz controller
@@ -88,37 +90,90 @@ class QuizController extends BaseController
     public function actionSubmit()
     {
         $quizId = Yii::$app->request->post('quiz_id');
-        $submittedAnswers = Yii::$app->request->post('answers');
+        $submittedAnswers = Yii::$app->request->post('answers', []);
 
         $quiz = Quiz::findOne($quizId);
-        $questions = $quiz->questions;
+        if (!$quiz) {
+            Yii::$app->session->setFlash('error', 'Quiz not found.');
+            return $this->redirect(Yii::$app->request->referrer);
+        }
 
+        $questions = $quiz->questions;
         $score = 0;
-        $results = [];
 
         foreach ($questions as $question) {
             $correctAnswers = $question->getChoices()->where(['correct' => 1])->all();
-
             $correctAnswerIds = array_map(fn($c) => $c->id, $correctAnswers);
-            $userAnswerIds = $submittedAnswers[$question->id] ?? null;
-            
+            $userAnswerIds = $submittedAnswers[$question->id] ?? [];
+
             sort($userAnswerIds);
             sort($correctAnswerIds);
-            
-            
-            $isCorrect = $userAnswerIds == $correctAnswerIds;
-            $results[$question->id] = $isCorrect;
-            if ($isCorrect) {
+
+            if ($userAnswerIds == $correctAnswerIds) {
                 $score++;
             }
-
-            // TO DO: Save user progress to a new table
         }
 
-        Yii::$app->session->setFlash('success', "You scored $score / " . count($questions));
+        $totalQuestions = count($questions);
+        $percentage = $totalQuestions > 0 ? ($score / $totalQuestions) * 100 : 0;
+
+        // Save attempt
+        $attempt = new QuizAttempt();
+        $attempt->user_id = Yii::$app->user->id;
+        $attempt->course_id = $quiz->course_id;
+        $attempt->element_id = $quiz->id;
+        $attempt->score = $score;
+        $attempt->passed = $percentage >= 50 ? 1 : 0;
+        $attempt->attempted_at = date('Y-m-d H:i:s');
+        $attempt->save(false);
+
+        $course_element = CourseElement::findOne(['element_id' => $quiz->id]);
+
+        if ($attempt->passed) {
+            // Unlock next element
+            $nextElement = CourseElement::find()
+                ->where(['course_id' => $quiz->course_id])
+                ->andWhere(['>', 'sort_index', $course_element->sort_index])
+                ->orderBy(['sort_index' => SORT_ASC])
+                ->one();
+
+            if ($nextElement) {
+                if ($existent = CourseProgress::find()
+                ->where([
+                    'user_id' =>  $attempt->user_id,
+                    'course_id' => $quiz->course_id,
+                ])->one()) {
+                    $existent->element_id = $nextElement->id;
+                    $existent->update(false);
+                } else {
+                    $progress = new CourseProgress();
+                    $progress->user_id = $attempt->user_id;
+                    $progress->course_id = $quiz->course_id;
+                    $progress->element_id = $nextElement->id;
+                    $progress->save(false);
+                }
+            } else {
+                if ($existent = CourseProgress::find()
+                ->where([
+                    'user_id' =>  $attempt->user_id,
+                    'course_id' => $quiz->course_id,
+                ])->one()) {
+                    $existent->completed_at = date('Y-m-d H:i:s');
+                    $existent->update(false);
+                } else {
+                    $progress = new CourseProgress();
+                    $progress->completed_at = date('Y-m-d H:i:s');
+                    $progress->save(false);
+                }
+            }
+
+            Yii::$app->session->setFlash('success', 'You passed the quiz! Next element unlocked.');
+        } else {
+            Yii::$app->session->setFlash('error', "You scored $score / $totalQuestions. You can retry after 1 hour.");
+        }
+
         return $this->redirect(Yii::$app->request->referrer);
     }
-
 
     /**
      * Create a new quiz

@@ -41,7 +41,7 @@ $this->title = $model->title;
         
         <hr>
         <div class="padd-15 text-center">
-            <p class="gray text-sm">Any question you save that has no answers <span style="color: red;">will be skipped</span> for the user!</p>
+            <p class="gray text-sm"><?= Yii::t('app', 'Any question you save that has no answers') ?> <span style="color: red;"><?= Yii::t('app', 'will be skipped') ?></span> <?= Yii::t('app', 'for the user') ?>!</p>
             <?= Html::a(Yii::t('app', 'Add New Question'),['/quiz/create-question', 'quiz_id' => $model->public_id],['class' => ['btn btn-outline-secondary scale_on_hover mb-3']]) ?>
         </div>
 
